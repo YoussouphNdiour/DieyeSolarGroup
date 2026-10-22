@@ -1,7 +1,7 @@
 ---
 # Déploiement cPanel (Git Version Control > Deploy HEAD Commit) :
-# copie le site généré (public/) vers la racine web du domaine dsg.sn.
+# copie le site généré (public/) vers la racine du domaine dsg.sn (domaine supplémentaire : ~/dsg.sn).
 deployment:
   tasks:
-    - export DEPLOYPATH=$HOME/public_html/
+    - export DEPLOYPATH=$HOME/dsg.sn/
     - /bin/cp -R public/. $DEPLOYPATH

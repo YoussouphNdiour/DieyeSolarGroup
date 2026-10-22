@@ -28,7 +28,7 @@ Le dossier `public/` contient le site prêt à servir (HTML déjà générés, `
 
 **Option A – Git (recommandé)** : cPanel > *Git™ Version Control* > *Create* > cloner `https://github.com/YoussouphNdiour/DieyeSolarGroup.git`.
 Ensuite, à chaque mise à jour : *Manage* > *Pull or Deploy* > *Update from Remote* puis *Deploy HEAD Commit*.
-Le fichier `.cpanel.yml` copie `public/` dans `~/public_html/`.
+Le fichier `.cpanel.yml` copie `public/` dans `~/dsg.sn/` (racine du domaine supplémentaire dsg.sn).
 
 **Option B – Upload** : cPanel > *Gestionnaire de fichiers* > `public_html` > téléverser `dsg-site-cpanel.zip` puis *Extraire*
 (fichier créé par `npm run zip`).
