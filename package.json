@@ -1,0 +1,15 @@
+{
+  "name": "dsg-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site vitrine de DSG – Dieye Solar Group (dsg.sn)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && npx --yes serve@14.2.4 public -l 3000",
+    "zip": "node build.mjs && rm -f dsg-site-cpanel.zip && cd public && zip -qr ../dsg-site-cpanel.zip . -x '.DS_Store'"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
