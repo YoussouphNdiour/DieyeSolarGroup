@@ -359,6 +359,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .ac-dl div:last-child { border-bottom: 0; }
 .ac-dl dt { font-weight: 700; color: var(--ink); }
 .ac-dl dd { margin: 0; }
+.owner-card { display: grid; grid-template-columns: 148px 1fr; gap: 24px; align-items: center; }
+.owner-photo { width: 148px; height: 148px; border-radius: 18px; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 4px rgba(253, 189, 0, 0.35); }
+@media (max-width: 480px) {
+  .owner-card { grid-template-columns: 1fr; }
+  .owner-photo { width: 120px; height: 120px; }
+}
 .owner-titles li { position: relative; padding-left: 16px; margin-top: 6px; font-size: 15px; line-height: 1.45; }
 .owner-titles li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
 

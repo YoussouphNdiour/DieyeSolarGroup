@@ -166,7 +166,10 @@ add('groupe.html', {
     <div class="vm">
       <div class="card" data-reveal><h3>${icon('sun')} Notre vision</h3><p>Une énergie propre, fiable et accessible pour chaque foyer, chaque entreprise et chaque communauté du Sénégal.</p></div>
       <div class="card" data-reveal><h3>${icon('bolt')} Notre mission</h3><p>Concevoir des solutions solaires et hydrauliques justes, durables et abordables, avec un service réactif après l'installation.</p></div>
-      <div class="card card-dark" data-reveal><h3>Direction</h3><p class="owner">${company.owner}</p><ul class="owner-titles">${company.ownerTitles.map((t) => `<li>${t}</li>`).join('')}</ul></div>
+      <div class="card card-dark owner-card" data-reveal>
+        <img class="owner-photo" src="assets/img/cheikh-mohamed-dieye.webp" alt="${company.owner}, Président Directeur Général de Dieye Solar Group" width="160" height="160" loading="lazy">
+        <div><h3>Direction</h3><p class="owner">${company.owner}</p><ul class="owner-titles">${company.ownerTitles.map((t) => `<li>${t}</li>`).join('')}</ul></div>
+      </div>
     </div>
   </div>
 </section>
