@@ -1,6 +1,8 @@
-// Toutes les informations éditables du site DSG sont centralisées ici.
+// Toutes les informations éditables du site DSG sont centralisées ici (version française).
+// Les traductions anglaises sont dans data.en.mjs ; setLang() choisit la langue avant chaque page.
+import { en } from './data.en.mjs';
 
-export const company = {
+const companyFr = {
   name: 'Dieye Solar Group',
   short: 'DSG',
   legal: 'DIEYE SOLAR GROUP SAS',
@@ -22,7 +24,7 @@ export const company = {
   url: 'https://www.dsg.sn',
 };
 
-export const services = [
+const servicesFr = [
   {
     slug: 'energie-solaire',
     icon: 'sun',
@@ -136,7 +138,7 @@ export const services = [
   },
 ];
 
-export const projects = [
+const projectsFr = [
   {
     slug: 'centrale-1mwc-sandiara',
     title: 'Centrale solaire photovoltaïque de 1\u00a0MWc à Sandiara',
@@ -146,17 +148,17 @@ export const projects = [
     category: 'Industrie',
     figure: '1',
     unit: 'MWc',
-    summary: 'Centrale en injection directe, 7 onduleurs Sungrow de 115 kW, 100 % des besoins de l\'usine couverts.',
+    summary: 'Centrale en injection directe, 7 onduleurs Sungrow de 115 kW, 100 % des besoins journaliers de l\'usine couverts.',
     image: 'centrale-1mwc-aerien',
     gallery: ['hero-centrale-1mwc', 'centrale-1mwc-aerien'],
     specs: [
       ['Puissance', '1 MWc'],
       ['Onduleurs', '7 × Sungrow 115 kW'],
       ['Raccordement', 'Injection directe'],
-      ['Couverture', '100 % des besoins'],
+      ['Autonomie', '100 % des besoins journaliers'],
     ],
     challenge: "Une usine à forte consommation électrique, qui voulait maîtriser ses coûts énergétiques et gagner en autonomie.",
-    solution: "Installation d'une centrale solaire photovoltaïque de 1 MWc en injection directe, équipée de 7 onduleurs Sungrow de 115 kW chacun, destinée à couvrir 100 % des besoins énergétiques de l'usine.",
+    solution: "Installation d'une centrale solaire photovoltaïque de 1 MWc en injection directe, équipée de 7 onduleurs Sungrow de 115 kW chacun, destinée à couvrir 100 % des besoins énergétiques journaliers de l'usine.",
     result: "Ce projet illustre notre expertise dans la conception et la réalisation de solutions solaires industrielles performantes, qui optimisent les coûts énergétiques et renforcent l'autonomie énergétique de nos clients.",
   },
   {
@@ -246,7 +248,7 @@ export const projects = [
   },
 ];
 
-export const steps = [
+const stepsFr = [
   ['Visite et étude', 'Un technicien vient sur place, relève vos consommations, vos factures et vos contraintes.'],
   ['Dimensionnement et devis', 'Nous calculons la solution juste nécessaire et vous remettons un devis détaillé.'],
   ['Fourniture et installation', 'Matériel de marques reconnues, posé par nos propres équipes.'],
@@ -254,7 +256,7 @@ export const steps = [
   ['Suivi et maintenance', 'Supervision, visites préventives et dépannage rapide.'],
 ];
 
-export const partners = {
+const partnersFr = {
   clients: [
     ['senico', 'Senico'],
     ['patisen', 'Patisen'],
@@ -282,7 +284,7 @@ export const partners = {
   ],
 };
 
-export const academy = {
+const academyFr = {
   name: 'ProSolar Academy',
   tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
   partner: 'ISEP Abdoulaye Ly de Thiès',
@@ -313,7 +315,7 @@ export const academy = {
   ],
 };
 
-export const fieldPhotos = [
+const fieldPhotosFr = [
   ['equipe-pose', 'Pose de panneaux en toiture par l\'équipe DSG'],
   ['sandiara-techniciens', 'Mise en service des onduleurs à Sandiara'],
   ['champ-solaire', 'Champ solaire au sol vu du ciel'],
@@ -326,7 +328,7 @@ export const fieldPhotos = [
 ];
 
 // Vidéos courtes filmées au téléphone (format vertical)
-export const clips = {
+const clipsFr = {
   'forage-foration-1': { title: 'Foration d\'un forage', duration: '39 s' },
   'forage-foration-2': { title: 'Foration : l\'eau jaillit', duration: '28 s' },
   'forage-foration-3': { title: 'Foration : le forage débite', duration: '16 s' },
@@ -334,3 +336,38 @@ export const clips = {
   'pompage-pose-panneaux': { title: 'Pose de panneaux au sol', duration: '9 s' },
   'sav-nettoyage-brosse': { title: 'Nettoyage des panneaux à la brosse rotative', duration: '24 s' },
 };
+
+// ---------- Langue courante ----------
+// Les exports « let » sont des liaisons vivantes : les modules qui les importent voient la langue active.
+export let lang = 'fr';
+export let company = companyFr;
+export let services = servicesFr;
+export let projects = projectsFr;
+export let steps = stepsFr;
+export let partners = partnersFr;
+export let academy = academyFr;
+export let fieldPhotos = fieldPhotosFr;
+export let clips = clipsFr;
+
+/** Texte selon la langue active : t('Bonjour', 'Hello'). */
+export const t = (fr, enText) => (lang === 'en' ? enText : fr);
+
+export function setLang(l) {
+  lang = l;
+  const isEn = l === 'en';
+  const pick = (base, tr) => (isEn && tr ? { ...base, ...tr } : base);
+  company = pick(companyFr, en.company);
+  services = servicesFr.map((s) => pick(s, en.services[s.slug]));
+  projects = projectsFr.map((p) => {
+    const out = pick(p, en.projects[p.slug]);
+    if (isEn && p.video && en.projects[p.slug]?.video) out.video = { ...p.video, ...en.projects[p.slug].video };
+    return out;
+  });
+  steps = isEn ? en.steps : stepsFr;
+  partners = isEn
+    ? Object.fromEntries(Object.entries(partnersFr).map(([k, list]) => [k, list.map(([f, n]) => [f, en.partnerNames[f] || n])]))
+    : partnersFr;
+  academy = pick(academyFr, en.academy);
+  fieldPhotos = isEn ? fieldPhotosFr.map(([k, a]) => [k, en.fieldPhotos[k] || a]) : fieldPhotosFr;
+  clips = isEn ? Object.fromEntries(Object.entries(clipsFr).map(([k, c]) => [k, { ...c, ...en.clips[k] }])) : clipsFr;
+}

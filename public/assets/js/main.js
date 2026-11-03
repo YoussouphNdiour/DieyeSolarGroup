@@ -5,7 +5,10 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fmt = (n, d = 0) => n.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/ /g, ' ');
+  // Langue de la page (<html lang>) : les textes générés ici suivent la version affichée.
+  const EN = document.documentElement.lang === 'en';
+  const L = (fr, en) => (EN ? en : fr);
+  const fmt = (n, d = 0) => n.toLocaleString(EN ? 'en-US' : 'fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/ /g, ' ');
 
   /* En-tête */
   const header = $('.site-header');
@@ -18,12 +21,12 @@
   const closeNav = () => {
     document.body.classList.remove('nav-open');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Ouvrir le menu');
+    burger.setAttribute('aria-label', L('Ouvrir le menu', 'Open menu'));
   };
   burger.addEventListener('click', () => {
     const open = document.body.classList.toggle('nav-open');
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    burger.setAttribute('aria-label', open ? L('Fermer le menu', 'Close menu') : L('Ouvrir le menu', 'Open menu'));
   });
   $$('.main-nav a').forEach((a) => a.addEventListener('click', closeNav));
 
@@ -71,8 +74,9 @@
   const counters = $$('[data-count]');
   const runCount = (el) => {
     const raw = el.textContent.trim();
-    const dec = raw.includes(',') ? raw.split(',')[1].length : 0;
-    const target = parseFloat(raw.replace(/\s/g, '').replace(',', '.'));
+    const sep = EN ? '.' : ',';
+    const dec = raw.includes(sep) ? raw.split(sep)[1].length : 0;
+    const target = parseFloat(EN ? raw.replace(/[\s,]/g, '') : raw.replace(/\s/g, '').replace(',', '.'));
     if (Number.isNaN(target)) return;
     const t0 = performance.now();
     const dur = 1600;
@@ -146,7 +150,9 @@
     const range = $('#sim-bill-range', sim);
     const num = $('#sim-bill', sim);
     const out = (k) => $(`[data-out="${k}"]`, sim);
-    const labels = { maison: 'Maison / villa', entreprise: 'Entreprise / commerce', culte: 'Lieu de culte / école', agricole: 'Exploitation agricole' };
+    const labels = EN
+      ? { maison: 'House / villa', entreprise: 'Business / shop', culte: 'Place of worship / school', agricole: 'Farm' }
+      : { maison: 'Maison / villa', entreprise: 'Entreprise / commerce', culte: 'Lieu de culte / école', agricole: 'Exploitation agricole' };
     const cta = $('[data-sim-cta]', sim);
 
     const compute = () => {
@@ -162,12 +168,19 @@
 
       out('kwc').textContent = fmt(kwc, kwc < 10 ? 2 : 1);
       out('panels').textContent = fmt(panels);
-      out('storage').textContent = storage ? fmt(storage) : 'Optionnel';
+      out('storage').textContent = storage ? fmt(storage) : L('Optionnel', 'Optional');
       out('storage-unit').hidden = !storage;
       out('save').textContent = fmt(save);
       out('save-year').textContent = fmt(save * 12);
 
-      const msg = `Bonjour DSG, j'ai utilisé le simulateur du site.
+      const msg = EN
+        ? `Hello DSG, I used the simulator on your website.
+- Type of site: ${labels[type]}
+- Monthly bill: ${fmt(bill)} FCFA
+- Power cuts / evening use: ${outages ? 'yes' : 'no'}
+Estimate: ${fmt(kwc, 2)} kWp (${panels} panels)${storage ? `, ${storage} kWh of storage` : ''}, about ${fmt(save)} FCFA saved per month.
+I would like a free study.`
+        : `Bonjour DSG, j'ai utilisé le simulateur du site.
 - Type de site : ${labels[type]}
 - Facture mensuelle : ${fmt(bill)} FCFA
 - Coupures / besoin le soir : ${outages ? 'oui' : 'non'}
@@ -211,15 +224,23 @@ Je souhaite une étude gratuite.`;
 
       const d = Object.fromEntries(new FormData(form));
       const needLabel = need.options[need.selectedIndex].text;
-      const body = `Demande de devis – ${needLabel}
+      const subject = `${L('Demande de devis', 'Quote request')} – ${needLabel}`;
+      const body = EN
+        ? `${subject}
+Name: ${d.name}
+Phone: ${d.phone}${d.email ? `\nEmail: ${d.email}` : ''}
+Town: ${d.city}
+
+${d.message}`
+        : `${subject}
 Nom : ${d.name}
 Téléphone : ${d.phone}${d.email ? `\nE-mail : ${d.email}` : ''}
 Localité : ${d.city}
 
 ${d.message}`;
       const url = via === 'email'
-        ? `mailto:${EMAIL}?subject=${encodeURIComponent(`Demande de devis – ${needLabel}`)}&body=${encodeURIComponent(body)}`
-        : `https://wa.me/${WA}?text=${encodeURIComponent(`Bonjour DSG,\n${body}`)}`;
+        ? `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+        : `https://wa.me/${WA}?text=${encodeURIComponent(`${L('Bonjour DSG,', 'Hello DSG,')}\n${body}`)}`;
       if (via === 'email') location.href = url;
       else window.open(url, '_blank', 'noopener');
     });
@@ -235,7 +256,7 @@ ${d.message}`;
     const btnLabel = btn.innerHTML;
     f.ts.value = Math.floor(Date.now() / 1000);
     if (new URLSearchParams(location.search).get('erreur')) {
-      err.textContent = "Votre inscription n'a pas pu être enregistrée : vérifiez les champs obligatoires puis réessayez.";
+      err.textContent = L("Votre inscription n'a pas pu être enregistrée : vérifiez les champs obligatoires puis réessayez.", 'Your enrolment could not be saved: please check the required fields and try again.');
       err.hidden = false;
     }
     const showError = (text) => {
@@ -244,19 +265,27 @@ ${d.message}`;
     };
     const waFallback = () => {
       const d = Object.fromEntries(new FormData(reg));
-      const msg = `Bonjour DSG, je souhaite m'inscrire à ProSolar Academy.
+      const msg = EN
+        ? `Hello DSG, I would like to enrol in ProSolar Academy.
+First name: ${d.prenom}
+Last name: ${d.nom}
+Phone: ${d.telephone}${d.email ? `\nEmail: ${d.email}` : ''}
+Town: ${d.ville}
+Profile: ${d.profil}
+Education: ${d.niveau}`
+        : `Bonjour DSG, je souhaite m'inscrire à ProSolar Academy.
 Prénom : ${d.prenom}
 Nom : ${d.nom}
 Téléphone : ${d.telephone}${d.email ? `\nE-mail : ${d.email}` : ''}
 Ville : ${d.ville}
 Profil : ${d.profil}
 Niveau : ${d.niveau}`;
-      err.textContent = "L'envoi n'a pas abouti. Vous pouvez envoyer votre inscription sur WhatsApp : ";
+      err.textContent = L("L'envoi n'a pas abouti. Vous pouvez envoyer votre inscription sur WhatsApp : ", 'Sending failed. You can send your enrolment on WhatsApp: ');
       const a = document.createElement('a');
       a.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
       a.target = '_blank';
       a.rel = 'noopener';
-      a.textContent = 'envoyer sur WhatsApp';
+      a.textContent = L('envoyer sur WhatsApp', 'send on WhatsApp');
       err.appendChild(a);
       err.hidden = false;
     };
@@ -272,13 +301,13 @@ Niveau : ${d.niveau}`;
       if (f.email.value.trim() && !f.email.checkValidity()) f.email.setAttribute('aria-invalid', 'true');
       const firstBad = $('[aria-invalid="true"]', reg);
       if (firstBad) {
-        showError('Merci de vérifier les champs signalés en rouge.');
+        showError(L('Merci de vérifier les champs signalés en rouge.', 'Please check the fields highlighted in red.'));
         firstBad.focus();
         return;
       }
       err.hidden = true;
       btn.disabled = true;
-      btn.textContent = 'Envoi en cours…';
+      btn.textContent = L('Envoi en cours…', 'Sending…');
       try {
         const res = await fetch(reg.action, { method: 'POST', body: new FormData(reg), headers: { Accept: 'application/json' } });
         const data = await res.json();
@@ -309,10 +338,12 @@ Niveau : ${d.niveau}`;
     }
     if (prenom) {
       const hello = $('[data-hello]', pay);
-      hello.textContent = `Merci ${prenom}, plus qu'une étape !`;
+      hello.textContent = EN ? `Thank you ${prenom}, just one more step!` : `Merci ${prenom}, plus qu'une étape !`;
       hello.hidden = false;
     }
-    const msg = `Bonjour DSG, voici mon reçu de paiement Wave pour ProSolar Academy (session du ${pay.dataset.session}).${ref ? ` Référence : ${ref}.` : ''}${prenom ? ` Prénom : ${prenom}.` : ''}`;
+    const msg = EN
+      ? `Hello DSG, here is my Wave payment receipt for ProSolar Academy (session starting ${pay.dataset.session}).${ref ? ` Reference: ${ref}.` : ''}${prenom ? ` First name: ${prenom}.` : ''}`
+      : `Bonjour DSG, voici mon reçu de paiement Wave pour ProSolar Academy (session du ${pay.dataset.session}).${ref ? ` Référence : ${ref}.` : ''}${prenom ? ` Prénom : ${prenom}.` : ''}`;
     $('[data-pay-wa]', pay).href = `https://wa.me/${pay.dataset.wa}?text=${encodeURIComponent(msg)}`;
   }
 

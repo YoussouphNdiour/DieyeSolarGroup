@@ -1,13 +1,16 @@
-import { company, services, projects } from './data.mjs';
+import { company, services, projects, lang, t } from './data.mjs';
 
 const ASSET_V = Date.now().toString(36);
 
 export const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export const img = (name) => `assets/img/${name}.webp`;
+// Les pages anglaises sont dans /en/ : les fichiers communs se trouvent un dossier au-dessus.
+export const base = () => (lang === 'en' ? '../' : '');
+export const asset = (p) => `${base()}assets/${p}`;
+export const img = (name) => asset(`img/${name}.webp`);
 
-export const waLink = (text = 'Bonjour DSG, je souhaite un devis pour un projet.') =>
+export const waLink = (text = t('Bonjour DSG, je souhaite un devis pour un projet.', 'Hello DSG, I would like a quote for a project.')) =>
   `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(text)}`;
 
 const paths = {
@@ -39,28 +42,32 @@ const paths = {
 export const icon = (name, cls = '') =>
   `<svg class="ico ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
 
-const nav = [
-  { label: 'Accueil', href: 'index.html', key: 'home' },
+const nav = () => [
+  { label: t('Accueil', 'Home'), href: 'index.html', key: 'home' },
   {
-    label: 'Activités',
+    label: t('Activités', 'Services'),
     key: 'services',
     children: services.map((s) => ({ label: s.title, href: `${s.slug}.html`, icon: s.icon, desc: s.short })),
   },
   {
-    label: 'Réalisations',
+    label: t('Réalisations', 'Projects'),
     key: 'projects',
     children: [
       ...projects.map((p) => ({ label: p.shortTitle || p.title, href: `projet-${p.slug}.html`, desc: `${p.figure} ${p.unit} · ${p.place}` })),
-      { label: 'Toutes nos réalisations', href: 'realisations.html', all: true },
+      { label: t('Toutes nos réalisations', 'All our projects'), href: 'realisations.html', all: true },
     ],
   },
-  { label: 'Le groupe', href: 'groupe.html', key: 'group' },
+  { label: t('Le groupe', 'About us'), href: 'groupe.html', key: 'group' },
   { label: 'ProSolar Academy', href: 'prosolar-academy.html', key: 'academy' },
   { label: 'Contact', href: 'contact.html', key: 'contact' },
 ];
 
-function header(active) {
-  const items = nav
+function header(active, file) {
+  const other = lang === 'en' ? `../${file}` : `en/${file}`;
+  const langLink = (cls) => lang === 'en'
+    ? `<a class="${cls}" href="${other}" hreflang="fr" lang="fr" title="Version française">FR</a>`
+    : `<a class="${cls}" href="${other}" hreflang="en" lang="en" title="English version">EN</a>`;
+  const items = nav()
     .map((item) => {
       const cur = item.key === active ? ' aria-current="page"' : '';
       if (!item.children) return `<li><a class="nav-link" href="${item.href}"${cur}>${item.label}</a></li>`;
@@ -76,23 +83,25 @@ function header(active) {
     })
     .join('');
 
-  return `<a class="skip" href="#contenu">Aller au contenu</a>
+  return `<a class="skip" href="#contenu">${t('Aller au contenu', 'Skip to content')}</a>
 <header class="site-header">
   <div class="wrap header-in">
-    <a class="brand" href="index.html" aria-label="Dieye Solar Group, accueil">
-      <img src="assets/brand/dsg-mark.webp" alt="DSG Dieye Solar Group" width="160" height="45">
+    <a class="brand" href="index.html" aria-label="${t('Dieye Solar Group, accueil', 'Dieye Solar Group, home')}">
+      <img src="${asset('brand/dsg-mark.webp')}" alt="DSG Dieye Solar Group" width="160" height="45">
     </a>
-    <nav class="main-nav" aria-label="Navigation principale">
+    <nav class="main-nav" aria-label="${t('Navigation principale', 'Main navigation')}">
       <ul class="nav-list">${items}</ul>
       <div class="nav-mobile-extra">
-        <a class="btn btn-primary" href="contact.html#devis">Demander un devis</a>
+        <a class="btn btn-primary" href="contact.html#devis">${t('Demander un devis', 'Request a quote')}</a>
+        ${langLink('nav-lang')}
         <a class="nav-phone" href="tel:${company.phoneHref}">${icon('phone')} ${company.phone}</a>
       </div>
     </nav>
     <div class="header-actions">
       <a class="header-phone" href="tel:${company.phoneHref}">${icon('phone')}<span>${company.phone}</span></a>
-      <a class="btn btn-primary btn-sm" href="contact.html#devis">Demander un devis</a>
-      <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false">${icon('menu', 'i-open')}${icon('close', 'i-close')}</button>
+      ${langLink('lang-switch')}
+      <a class="btn btn-primary btn-sm" href="contact.html#devis">${t('Demander un devis', 'Request a quote')}</a>
+      <button class="burger" type="button" aria-label="${t('Ouvrir le menu', 'Open menu')}" aria-expanded="false">${icon('menu', 'i-open')}${icon('close', 'i-close')}</button>
     </div>
   </div>
   <div class="brand-stripe" aria-hidden="true"></div>
@@ -106,12 +115,12 @@ function footer() {
   <div class="wrap">
     <div class="f-top">
       <div class="f-brand">
-        <img src="assets/brand/dsg-logo-blanc.webp" alt="DSG Dieye Solar Group, l'innovation au service de vos projets" width="260" height="110" loading="lazy">
-        <p>Groupe sénégalais basé à Thiès. Énergie solaire, forage et pompage, irrigation, électricité générale, BTP, SAV et maintenance, de l'étude au suivi.</p>
-        <a class="btn btn-wa" href="${waLink()}" target="_blank" rel="noopener">${icon('chat')} Écrire sur WhatsApp</a>
+        <img src="${asset('brand/dsg-logo-blanc.webp')}" alt="DSG Dieye Solar Group, ${t('l’innovation au service de vos projets', 'innovation serving your projects')}" width="260" height="110" loading="lazy">
+        <p>${t("Groupe sénégalais basé à Thiès. Énergie solaire, forage et pompage, irrigation, électricité générale, BTP, SAV et maintenance, de l'étude au suivi.", 'Senegalese group based in Thiès. Solar energy, boreholes and pumping, irrigation, electrical work, construction, after-sales service and maintenance, from study to follow-up.')}</p>
+        <a class="btn btn-wa" href="${waLink()}" target="_blank" rel="noopener">${icon('chat')} ${t('Écrire sur WhatsApp', 'Message us on WhatsApp')}</a>
       </div>
-      ${col('Activités', services.map((s) => [s.title, `${s.slug}.html`]))}
-      ${col('Réalisations', [...projects.map((p) => [p.shortTitle || p.title, `projet-${p.slug}.html`]), ['Toutes les réalisations', 'realisations.html']])}
+      ${col(t('Activités', 'Services'), services.map((s) => [s.title, `${s.slug}.html`]))}
+      ${col(t('Réalisations', 'Projects'), [...projects.map((p) => [p.shortTitle || p.title, `projet-${p.slug}.html`]), [t('Toutes les réalisations', 'All projects'), 'realisations.html']])}
       <div class="f-col f-contact">
         <h3>Contact</h3>
         <ul>
@@ -123,12 +132,12 @@ function footer() {
       </div>
     </div>
     <div class="f-bottom">
-      <p>© <span data-year>2026</span> ${company.legal}. Tous droits réservés.</p>
-      <ul><li><a href="groupe.html">Le groupe</a></li><li><a href="prosolar-academy.html">ProSolar Academy</a></li><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <p>© <span data-year>2026</span> ${company.legal}. ${t('Tous droits réservés.', 'All rights reserved.')}</p>
+      <ul><li><a href="groupe.html">${t('Le groupe', 'About us')}</a></li><li><a href="prosolar-academy.html">ProSolar Academy</a></li><li><a href="mentions-legales.html">${t('Mentions légales', 'Legal notice')}</a></li><li><a href="contact.html">Contact</a></li></ul>
     </div>
   </div>
 </footer>
-<a class="wa-float" href="${waLink()}" target="_blank" rel="noopener" aria-label="Écrire à DSG sur WhatsApp">${icon('chat')}</a>`;
+<a class="wa-float" href="${waLink()}" target="_blank" rel="noopener" aria-label="${t('Écrire à DSG sur WhatsApp', 'Message DSG on WhatsApp')}">${icon('chat')}</a>`;
 }
 
 const jsonLd = () =>
@@ -145,14 +154,17 @@ const jsonLd = () =>
     logo: `${company.url}/assets/brand/dsg-logo.png`,
     address: { '@type': 'PostalAddress', streetAddress: 'Grand Standing', addressLocality: 'Thiès', addressCountry: 'SN' },
     openingHours: 'Mo-Fr 08:00-17:00',
-    areaServed: 'Sénégal',
+    areaServed: 'SN',
   });
 
 export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
-  const canonical = `${company.url}/${file === 'index.html' ? '' : file}`;
+  const path = file === 'index.html' ? '' : file;
+  const urlFr = `${company.url}/${path}`;
+  const urlEn = `${company.url}/en/${path}`;
+  const canonical = lang === 'en' ? urlEn : urlFr;
   return `<!doctype html>
-<html lang="fr">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -161,29 +173,32 @@ export function page({ file, title, description, active, body, image = 'hero-cen
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="fr" href="${urlFr}">
+<link rel="alternate" hreflang="en" href="${urlEn}">
+<link rel="alternate" hreflang="x-default" href="${urlFr}">
 <meta name="theme-color" content="#0D1034">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_SN">
+<meta property="og:locale" content="${t('fr_SN', 'en_US')}">
 <meta property="og:site_name" content="DSG – Dieye Solar Group">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:image" content="${company.url}/${img(image)}">
+<meta property="og:image" content="${company.url}/assets/img/${image}.webp">
 <meta property="og:url" content="${canonical}">
-<link rel="icon" type="image/png" sizes="64x64" href="assets/brand/favicon-64.png">
-<link rel="apple-touch-icon" href="assets/brand/favicon-180.png">
+<link rel="icon" type="image/png" sizes="64x64" href="${asset('brand/favicon-64.png')}">
+<link rel="apple-touch-icon" href="${asset('brand/favicon-180.png')}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=${ASSET_V}">
+<link rel="stylesheet" href="${asset('css/style.css')}?v=${ASSET_V}">
 ${home ? `<link rel="preload" as="image" href="${img(image)}" fetchpriority="high">\n<script type="application/ld+json">${jsonLd()}</script>` : ''}
 </head>
 <body>
-${header(active)}
+${header(active, file)}
 <main id="contenu">
 ${body}
 </main>
 ${footer()}
-<script src="assets/js/main.js?v=${ASSET_V}" defer></script>
+<script src="${asset('js/main.js')}?v=${ASSET_V}" defer></script>
 </body>
 </html>
 `;

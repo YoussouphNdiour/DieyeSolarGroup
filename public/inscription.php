@@ -9,7 +9,9 @@
 const NOTIFY_TO = 'info@dsg.sn';
 const MAIL_FROM = 'no-reply@dsg.sn';
 const SESSION_LABEL = '7 décembre 2026';
+const SESSION_LABEL_EN = 'December 7, 2026';
 const AMOUNT = '100 000 FCFA';
+const AMOUNT_EN = '100,000 FCFA';
 const PAY_URL = 'https://pay.wave.com/m/M_sn_M3Cuivt2qVb3/c/sn/?amount=100000';
 const WHATSAPP = '221786803131';
 
@@ -17,17 +19,21 @@ const WHATSAPP = '221786803131';
 define('CSV_FILE', dirname(__DIR__) . '/prosolar-inscriptions.csv');
 
 $wantsJson = strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
+// Langue du formulaire : les pages anglaises sont dans /en/.
+$lang = ($_POST['lang'] ?? '') === 'en' ? 'en' : 'fr';
 
 function respond($ok, $ref, $prenom, $error, $wantsJson)
 {
+    global $lang;
+    $prefix = $lang === 'en' ? 'en/' : '';
     if ($wantsJson) {
         http_response_code($ok ? 200 : 422);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['ok' => $ok, 'ref' => $ref, 'error' => $error], JSON_UNESCAPED_UNICODE);
     } elseif ($ok) {
-        header('Location: prosolar-inscription-merci.html?ref=' . rawurlencode($ref) . '&prenom=' . rawurlencode($prenom), true, 303);
+        header('Location: ' . $prefix . 'prosolar-inscription-merci.html?ref=' . rawurlencode($ref) . '&prenom=' . rawurlencode($prenom), true, 303);
     } else {
-        header('Location: prosolar-inscription.html?erreur=1#inscription', true, 303);
+        header('Location: ' . $prefix . 'prosolar-inscription.html?erreur=1#inscription', true, 303);
     }
     exit;
 }
@@ -95,7 +101,7 @@ if ($errors) {
 
 $date = date('Y-m-d H:i');
 $row = [$date, $ref, SESSION_LABEL, $data['prenom'], $data['nom'], $data['telephone'], $data['email'], $data['ville'],
-    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente du paiement Wave'];
+    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente du paiement Wave', strtoupper($lang)];
 
 $saved = false;
 $isNew = !file_exists(CSV_FILE);
@@ -104,7 +110,7 @@ if ($fh && flock($fh, LOCK_EX)) {
     if ($isNew) {
         fwrite($fh, "\xEF\xBB\xBF");
         fputcsv($fh, ['Date', 'Référence', 'Session', 'Prénom', 'Nom', 'Téléphone', 'E-mail', 'Ville', 'Profil',
-            'Niveau', 'Expérience solaire', 'Connu par', 'Attentes', 'Statut'], ';', '"', '');
+            'Niveau', 'Expérience solaire', 'Connu par', 'Attentes', 'Statut', 'Langue'], ';', '"', '');
     }
     $saved = fputcsv($fh, array_map('csvSafe', $row), ';', '"', '') !== false;
     flock($fh, LOCK_UN);
@@ -122,6 +128,7 @@ $lines = [
     'Référence : ' . $ref,
     'Session : ' . SESSION_LABEL,
     'Date : ' . $date,
+    'Langue du formulaire : ' . strtoupper($lang),
     '',
     'Prénom : ' . $data['prenom'],
     'Nom : ' . $data['nom'],
@@ -150,21 +157,40 @@ $mailed = @mail(NOTIFY_TO, encodeHeader('Inscription ProSolar Academy ' . $ref .
     implode("\n", $lines), implode("\r\n", $headers));
 
 if ($data['email'] !== '') {
-    $confirm = [
-        'Bonjour ' . $data['prenom'] . ',',
-        '',
-        'Nous avons bien reçu votre demande d\'inscription à ProSolar Academy (session du ' . SESSION_LABEL . ').',
-        'Votre référence : ' . $ref,
-        '',
-        'Pour valider votre place, réglez ' . AMOUNT . ' via Wave :',
-        PAY_URL,
-        '',
-        'Envoyez ensuite la capture de votre reçu sur WhatsApp au +' . WHATSAPP . ' en indiquant votre référence.',
-        '',
-        'À bientôt,',
-        'ProSolar Academy – Dieye Solar Group',
-    ];
-    @mail($data['email'], encodeHeader('Votre inscription à ProSolar Academy – ' . $ref), implode("\n", $confirm),
+    if ($lang === 'en') {
+        $subject = 'Your ProSolar Academy enrolment – ' . $ref;
+        $confirm = [
+            'Hello ' . $data['prenom'] . ',',
+            '',
+            'We have received your request to enrol in ProSolar Academy (session starting ' . SESSION_LABEL_EN . ').',
+            'Your reference: ' . $ref,
+            '',
+            'To confirm your place, please pay ' . AMOUNT_EN . ' via Wave:',
+            PAY_URL,
+            '',
+            'Then send a screenshot of your receipt on WhatsApp to +' . WHATSAPP . ' with your reference.',
+            '',
+            'See you soon,',
+            'ProSolar Academy – Dieye Solar Group',
+        ];
+    } else {
+        $subject = 'Votre inscription à ProSolar Academy – ' . $ref;
+        $confirm = [
+            'Bonjour ' . $data['prenom'] . ',',
+            '',
+            'Nous avons bien reçu votre demande d\'inscription à ProSolar Academy (session du ' . SESSION_LABEL . ').',
+            'Votre référence : ' . $ref,
+            '',
+            'Pour valider votre place, réglez ' . AMOUNT . ' via Wave :',
+            PAY_URL,
+            '',
+            'Envoyez ensuite la capture de votre reçu sur WhatsApp au +' . WHATSAPP . ' en indiquant votre référence.',
+            '',
+            'À bientôt,',
+            'ProSolar Academy – Dieye Solar Group',
+        ];
+    }
+    @mail($data['email'], encodeHeader($subject), implode("\n", $confirm),
         implode("\r\n", ['MIME-Version: 1.0', 'Content-Type: text/plain; charset=UTF-8', 'Content-Transfer-Encoding: 8bit',
             'From: ' . encodeHeader('ProSolar Academy') . ' <' . MAIL_FROM . '>', 'Reply-To: ' . NOTIFY_TO]));
 }
