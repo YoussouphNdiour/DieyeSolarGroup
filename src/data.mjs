@@ -7,13 +7,18 @@ export const company = {
   slogan: "L'innovation au service de vos projets",
   tagline: 'Une vision globale, des solutions durables.',
   owner: 'Cheikh Mohamed Dieye',
+  ownerTitles: [
+    'Président Directeur Général de Dieye Solar Group SAS',
+    'Enseignant formateur à l\'ISEP de Thiès',
+    'Auditeur de centrales photovoltaïques',
+  ],
   phone: '+221 78 680 31 31',
   phoneHref: '+221786803131',
   whatsapp: '221786803131',
   email: 'info@dsg.sn',
   address: 'Grand Standing, Thiès, Sénégal',
   city: 'Thiès',
-  hours: 'Lundi au samedi, 8 h – 18 h',
+  hours: 'Lundi au vendredi, 8 h – 17 h',
   url: 'https://www.dsg.sn',
 };
 
@@ -51,7 +56,7 @@ export const services = [
       ['Maintenance', 'Contrôle des pompes, nettoyage des panneaux, suivi du débit.'],
     ],
     audiences: ['Exploitations agricoles', 'Villages et communautés', 'Élevages', 'Sites industriels'],
-    gallery: ['keur-madaro-bassin', 'keur-madaro-chantier', 'champ-solaire'],
+    gallery: ['forage-jet', 'forage-eau', 'keur-madaro-bassin'],
     project: 'pompage-keur-madaro',
   },
   {
@@ -69,7 +74,7 @@ export const services = [
       ['Programmation', 'Vannes et programmateurs pour irriguer aux heures utiles.'],
     ],
     audiences: ['Maraîchers', 'Arboriculteurs', 'Fermes et GIE', 'Projets agricoles'],
-    gallery: ['keur-madaro-pompe', 'keur-madaro-chantier', 'champ-solaire'],
+    gallery: ['irrigation-raccords', 'irrigation-vannes', 'keur-madaro-pompe'],
     project: 'pompage-keur-madaro',
   },
   {
@@ -108,9 +113,48 @@ export const services = [
     gallery: ['sandiara-charpente', 'sandiara-ombriere', 'sandiara-site'],
     project: 'chambres-froides-sandiara',
   },
+  {
+    slug: 'sav-maintenance',
+    icon: 'wrench',
+    title: 'SAV et maintenance',
+    short: 'Nettoyage des panneaux à la brosse, maintenance préventive et curative, entretien de vos installations.',
+    image: 'sav-brosse',
+    imageAlt: 'Nettoyage de panneaux solaires avec une brosse rotative par un technicien DSG',
+    lead: "Une centrale encrassée ou mal entretenue perd de la production chaque jour. Nos techniciens nettoient, contrôlent et dépannent vos installations pour qu'elles gardent leurs performances dans la durée.",
+    offers: [
+      ['Nettoyage des panneaux', 'Brosse rotative et eau, sans abîmer les modules : la poussière et le sable partent, la production remonte.'],
+      ['Maintenance préventive', 'Visites programmées : contrôle des onduleurs, des batteries, des protections et des serrages.'],
+      ['Maintenance curative', 'Diagnostic et dépannage rapide en cas de panne, remplacement des équipements défectueux.'],
+      ["Contrats d'entretien", 'Un calendrier de passages adapté à votre site, avec un rapport après chaque intervention.'],
+    ],
+    audiences: ['Centrales solaires et hybrides', 'Entreprises et industries', 'Lieux de culte et écoles', 'Villas et résidences', 'Pompages solaires'],
+    gallery: ['sav-nettoyage', 'sav-brosse-toiture', 'onduleurs-mur'],
+    project: 'mosquee-abdoulaye-diop',
+  },
 ];
 
 export const projects = [
+  {
+    slug: 'centrale-1mwc-sandiara',
+    title: 'Centrale solaire photovoltaïque de 1\u00a0MWc à Sandiara',
+    shortTitle: 'Centrale de 1\u00a0MWc à Sandiara',
+    place: 'Sandiara, région de Thiès',
+    category: 'Industrie',
+    figure: '1',
+    unit: 'MWc',
+    summary: 'Centrale en injection directe, 7 onduleurs Sungrow de 115 kW, 100 % des besoins de l\'usine couverts.',
+    image: 'centrale-1mwc-aerien',
+    gallery: ['hero-centrale-1mwc', 'centrale-1mwc-panneaux'],
+    specs: [
+      ['Puissance', '1 MWc'],
+      ['Onduleurs', '7 × Sungrow 115 kW'],
+      ['Raccordement', 'Injection directe'],
+      ['Couverture', '100 % des besoins'],
+    ],
+    challenge: "Une usine à forte consommation électrique, qui voulait maîtriser ses coûts énergétiques et gagner en autonomie.",
+    solution: "Installation d'une centrale solaire photovoltaïque de 1 MWc en injection directe, équipée de 7 onduleurs Sungrow de 115 kW chacun, destinée à couvrir 100 % des besoins énergétiques de l'usine.",
+    result: "Ce projet illustre notre expertise dans la conception et la réalisation de solutions solaires industrielles performantes, qui optimisent les coûts énergétiques et renforcent l'autonomie énergétique de nos clients.",
+  },
   {
     slug: 'mosquee-abdoulaye-diop',
     title: 'Mosquée Abdoulaye Diop',
@@ -208,27 +252,49 @@ export const steps = [
 
 export const partners = {
   clients: [
-    ['patisen', 'Patisen'],
-    ['terranga-farms', 'Terranga Farms Sénégal'],
     ['senico', 'Senico'],
-    ['afreenergy', 'Afreenergy'],
-    ['grips', 'GRIPS'],
-    ['mp-energy', 'MP Energy'],
-    ['tumiqui', 'Tumiqui Japon'],
+    ['patisen', 'Patisen'],
   ],
-  institutions: [
-    ['senelec', 'Senelec'],
-    ['aner', 'ANER'],
-    ['isep-thies', 'ISEP Thiès'],
+  partners: [
+    ['eranove', 'Eranove'],
+    ['felicity', 'Felicity Solar'],
+    ['solarx', 'SolarX'],
+    ['solarig', 'Solarig'],
+    ['infraenergy', 'Infranergy'],
+    ['deye', 'Deye'],
   ],
   brands: [
+    ['felicity', 'Felicity Solar'],
+    ['solarig', 'Solarig'],
     ['deye', 'Deye'],
-    ['huawei', 'Huawei'],
-    ['victron', 'Victron Energy'],
-    ['sma', 'SMA'],
-    ['uhome', 'Uhome'],
-    ['livoltek', 'Livoltek'],
-    ['solarx', 'SolarX'],
+  ],
+};
+
+export const academy = {
+  name: 'ProSolar Academy',
+  tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
+  partner: 'ISEP Abdoulaye Ly de Thiès',
+  nextSession: '7 décembre 2026',
+  place: "Grand Standing, Thiès (près de l'École Sainte Bernadette)",
+  facts: [
+    ['70 %', 'de pratique sur de vrais équipements'],
+    ['3 mois', 'de formation, dont 1 mois de stage'],
+    ['20', 'places maximum par cohorte'],
+    ['7 déc.', 'début de la prochaine session'],
+  ],
+  modules: [
+    ['Électricité appliquée', ['Bases de l\'électricité, courant continu et alternatif', 'Tension, courant, puissance et énergie', 'Protections électriques et mise à la terre', 'Câblage, raccordement et lecture de schémas', 'Mesures électriques et multimètre']],
+    ['Technologie des systèmes solaires', ['Principe du photovoltaïque, panneaux et caractéristiques', 'Régulateurs MPPT / PWM', 'Batteries et systèmes de stockage', 'Onduleurs off-grid et systèmes hybrides', 'Installation, configuration et mise en service']],
+    ['Dimensionnement optimal', ['Analyse des besoins énergétiques', 'Champ photovoltaïque, batteries, onduleurs et protections', 'Câbles et chutes de tension', 'Systèmes de pompage solaire', 'Études de cas et conception complète d\'une installation']],
+    ['Incubation et entrepreneuriat', ['Créer et structurer une activité solaire', 'Élaborer une offre commerciale et un devis', 'Gestion de projet et relation client', 'Business model et présentation de projet']],
+  ],
+  audiences: [
+    ['Techniciens en activité', 'qui veulent se spécialiser ou se perfectionner dans le solaire.'],
+    ['Électriciens', 'qui souhaitent élargir leurs compétences au photovoltaïque.'],
+    ['Étudiants et jeunes diplômés', 'des filières techniques, à la recherche d\'une spécialisation concrète.'],
+    ['Entrepreneurs', 'qui veulent se lancer dans la vente ou l\'installation de systèmes solaires.'],
+    ['Agriculteurs', 'pour gagner en autonomie sur le diagnostic et l\'entretien de leurs pompes solaires.'],
+    ['Personnes en reconversion', 'qui cherchent un métier porteur et générateur de revenus.'],
   ],
 };
 

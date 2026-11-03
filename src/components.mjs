@@ -1,4 +1,4 @@
-import { company, services, projects, steps, partners } from './data.mjs';
+import { company, services, projects, steps, partners, academy } from './data.mjs';
 import { esc, icon, img, waLink } from './layout.mjs';
 
 export const picture = (name, alt, { cls = '', eager = false, sizes } = {}) =>
@@ -14,18 +14,18 @@ export const ctaButtons = (secondary = { label: 'Nos réalisations', href: 'real
 
 export function homeHero() {
   const stats = [
-    ['35,5', 'kWc', 'notre plus grande centrale hybride, à Sandiara'],
+    ['1', 'MWc', 'notre plus grande centrale, à Sandiara'],
     ['70', '%', "d'autonomie pour la mosquée Abdoulaye Diop"],
     ['600 000', 'FCFA', "économisés chaque mois par la mosquée"],
-    ['5', 'métiers', "de l'énergie à l'eau, un seul groupe"],
+    ['6', 'métiers', "de l'énergie à la maintenance, un seul groupe"],
   ];
   return `<section class="hero">
-  <div class="hero-media">${picture('hero-mosquee', 'Vue aérienne de la mosquée Abdoulaye Diop à Thiès et de sa centrale solaire posée par DSG', { eager: true })}</div>
+  <div class="hero-media">${picture('hero-centrale-1mwc', 'Vue aérienne de la centrale solaire de 1 MWc réalisée par DSG à Sandiara', { eager: true })}</div>
   <div class="hero-sun" aria-hidden="true"></div>
   <div class="wrap hero-in">
     <p class="kicker kicker-light">Dieye Solar Group · Thiès, Sénégal</p>
     <h1 class="hero-title">L'innovation au service <span>de vos projets.</span></h1>
-    <p class="hero-lead">Énergie solaire, forage et irrigation, électricité générale et BTP. Un seul groupe conçoit, installe et entretient vos équipements, pour les entreprises, les collectivités et les familles de tout le Sénégal.</p>
+    <p class="hero-lead">Énergie solaire, forage et irrigation, électricité générale, BTP, SAV et maintenance. Un seul groupe conçoit, installe et entretient vos équipements, pour les industries, les collectivités et les familles de tout le Sénégal.</p>
     ${ctaButtons()}
   </div>
   <div class="hero-stats">
@@ -39,14 +39,16 @@ export function homeHero() {
 }
 
 export function logoTicker() {
-  const all = [...partners.brands, ...partners.clients, ...partners.institutions];
-  const row = all.map(([f, n]) => `<li><img src="assets/logos/${f}.webp" alt="${esc(n)}" loading="lazy" height="40"></li>`).join('');
-  return `<section class="ticker" aria-label="Marques, clients et partenaires">
-  <div class="ticker-track"><ul>${row}</ul><ul aria-hidden="true">${row}</ul></div>
+  const seen = new Set();
+  const all = [...partners.clients, ...partners.partners, ...partners.brands].filter(([f]) => !seen.has(f) && seen.add(f));
+  const row = (hidden) => all.map(([f, n]) => `<li><img src="assets/logos/${f}.webp" alt="${hidden ? '' : esc(n)}" loading="lazy" height="40"></li>`).join('');
+  // La liste est courte : on la répète pour que la bande défile sans trou sur grand écran.
+  return `<section class="ticker" aria-label="Clients, partenaires et marques">
+  <div class="ticker-track"><ul>${row(false)}${row(true)}</ul><ul aria-hidden="true">${row(true)}${row(true)}</ul></div>
 </section>`;
 }
 
-export function servicesGrid({ title = 'Cinq métiers, <br>un seul interlocuteur.', intro = true } = {}) {
+export function servicesGrid({ title = 'Six métiers, <br>un seul interlocuteur.', intro = true } = {}) {
   return `<section class="section services" id="activites">
   <div class="wrap">
     <div class="section-head">
@@ -54,12 +56,12 @@ export function servicesGrid({ title = 'Cinq métiers, <br>un seul interlocuteur
         ${kicker('Nos activités')}
         <h2>${title}</h2>
       </div>
-      ${intro ? `<p class="section-intro">L'énergie, l'eau et le bâtiment sont liés sur un chantier. Nous les réunissons dans une même équipe pour que votre projet avance sans coordination à faire entre plusieurs prestataires.</p>` : ''}
+      ${intro ? `<p class="section-intro">L'énergie, l'eau, le bâtiment et l'entretien sont liés sur un chantier. Nous les réunissons dans une même équipe pour que votre projet avance sans coordination à faire entre plusieurs prestataires.</p>` : ''}
     </div>
     <ul class="svc-grid">
       ${services
         .map(
-          (s, i) => `<li class="svc-card${i === 0 ? ' svc-lg' : ''}" data-reveal>
+          (s) => `<li class="svc-card" data-reveal>
         <a href="${s.slug}.html">
           ${picture(s.image, s.imageAlt)}
           <div class="svc-body">
@@ -80,7 +82,7 @@ export function servicesGrid({ title = 'Cinq métiers, <br>un seul interlocuteur
 export function approach() {
   const items = [
     ['doc', "L'étude avant le devis", 'Nous relevons vos consommations et vos contraintes sur place avant de chiffrer. Vous payez la solution juste nécessaire, pas plus.'],
-    ['shield', 'Du matériel qui dure', 'Onduleurs, batteries et panneaux de marques reconnues (Deye, Huawei, Victron, SMA…), posés par nos propres techniciens.'],
+    ['shield', 'Du matériel qui dure', 'Onduleurs, batteries et panneaux de marques reconnues (Deye, Felicity Solar, Solarig…), posés par nos propres techniciens.'],
     ['chart', 'Un suivi dans le temps', 'Supervision de la production, visites de maintenance et dépannage rapide : votre installation garde ses performances.'],
   ];
   return `<section class="section approach">
@@ -155,9 +157,9 @@ export const projectCard = (p, cls = '') => `<article class="proj-card ${cls}">
     ${picture(p.image, `${p.title}, ${p.place}`)}
     <div class="proj-body">
       <p class="proj-fig"><span>${p.figure}</span><small>${p.unit}</small></p>
-      <h3>${p.title}</h3>
+      <h3>${p.shortTitle || p.title}</h3>
       <p class="proj-sum">${p.place} · ${p.summary}</p>
-      <p class="tags"><span class="tag tag-accent">${p.category}</span><span class="tag">${p.year}</span></p>
+      <p class="tags"><span class="tag tag-accent">${p.category}</span>${p.year ? `<span class="tag">${p.year}</span>` : ''}</p>
     </div>
   </a>
 </article>`;
@@ -205,6 +207,33 @@ export function videosSection() {
       <p class="section-intro">De la pose des panneaux à la mise en service : suivez nos équipes sur deux de nos réalisations.</p>
     </div>
     <div class="videos">${list.map(videoCard).join('')}</div>
+  </div>
+</section>`;
+}
+
+export const academyWa = () =>
+  waLink(`Bonjour DSG, je souhaite m'inscrire à ProSolar Academy (session du ${academy.nextSession}).`);
+
+export const academyFacts = () =>
+  `<ul class="ac-facts">${academy.facts.map(([n, t]) => `<li><strong>${n}</strong><span>${t}</span></li>`).join('')}</ul>`;
+
+export function academySection() {
+  return `<section class="section dark academy" id="prosolar-academy">
+  <div class="wrap academy-in">
+    <div>
+      ${kicker('Formation · ProSolar Academy', true)}
+      <h2>Formez-vous aux métiers du solaire.</h2>
+      <p class="academy-lead">${academy.name}, le centre de formation de Dieye Solar Group, forme des techniciens opérationnels en installation et maintenance de systèmes solaires, en partenariat avec l'${academy.partner}.</p>
+      ${academyFacts()}
+      <div class="btn-row">
+        <a class="btn btn-primary" href="prosolar-academy.html">Découvrir la formation ${icon('arrow')}</a>
+        <a class="btn btn-ghost" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire</a>
+      </div>
+    </div>
+    <figure class="academy-media" data-reveal>
+      ${picture('prosolar-signature', "Signature de la convention de partenariat ProSolar Academy entre le directeur général de Dieye Solar Group et le directeur de l'ISEP de Thiès")}
+      <figcaption><span></span>Signature de la convention de partenariat avec l'ISEP de Thiès</figcaption>
+    </figure>
   </div>
 </section>`;
 }
@@ -285,7 +314,7 @@ export function partnersSection() {
       </div>
     </div>
     ${group('Clients', partners.clients)}
-    ${group('Institutions et formation', partners.institutions)}
+    ${group('Partenaires', partners.partners)}
     ${group('Équipements que nous installons', partners.brands)}
   </div>
 </section>`;

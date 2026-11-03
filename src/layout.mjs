@@ -31,6 +31,8 @@ const paths = {
   shield: '<path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/>',
   chart: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
   play: '<path d="M8 5.5v13l11-6.5z" fill="currentColor"/>',
+  wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/>',
+  cap: '<path d="M22 9.5 12 5 2 9.5 12 14z"/><path d="M6 11.5V16c3.5 2.7 8.5 2.7 12 0v-4.5"/><path d="M22 9.5V15"/>',
   doc: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
 };
 
@@ -48,11 +50,12 @@ const nav = [
     label: 'Réalisations',
     key: 'projects',
     children: [
-      ...projects.map((p) => ({ label: p.title, href: `projet-${p.slug}.html`, desc: `${p.figure} ${p.unit} · ${p.place}` })),
+      ...projects.map((p) => ({ label: p.shortTitle || p.title, href: `projet-${p.slug}.html`, desc: `${p.figure} ${p.unit} · ${p.place}` })),
       { label: 'Toutes nos réalisations', href: 'realisations.html', all: true },
     ],
   },
   { label: 'Le groupe', href: 'groupe.html', key: 'group' },
+  { label: 'ProSolar Academy', href: 'prosolar-academy.html', key: 'academy' },
   { label: 'Contact', href: 'contact.html', key: 'contact' },
 ];
 
@@ -104,11 +107,11 @@ function footer() {
     <div class="f-top">
       <div class="f-brand">
         <img src="assets/brand/dsg-logo-blanc.webp" alt="DSG Dieye Solar Group, l'innovation au service de vos projets" width="260" height="110" loading="lazy">
-        <p>Groupe sénégalais basé à Thiès. Énergie solaire, forage et pompage, irrigation, électricité générale et BTP, de l'étude à la maintenance.</p>
+        <p>Groupe sénégalais basé à Thiès. Énergie solaire, forage et pompage, irrigation, électricité générale, BTP, SAV et maintenance, de l'étude au suivi.</p>
         <a class="btn btn-wa" href="${waLink()}" target="_blank" rel="noopener">${icon('chat')} Écrire sur WhatsApp</a>
       </div>
       ${col('Activités', services.map((s) => [s.title, `${s.slug}.html`]))}
-      ${col('Réalisations', [...projects.map((p) => [p.title, `projet-${p.slug}.html`]), ['Toutes les réalisations', 'realisations.html']])}
+      ${col('Réalisations', [...projects.map((p) => [p.shortTitle || p.title, `projet-${p.slug}.html`]), ['Toutes les réalisations', 'realisations.html']])}
       <div class="f-col f-contact">
         <h3>Contact</h3>
         <ul>
@@ -121,7 +124,7 @@ function footer() {
     </div>
     <div class="f-bottom">
       <p>© <span data-year>2026</span> ${company.legal}. Tous droits réservés.</p>
-      <ul><li><a href="groupe.html">Le groupe</a></li><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <ul><li><a href="groupe.html">Le groupe</a></li><li><a href="prosolar-academy.html">ProSolar Academy</a></li><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="contact.html">Contact</a></li></ul>
     </div>
   </div>
 </footer>
@@ -138,14 +141,14 @@ const jsonLd = () =>
     url: company.url,
     telephone: company.phone,
     email: company.email,
-    image: `${company.url}/assets/img/hero-mosquee.webp`,
+    image: `${company.url}/assets/img/hero-centrale-1mwc.webp`,
     logo: `${company.url}/assets/brand/dsg-logo.png`,
     address: { '@type': 'PostalAddress', streetAddress: 'Grand Standing', addressLocality: 'Thiès', addressCountry: 'SN' },
-    openingHours: 'Mo-Sa 08:00-18:00',
+    openingHours: 'Mo-Fr 08:00-17:00',
     areaServed: 'Sénégal',
   });
 
-export function page({ file, title, description, active, body, image = 'hero-mosquee', home = false }) {
+export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
   const canonical = `${company.url}/${file === 'index.html' ? '' : file}`;
   return `<!doctype html>

@@ -1,11 +1,11 @@
 // Génère les pages HTML statiques dans public/ — usage : node build.mjs
 import { writeFileSync } from 'node:fs';
-import { company, services, projects, fieldPhotos } from './src/data.mjs';
+import { company, services, projects, fieldPhotos, academy } from './src/data.mjs';
 import { page, icon, esc, waLink } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
-  videosSection, videoCard,
+  videosSection, videoCard, academySection, academyFacts, academyWa,
 } from './src/components.mjs';
 
 const out = [];
@@ -16,8 +16,8 @@ add('index.html', {
   home: true,
   active: 'home',
   title: 'DSG – Dieye Solar Group | Énergie solaire, forage, irrigation, électricité et BTP au Sénégal',
-  description: "Dieye Solar Group (DSG), groupe sénégalais basé à Thiès : centrales solaires hybrides, forage et pompage solaire, irrigation, électricité générale et BTP. Étude gratuite.",
-  body: [homeHero(), logoTicker(), servicesGrid(), approach(), hybridDay(), projectsCarousel(), videosSection(), simulator(), stepsSection(), partnersSection(), ctaBand()].join('\n'),
+  description: "Dieye Solar Group (DSG), groupe sénégalais basé à Thiès : centrales solaires, forage et pompage solaire, irrigation, électricité générale, BTP, SAV et maintenance. Centre de formation ProSolar Academy.",
+  body: [homeHero(), logoTicker(), servicesGrid(), approach(), hybridDay(), projectsCarousel(), videosSection(), academySection(), simulator(), stepsSection(), partnersSection(), ctaBand()].join('\n'),
 });
 
 // Pages activités
@@ -105,8 +105,8 @@ projects.forEach((p, i) => {
     active: 'projects',
     image: p.image,
     title: p.title,
-    description: `${p.title} (${p.place}, ${p.year}) : ${p.summary} Une réalisation Dieye Solar Group.`,
-    body: `${pageHero({ kickerText: `${p.category} · ${p.year}`, title: p.title, lead: `${p.place}. ${p.summary}`, image: p.image, alt: `${p.title}, ${p.place}`, crumbs: [['Réalisations', 'realisations.html'], [p.title]], actions: false })}
+    description: `${p.title} (${p.place}${p.year ? `, ${p.year}` : ''}) : ${p.summary} Une réalisation Dieye Solar Group.`,
+    body: `${pageHero({ kickerText: p.year ? `${p.category} · ${p.year}` : p.category, title: p.title, lead: `${p.place}. ${p.summary}`, image: p.image, alt: `${p.title}, ${p.place}`, crumbs: [['Réalisations', 'realisations.html'], [p.title]], actions: false })}
 <section class="section">
   <div class="wrap">
     <dl class="spec-bar">${p.specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
@@ -135,7 +135,7 @@ ${p.video ? `<section class="section section-paper videos-sec">
   <div class="wrap next-proj">
     <a href="projet-${next.slug}.html">
       <small>Projet suivant</small>
-      <strong>${next.title}</strong>
+      <strong>${next.shortTitle || next.title}</strong>
       <span>${next.figure} ${next.unit} · ${next.place}</span>
       ${icon('arrow')}
     </a>
@@ -148,26 +148,27 @@ ${ctaBand()}`,
 // Le groupe
 add('groupe.html', {
   active: 'group',
-  image: 'sandiara-techniciens',
+  image: 'equipe-dsg',
   title: 'Le groupe',
-  description: "Dieye Solar Group (DSG), groupe sénégalais basé à Thiès : énergie solaire, eau, électricité et BTP réunis sous une même enseigne.",
-  body: `${pageHero({ kickerText: 'Le groupe', title: 'Un groupe sénégalais, basé à Thiès.', lead: "Dieye Solar Group réunit sous une même enseigne l'énergie solaire, l'eau, l'électricité et le bâtiment, pour accompagner un projet du premier relevé jusqu'à la maintenance.", image: 'sandiara-techniciens', alt: 'Techniciens DSG lors d\'une mise en service', crumbs: [['Le groupe']] })}
+  description: "Dieye Solar Group (DSG), groupe sénégalais basé à Thiès : énergie solaire, eau, électricité, BTP, SAV et maintenance réunis sous une même enseigne.",
+  body: `${pageHero({ kickerText: 'Le groupe', title: 'Un groupe sénégalais, basé à Thiès.', lead: "Dieye Solar Group réunit sous une même enseigne l'énergie solaire, l'eau, l'électricité, le bâtiment et la maintenance, pour accompagner un projet du premier relevé jusqu'au suivi dans le temps.", image: 'equipe-dsg', alt: "L'équipe DSG en tenue de chantier", crumbs: [['Le groupe']] })}
 <section class="section">
   <div class="wrap about-in">
     <div>
       ${kicker('Qui sommes-nous')}
       <h2>L'innovation au service de vos projets.</h2>
       <p class="section-intro">DSG est né d'un constat simple : au Sénégal, un projet d'énergie touche presque toujours l'eau, l'électricité du bâtiment et le génie civil. Plutôt que de multiplier les intervenants, nous avons réuni ces métiers dans une seule équipe.</p>
-      <p>Nos techniciens, électriciens et équipes BTP travaillent ensemble sur chaque chantier : centrale hybride pour une mosquée, chambres froides solaires pour l'agro-industrie, forage et bassin pour une ferme, villa en autoconsommation.</p>
+      <p>Nos techniciens, électriciens et équipes BTP travaillent ensemble sur chaque chantier : centrale de 1 MWc pour une usine, centrale hybride pour une mosquée, chambres froides solaires pour l'agro-industrie, forage et bassin pour une ferme, villa en autoconsommation.</p>
+      <p>Pour former la relève, le groupe a créé <a href="prosolar-academy.html">ProSolar Academy</a>, son centre de formation professionnelle aux métiers du solaire, en partenariat avec l'${academy.partner}.</p>
     </div>
     <div class="vm">
       <div class="card" data-reveal><h3>${icon('sun')} Notre vision</h3><p>Une énergie propre, fiable et accessible pour chaque foyer, chaque entreprise et chaque communauté du Sénégal.</p></div>
       <div class="card" data-reveal><h3>${icon('bolt')} Notre mission</h3><p>Concevoir des solutions solaires et hydrauliques justes, durables et abordables, avec un service réactif après l'installation.</p></div>
-      <div class="card card-dark" data-reveal><h3>Direction</h3><p class="owner">${company.owner}</p><p>Propriétaire de Dieye Solar Group</p></div>
+      <div class="card card-dark" data-reveal><h3>Direction</h3><p class="owner">${company.owner}</p><ul class="owner-titles">${company.ownerTitles.map((t) => `<li>${t}</li>`).join('')}</ul></div>
     </div>
   </div>
 </section>
-${servicesGrid({ title: 'Nos cinq métiers.', intro: false })}
+${servicesGrid({ title: 'Nos six métiers.', intro: false })}
 <section class="section section-paper">
   <div class="wrap">
     ${kicker('Sur le terrain')}
@@ -178,6 +179,88 @@ ${servicesGrid({ title: 'Nos cinq métiers.', intro: false })}
 ${stepsSection()}
 ${partnersSection()}
 ${ctaBand()}`,
+});
+
+// ProSolar Academy (informations publiques uniquement : pas de données financières du dossier de projet)
+add('prosolar-academy.html', {
+  active: 'academy',
+  image: 'prosolar-signature',
+  title: 'ProSolar Academy – formation aux métiers du solaire',
+  description: `ProSolar Academy, centre de formation de Dieye Solar Group à Thiès : installation et maintenance de systèmes solaires, 70 % de pratique, en partenariat avec l'${academy.partner}. Prochaine session le ${academy.nextSession}.`,
+  body: `${pageHero({ kickerText: 'Centre de formation', title: academy.name, lead: `${academy.tagline}, porté par Dieye Solar Group en partenariat avec l'${academy.partner}.`, image: 'sandiara-techniciens', alt: 'Techniciens en tenue de chantier devant des onduleurs hybrides', crumbs: [[academy.name]], actions: false })}
+<section class="section">
+  <div class="wrap ac-intro">
+    <div>
+      ${kicker('Pourquoi ProSolar Academy')}
+      <h2>Des techniciens formés sur le terrain, pas seulement en salle.</h2>
+      <p class="section-intro">Le solaire se développe vite au Sénégal, mais beaucoup d'installations sont encore posées par des techniciens insuffisamment formés : systèmes mal dimensionnés, pannes à répétition, clients déçus.</p>
+      <p>ProSolar Academy transmet le savoir-faire acquis par Dieye Solar Group sur ses chantiers : dimensionnement, pose d'onduleurs hybrides, stockage, pompage solaire et maintenance. La formation est ouverte à tous ceux qui veulent un métier concret dans un secteur qui recrute.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire sur WhatsApp</a>
+        <a class="btn btn-outline" href="contact.html?besoin=prosolar-academy#devis">Demander le programme</a>
+      </div>
+    </div>
+    <div class="ac-facts-wrap">${academyFacts()}</div>
+  </div>
+</section>
+<section class="section section-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        ${kicker('Programme')}
+        <h2>Quatre modules, du câble au business.</h2>
+      </div>
+      <p class="section-intro">Une approche 70 % pratique et 30 % théorie : chaque notion est mise en œuvre sur de vrais équipements (panneaux, onduleurs hybrides, batteries lithium, régulateurs MPPT, pompes solaires).</p>
+    </div>
+    <ol class="modules">
+      ${academy.modules.map(([t, items], i) => `<li class="card" data-reveal><span class="mod-n">Module ${i + 1}</span><h3>${t}</h3><ul>${items.map((x) => `<li>${icon('check')}${x}</li>`).join('')}</ul></li>`).join('')}
+    </ol>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    ${kicker('Pour qui ?')}
+    <h2>Une formation ouverte.</h2>
+    <ul class="aud-grid">
+      ${academy.audiences.map(([t, d]) => `<li data-reveal><span class="svc-ico">${icon('cap')}</span><div><h3>${t}</h3><p>${d}</p></div></li>`).join('')}
+    </ul>
+  </div>
+</section>
+<section class="section dark">
+  <div class="wrap academy-in">
+    <figure class="academy-media" data-reveal>
+      ${picture('prosolar-signature', "Signature de la convention de partenariat entre le directeur général de Dieye Solar Group et le directeur de l'ISEP de Thiès")}
+      <figcaption><span></span>Signature de la convention entre DSG et l'ISEP de Thiès</figcaption>
+    </figure>
+    <div>
+      ${kicker('Partenaire pédagogique', true)}
+      <h2>En partenariat avec l'${academy.partner}.</h2>
+      <p class="academy-lead">Dieye Solar Group et l'${academy.partner} ont signé une convention de partenariat pour la formation professionnelle aux énergies renouvelables. Le programme est construit en concertation avec l'institut.</p>
+      <p class="academy-lead">À l'issue de la formation, chaque apprenant reçoit une attestation de compétences délivrée par ProSolar Academy – Dieye Solar Group, en partenariat avec l'ISEP.</p>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap ac-practical">
+    <div>
+      ${kicker('Infos pratiques')}
+      <h2>Prochaine session : ${academy.nextSession}.</h2>
+      <p class="section-intro">Les places sont limitées pour garantir à chacun un accès aux équipements. Réservez la vôtre dès maintenant.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire sur WhatsApp</a>
+        <a class="btn btn-outline" href="tel:${company.phoneHref}">${icon('phone')} ${company.phone}</a>
+      </div>
+    </div>
+    <dl class="card ac-dl">
+      <div><dt>Durée</dt><dd>3 mois, dont 1 mois de stage pratique</dd></div>
+      <div><dt>Rythme</dt><dd>Cours intensifs le week-end, compatibles avec une activité professionnelle</dd></div>
+      <div><dt>Pédagogie</dt><dd>70 % de pratique, 30 % de théorie, évaluation finale sur un projet réel</dd></div>
+      <div><dt>Lieu</dt><dd>${academy.place}</dd></div>
+      <div><dt>Effectif</dt><dd>20 apprenants maximum par cohorte</dd></div>
+      <div><dt>Attestation</dt><dd>Délivrée par ProSolar Academy – DSG, en partenariat avec l'ISEP de Thiès</dd></div>
+    </dl>
+  </div>
+</section>`,
 });
 
 // Contact
@@ -199,6 +282,7 @@ add('contact.html', {
         <div class="field f-full"><label for="q-need">Votre besoin *</label>
           <select id="q-need" name="need" required>
             ${services.map((s) => `<option value="${s.slug}">${esc(s.title)}</option>`).join('')}
+            <option value="prosolar-academy">Formation ProSolar Academy</option>
             <option value="autre">Autre / je ne sais pas encore</option>
           </select>
         </div>
@@ -232,7 +316,7 @@ add('mentions-legales.html', {
   <div class="wrap prose">
     <h2>Éditeur du site</h2>
     <p>${company.legal}, société par actions simplifiée.<br>Siège : ${company.address}.<br>Téléphone : <a href="tel:${company.phoneHref}">${company.phone}</a> · E-mail : <a href="mailto:${company.email}">${company.email}</a></p>
-    <p>Responsable de la publication : ${company.owner}.</p>
+    <p>Responsable de la publication : ${company.owner}, Président Directeur Général.</p>
     <p class="todo">RCCM et NINEA : à compléter.</p>
     <h2>Hébergement</h2>
     <p class="todo">Nom et adresse de l'hébergeur cPanel : à compléter.</p>
