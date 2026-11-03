@@ -38,8 +38,8 @@ export const services = [
       ['Supervision à distance', 'Suivi de la production et alertes, pour réagir avant la panne.'],
     ],
     audiences: ['Entreprises et industries', 'Agro-industrie et chambres froides', 'Lieux de culte et écoles', 'Villas et résidences'],
-    gallery: ['mosquee-panneaux', 'local-batteries', 'mamelles-toiture'],
-    project: 'mosquee-abdoulaye-diop',
+    gallery: ['mosquee-panneaux', 'local-batteries', 'mamelles-toiture', 'onduleur-batterie', 'petit-champ-sol', 'local-technique'],
+    project: 'centrale-1mwc-sandiara',
   },
   {
     slug: 'forage-pompage-solaire',
@@ -56,7 +56,8 @@ export const services = [
       ['Maintenance', 'Contrôle des pompes, nettoyage des panneaux, suivi du débit.'],
     ],
     audiences: ['Exploitations agricoles', 'Villages et communautés', 'Élevages', 'Sites industriels'],
-    gallery: ['forage-jet', 'forage-eau', 'keur-madaro-bassin'],
+    gallery: ['forage-jet', 'forage-eau', 'forage-jet-2', 'forage-jet-3', 'pompage-champ-panneaux', 'keur-madaro-bassin'],
+    videos: ['forage-foration-1', 'forage-foration-2', 'forage-foration-3', 'pompage-debit', 'pompage-pose-panneaux'],
     project: 'pompage-keur-madaro',
   },
   {
@@ -74,7 +75,8 @@ export const services = [
       ['Programmation', 'Vannes et programmateurs pour irriguer aux heures utiles.'],
     ],
     audiences: ['Maraîchers', 'Arboriculteurs', 'Fermes et GIE', 'Projets agricoles'],
-    gallery: ['irrigation-raccords', 'irrigation-vannes', 'keur-madaro-pompe'],
+    gallery: ['irrigation-raccords', 'irrigation-vannes', 'irrigation-collecteur', 'keur-madaro-pompe', 'keur-madaro-chantier', 'pompage-champ-panneaux'],
+    videos: ['pompage-debit'],
     project: 'pompage-keur-madaro',
   },
   {
@@ -128,7 +130,8 @@ export const services = [
       ["Contrats d'entretien", 'Un calendrier de passages adapté à votre site, avec un rapport après chaque intervention.'],
     ],
     audiences: ['Centrales solaires et hybrides', 'Entreprises et industries', 'Lieux de culte et écoles', 'Villas et résidences', 'Pompages solaires'],
-    gallery: ['sav-nettoyage', 'sav-brosse-toiture', 'onduleurs-mur'],
+    gallery: ['sav-nettoyage', 'sav-brosse-toiture', 'sav-nettoyage-mosquee', 'onduleurs-mur', 'local-technique', 'technicienne-onduleur'],
+    videos: ['sav-nettoyage-brosse'],
     project: 'mosquee-abdoulaye-diop',
   },
 ];
@@ -139,12 +142,13 @@ export const projects = [
     title: 'Centrale solaire photovoltaïque de 1\u00a0MWc à Sandiara',
     shortTitle: 'Centrale de 1\u00a0MWc à Sandiara',
     place: 'Sandiara, région de Thiès',
+    year: 2026,
     category: 'Industrie',
     figure: '1',
     unit: 'MWc',
     summary: 'Centrale en injection directe, 7 onduleurs Sungrow de 115 kW, 100 % des besoins de l\'usine couverts.',
     image: 'centrale-1mwc-aerien',
-    gallery: ['hero-centrale-1mwc', 'centrale-1mwc-panneaux'],
+    gallery: ['hero-centrale-1mwc', 'centrale-1mwc-aerien'],
     specs: [
       ['Puissance', '1 MWc'],
       ['Onduleurs', '7 × Sungrow 115 kW'],
@@ -254,6 +258,11 @@ export const partners = {
   clients: [
     ['senico', 'Senico'],
     ['patisen', 'Patisen'],
+    ['terranga-farms', 'Terranga Farms Sénégal'],
+    ['afreenergy', 'Afreenergy'],
+    ['grips', 'GRIPS'],
+    ['mp-energy', 'MP Energy'],
+    ['tumiqui', 'Tumiqui Japon'],
   ],
   partners: [
     ['eranove', 'Eranove'],
@@ -262,6 +271,9 @@ export const partners = {
     ['solarig', 'Solarig'],
     ['infraenergy', 'Infranergy'],
     ['deye', 'Deye'],
+    ['senelec', 'Senelec'],
+    ['aner', 'ANER'],
+    ['isep-thies', 'ISEP Thiès'],
   ],
   brands: [
     ['felicity', 'Felicity Solar'],
@@ -275,6 +287,9 @@ export const academy = {
   tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
   partner: 'ISEP Abdoulaye Ly de Thiès',
   nextSession: '7 décembre 2026',
+  fee: '100\u00a0000\u00a0FCFA',
+  // Lien de paiement Wave (montant fixé dans l'URL)
+  payUrl: 'https://pay.wave.com/m/M_sn_M3Cuivt2qVb3/c/sn/?amount=100000',
   place: "Grand Standing, Thiès (près de l'École Sainte Bernadette)",
   facts: [
     ['70 %', 'de pratique sur de vrais équipements'],
@@ -305,4 +320,17 @@ export const fieldPhotos = [
   ['technicienne-onduleur', 'Raccordement d\'un onduleur hybride'],
   ['sandiara-charpente', 'Montage de la charpente de l\'ombrière de Sandiara'],
   ['local-onduleurs', 'Local technique : onduleurs et batteries lithium'],
+  ['sav-nettoyage-mosquee', 'Nettoyage des panneaux de la mosquée Abdoulaye Diop'],
+  ['forage-jet-3', 'Arrivée de l\'eau lors de la foration d\'un forage'],
+  ['petit-champ-sol', 'Champ de panneaux au sol'],
 ];
+
+// Vidéos courtes filmées au téléphone (format vertical)
+export const clips = {
+  'forage-foration-1': { title: 'Foration d\'un forage', duration: '39 s' },
+  'forage-foration-2': { title: 'Foration : l\'eau jaillit', duration: '28 s' },
+  'forage-foration-3': { title: 'Foration : le forage débite', duration: '16 s' },
+  'pompage-debit': { title: 'Pompage : sortie de l\'eau', duration: '18 s' },
+  'pompage-pose-panneaux': { title: 'Pose de panneaux au sol', duration: '9 s' },
+  'sav-nettoyage-brosse': { title: 'Nettoyage des panneaux à la brosse rotative', duration: '24 s' },
+};

@@ -1,4 +1,4 @@
-import { company, services, projects, steps, partners, academy } from './data.mjs';
+import { company, services, projects, steps, partners, academy, clips } from './data.mjs';
 import { esc, icon, img, waLink } from './layout.mjs';
 
 export const picture = (name, alt, { cls = '', eager = false, sizes } = {}) =>
@@ -185,15 +185,31 @@ export function projectsCarousel() {
 </section>`;
 }
 
-export const videoCard = (p) => `<figure class="vid">
+const vidFigure = ({ file, poster, title, sub, portrait = false }) => `<figure class="vid${portrait ? ' vid-portrait' : ''}">
   <div class="vid-frame">
-    <video controls preload="none" playsinline poster="${img(p.video.poster)}" aria-label="Vidéo du chantier : ${esc(p.title)}">
-      <source src="assets/video/${p.video.file}.mp4" type="video/mp4">
+    <video controls preload="none" playsinline poster="${img(poster)}" aria-label="Vidéo : ${esc(title)}">
+      <source src="assets/video/${file}.mp4" type="video/mp4">
     </video>
-    <button class="vid-play" type="button" aria-label="Lire la vidéo : ${esc(p.title)}">${icon('play')}</button>
+    <button class="vid-play" type="button" aria-label="Lire la vidéo : ${esc(title)}">${icon('play')}</button>
   </div>
-  <figcaption><strong>${p.title}</strong><span>${p.place}${p.video.duration ? ` · ${p.video.duration}` : ''}</span></figcaption>
+  <figcaption><strong>${title}</strong>${sub ? `<span>${sub}</span>` : ''}</figcaption>
 </figure>`;
+
+export const videoCard = (p) =>
+  vidFigure({ file: p.video.file, poster: p.video.poster, title: p.title, sub: `${p.place}${p.video.duration ? ` · ${p.video.duration}` : ''}` });
+
+export const clipCard = (key) =>
+  vidFigure({ file: key, poster: `video-${key}`, title: clips[key].title, sub: clips[key].duration, portrait: true });
+
+export function clipsSection(keys, { kickerText = 'En vidéo', title = 'Sur le terrain, en vidéo.', paper = false } = {}) {
+  return `<section class="section${paper ? ' section-paper' : ''} videos-sec">
+  <div class="wrap">
+    ${kicker(kickerText)}
+    <h2>${title}</h2>
+    <div class="videos videos-portrait">${keys.map(clipCard).join('')}</div>
+  </div>
+</section>`;
+}
 
 export function videosSection() {
   const list = projects.filter((p) => p.video);
@@ -226,8 +242,8 @@ export function academySection() {
       <p class="academy-lead">${academy.name}, le centre de formation de Dieye Solar Group, forme des techniciens opérationnels en installation et maintenance de systèmes solaires, en partenariat avec l'${academy.partner}.</p>
       ${academyFacts()}
       <div class="btn-row">
-        <a class="btn btn-primary" href="prosolar-academy.html">Découvrir la formation ${icon('arrow')}</a>
-        <a class="btn btn-ghost" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire</a>
+        <a class="btn btn-primary" href="prosolar-inscription.html">S'inscrire en ligne ${icon('arrow')}</a>
+        <a class="btn btn-ghost" href="prosolar-academy.html">Découvrir la formation</a>
       </div>
     </div>
     <figure class="academy-media" data-reveal>

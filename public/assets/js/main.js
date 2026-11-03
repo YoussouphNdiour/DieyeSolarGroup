@@ -226,6 +226,96 @@ ${d.message}`;
     $$('[required]', form).forEach((f) => f.addEventListener('input', () => f.removeAttribute('aria-invalid')));
   }
 
+  /* Inscription ProSolar Academy : envoi à inscription.php puis page de paiement Wave */
+  const reg = $('[data-register]');
+  if (reg) {
+    const f = reg.elements;
+    const err = $('.form-error', reg);
+    const btn = $('button[type="submit"]', reg);
+    const btnLabel = btn.innerHTML;
+    f.ts.value = Math.floor(Date.now() / 1000);
+    if (new URLSearchParams(location.search).get('erreur')) {
+      err.textContent = "Votre inscription n'a pas pu être enregistrée : vérifiez les champs obligatoires puis réessayez.";
+      err.hidden = false;
+    }
+    const showError = (text) => {
+      err.textContent = text;
+      err.hidden = false;
+    };
+    const waFallback = () => {
+      const d = Object.fromEntries(new FormData(reg));
+      const msg = `Bonjour DSG, je souhaite m'inscrire à ProSolar Academy.
+Prénom : ${d.prenom}
+Nom : ${d.nom}
+Téléphone : ${d.telephone}${d.email ? `\nE-mail : ${d.email}` : ''}
+Ville : ${d.ville}
+Profil : ${d.profil}
+Niveau : ${d.niveau}`;
+      err.textContent = "L'envoi n'a pas abouti. Vous pouvez envoyer votre inscription sur WhatsApp : ";
+      const a = document.createElement('a');
+      a.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'envoyer sur WhatsApp';
+      err.appendChild(a);
+      err.hidden = false;
+    };
+
+    reg.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const required = $$('[required]', reg);
+      required.forEach((el) => {
+        const bad = el.type === 'checkbox' ? !el.checked : !el.value.trim();
+        el.setAttribute('aria-invalid', String(bad));
+      });
+      if (f.telephone.value.trim() && !/^[0-9 +().-]{7,20}$/.test(f.telephone.value.trim())) f.telephone.setAttribute('aria-invalid', 'true');
+      if (f.email.value.trim() && !f.email.checkValidity()) f.email.setAttribute('aria-invalid', 'true');
+      const firstBad = $('[aria-invalid="true"]', reg);
+      if (firstBad) {
+        showError('Merci de vérifier les champs signalés en rouge.');
+        firstBad.focus();
+        return;
+      }
+      err.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+      try {
+        const res = await fetch(reg.action, { method: 'POST', body: new FormData(reg), headers: { Accept: 'application/json' } });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'refus');
+        location.href = `prosolar-inscription-merci.html?ref=${encodeURIComponent(data.ref)}&prenom=${encodeURIComponent(f.prenom.value.trim())}`;
+      } catch (ex) {
+        btn.disabled = false;
+        btn.innerHTML = btnLabel;
+        waFallback();
+      }
+    });
+    $$('input, select, textarea', reg).forEach((el) => {
+      const clear = () => el.removeAttribute('aria-invalid');
+      el.addEventListener('input', clear);
+      el.addEventListener('change', clear);
+    });
+  }
+
+  /* Page de paiement : référence et message WhatsApp préremplis */
+  const pay = $('[data-pay]');
+  if (pay) {
+    const q = new URLSearchParams(location.search);
+    const ref = (q.get('ref') || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 24);
+    const prenom = (q.get('prenom') || '').trim().slice(0, 60);
+    if (ref) {
+      $('[data-ref]', pay).textContent = ref;
+      $('[data-ref-row]', pay).hidden = false;
+    }
+    if (prenom) {
+      const hello = $('[data-hello]', pay);
+      hello.textContent = `Merci ${prenom}, plus qu'une étape !`;
+      hello.hidden = false;
+    }
+    const msg = `Bonjour DSG, voici mon reçu de paiement Wave pour ProSolar Academy (session du ${pay.dataset.session}).${ref ? ` Référence : ${ref}.` : ''}${prenom ? ` Prénom : ${prenom}.` : ''}`;
+    $('[data-pay-wa]', pay).href = `https://wa.me/${pay.dataset.wa}?text=${encodeURIComponent(msg)}`;
+  }
+
   /* Année du pied de page */
   $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();

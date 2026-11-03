@@ -148,7 +148,7 @@ const jsonLd = () =>
     areaServed: 'Sénégal',
   });
 
-export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false }) {
+export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
   const canonical = `${company.url}/${file === 'index.html' ? '' : file}`;
   return `<!doctype html>
@@ -159,6 +159,7 @@ export function page({ file, title, description, active, body, image = 'hero-cen
 <script>document.documentElement.classList.add('js')</script>
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
+${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="canonical" href="${canonical}">
 <meta name="theme-color" content="#0D1034">
 <meta property="og:type" content="website">

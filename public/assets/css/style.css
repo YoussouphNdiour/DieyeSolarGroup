@@ -280,6 +280,46 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .vid figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-top: 14px; }
 .vid figcaption strong { color: var(--ink); font-family: var(--font-d); font-size: 20px; letter-spacing: -0.01em; }
 .vid figcaption span { color: var(--ink-3); font-size: 15px; }
+.videos-portrait { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.vid-portrait .vid-frame { aspect-ratio: 9 / 16; }
+.vid-portrait figcaption { flex-direction: column; }
+.vid-portrait figcaption strong { font-size: 17px; line-height: 1.25; }
+
+/* ---------- Inscription ProSolar Academy ---------- */
+.reg-in { display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(24px, 4vw, 48px); align-items: start; }
+.reg-steps { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); font-size: 14.5px; font-weight: 600; color: var(--ink-3); }
+.reg-steps li { display: flex; align-items: center; gap: 8px; }
+.reg-steps span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 13px; }
+.reg-steps .ico { width: 14px; height: 14px; }
+.reg-steps .is-on { color: var(--ink); }
+.reg-steps .is-on span { background: var(--orange); border-color: var(--orange); color: var(--navy); }
+.reg-steps .is-done span { background: var(--navy); border-color: var(--navy); color: #fff; }
+.check { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; cursor: pointer; }
+.check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--orange); flex: none; }
+.check input[aria-invalid='true'] { outline: 2px solid #c62828; outline-offset: 2px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.reg-form { position: relative; }
+.reg-side { position: sticky; top: calc(var(--header-h) + 24px); }
+.reg-side h3 { font-family: var(--font-d); font-size: 22px; color: #fff; text-transform: none; letter-spacing: -0.01em; margin-bottom: 8px; }
+.reg-side dl { margin: 0 0 20px; }
+.reg-side dl div { padding: 12px 0; border-bottom: 1px solid var(--line-light); }
+.reg-side dt { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+.reg-side dd { margin: 2px 0 0; color: #fff; font-weight: 600; }
+.reg-amount dd { font-family: var(--font-d); font-size: 30px; color: var(--yellow) !important; font-weight: 800; }
+.reg-wave { font-size: 14px; margin-bottom: 16px; }
+.reg-wave strong { color: #fff; }
+.pay-in { display: grid; justify-items: center; }
+.pay-card { width: 100%; max-width: 640px; }
+.pay-hello { font-family: var(--font-d); font-size: 24px; color: var(--ink); font-weight: 700; margin-bottom: 16px; }
+.pay-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 22px; }
+.pay-sum div { padding: 16px 18px; border-radius: 14px; background: var(--paper); }
+.pay-sum dt { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.pay-sum dd { margin: 4px 0 0; font-family: var(--font-d); font-size: 22px; color: var(--ink); }
+.btn-wave { background: #1dc8ff; color: #04213a; box-shadow: 0 10px 24px -12px rgba(29, 200, 255, 0.9); }
+.btn-wave:hover { background: var(--yellow); }
+.pay-steps { counter-reset: p; margin: 24px 0; display: grid; gap: 12px; }
+.pay-steps li { counter-increment: p; display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; font-size: 15.5px; }
+.pay-steps li::before { content: counter(p); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--yellow); font-weight: 800; font-size: 14px; }
 
 /* ---------- ProSolar Academy ---------- */
 .academy { background: radial-gradient(800px 420px at 0% 100%, rgba(253, 102, 0, 0.28), transparent 60%), radial-gradient(900px 500px at 100% 0%, rgba(0, 106, 185, 0.35), transparent 60%), var(--navy); }
@@ -489,7 +529,7 @@ input[type='range'] { width: 100%; accent-color: var(--orange); height: 28px; }
 .form-hint { margin-top: 8px; font-size: 14px; color: var(--ink-3); }
 .f-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 26px; }
 .f-full { grid-column: 1 / -1; }
-.f-grid input, .field select, .field textarea {
+.f-grid input:not([type='checkbox']):not([type='hidden']), .field select, .field textarea {
   width: 100%; padding: 13px 15px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; font-size: 16px; transition: border-color 0.2s, box-shadow 0.2s;
 }
 .f-grid input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0, 106, 185, 0.15); }
@@ -556,7 +596,8 @@ input[type='range'] { width: 100%; accent-color: var(--orange); height: 28px; }
   .svc-grid { grid-template-columns: 1fr 1fr; }
   .svc-lg { grid-row: auto; grid-column: 1 / -1; }
   .svc-lg a { min-height: 380px; }
-  .approach-in, .hybrid-in, .sim-in, .cta-in, .svc-detail, .feat-proj, .about-in, .contact-in, .academy-in, .ac-intro, .ac-practical { grid-template-columns: 1fr; }
+  .approach-in, .hybrid-in, .sim-in, .cta-in, .svc-detail, .feat-proj, .about-in, .contact-in, .academy-in, .ac-intro, .ac-practical, .reg-in { grid-template-columns: 1fr; }
+  .reg-side { position: static; }
   .aud-grid { grid-template-columns: repeat(2, 1fr); }
   .approach-media { aspect-ratio: 16 / 10; }
   .steps { grid-template-columns: 1fr; gap: 0; }
@@ -584,6 +625,8 @@ input[type='range'] { width: 100%; accent-color: var(--orange); height: 28px; }
   .car-ctrl { display: none; }
   .proj-grid, .gallery, .offer-list, .mini-svc, .f-grid, .videos, .modules, .aud-grid { grid-template-columns: 1fr; }
   .ac-dl div { grid-template-columns: 1fr; gap: 2px; }
+  .videos-portrait { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .pay-sum { grid-template-columns: 1fr; }
   .js .vid-play .ico { width: 24px; height: 24px; padding: 20px; }
   .bill-row { grid-template-columns: 1fr; }
   .sim-out { grid-template-columns: 1fr 1fr; }

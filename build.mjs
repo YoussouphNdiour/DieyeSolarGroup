@@ -1,11 +1,11 @@
 // Génère les pages HTML statiques dans public/ — usage : node build.mjs
-import { writeFileSync } from 'node:fs';
-import { company, services, projects, fieldPhotos, academy } from './src/data.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { company, services, projects, fieldPhotos, academy, clips } from './src/data.mjs';
 import { page, icon, esc, waLink } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
-  videosSection, videoCard, academySection, academyFacts, academyWa,
+  videosSection, videoCard, academySection, academyFacts, academyWa, clipsSection,
 } from './src/components.mjs';
 
 const out = [];
@@ -54,7 +54,8 @@ services.forEach((s, i) => {
     ${gallery(s.gallery.map((g) => [g, `${s.title} : chantier DSG`]))}
   </div>
 </section>
-${p ? `<section class="section">
+${s.videos ? clipsSection(s.videos, { title: 'Le chantier en vidéo.' }) : ''}
+${p ? `<section class="section${s.videos ? ' section-paper' : ''}">
   <div class="wrap feat-proj">
     <div>
       ${kicker('Référence')}
@@ -95,6 +96,7 @@ add('realisations.html', {
     ${gallery(fieldPhotos)}
   </div>
 </section>
+${clipsSection(Object.keys(clips))}
 ${ctaBand()}`,
 });
 
@@ -196,8 +198,8 @@ add('prosolar-academy.html', {
       <p class="section-intro">Le solaire se développe vite au Sénégal, mais beaucoup d'installations sont encore posées par des techniciens insuffisamment formés : systèmes mal dimensionnés, pannes à répétition, clients déçus.</p>
       <p>ProSolar Academy transmet le savoir-faire acquis par Dieye Solar Group sur ses chantiers : dimensionnement, pose d'onduleurs hybrides, stockage, pompage solaire et maintenance. La formation est ouverte à tous ceux qui veulent un métier concret dans un secteur qui recrute.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire sur WhatsApp</a>
-        <a class="btn btn-outline" href="contact.html?besoin=prosolar-academy#devis">Demander le programme</a>
+        <a class="btn btn-primary" href="prosolar-inscription.html">S'inscrire en ligne ${icon('arrow')}</a>
+        <a class="btn btn-outline" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} Une question ?</a>
       </div>
     </div>
     <div class="ac-facts-wrap">${academyFacts()}</div>
@@ -247,11 +249,12 @@ add('prosolar-academy.html', {
       <h2>Prochaine session : ${academy.nextSession}.</h2>
       <p class="section-intro">Les places sont limitées pour garantir à chacun un accès aux équipements. Réservez la vôtre dès maintenant.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} S'inscrire sur WhatsApp</a>
+        <a class="btn btn-primary" href="prosolar-inscription.html">S'inscrire en ligne ${icon('arrow')}</a>
         <a class="btn btn-outline" href="tel:${company.phoneHref}">${icon('phone')} ${company.phone}</a>
       </div>
     </div>
     <dl class="card ac-dl">
+      <div><dt>Inscription</dt><dd>Formulaire en ligne, puis paiement de ${academy.fee} via Wave pour valider la place</dd></div>
       <div><dt>Durée</dt><dd>3 mois, dont 1 mois de stage pratique</dd></div>
       <div><dt>Rythme</dt><dd>Cours intensifs le week-end, compatibles avec une activité professionnelle</dd></div>
       <div><dt>Pédagogie</dt><dd>70 % de pratique, 30 % de théorie, évaluation finale sur un projet réel</dd></div>
@@ -262,6 +265,110 @@ add('prosolar-academy.html', {
   </div>
 </section>`,
 });
+
+// Inscription ProSolar Academy : formulaire → inscription.php → page de paiement Wave
+const opt = (list) => list.map((v) => `<option>${esc(v)}</option>`).join('');
+add('prosolar-inscription.html', {
+  active: 'academy',
+  image: 'prosolar-signature',
+  title: 'Inscription ProSolar Academy',
+  description: `Inscrivez-vous à ProSolar Academy, session du ${academy.nextSession} à Thiès : formulaire en ligne puis paiement de ${academy.fee} via Wave pour valider votre place.`,
+  body: `${pageHero({ kickerText: `Session du ${academy.nextSession}`, title: 'Inscription à ProSolar Academy', lead: `Remplissez le formulaire, puis validez votre place par un paiement de ${academy.fee} via Wave.`, crumbs: [[academy.name, 'prosolar-academy.html'], ['Inscription']], actions: false })}
+<section class="section" id="inscription">
+  <div class="wrap reg-in">
+    <form class="card quote-form reg-form" action="inscription.php" method="post" data-register novalidate>
+      <ol class="reg-steps" aria-label="Étapes de l'inscription">
+        <li class="is-on" aria-current="step"><span>1</span>Vos informations</li>
+        <li><span>2</span>Paiement Wave</li>
+        <li><span>3</span>Confirmation</li>
+      </ol>
+      <h2>Vos informations</h2>
+      <p class="form-hint">Les champs marqués * sont obligatoires.</p>
+      <div class="f-grid">
+        <div class="field"><label for="r-prenom">Prénom *</label><input id="r-prenom" name="prenom" autocomplete="given-name" maxlength="80" required></div>
+        <div class="field"><label for="r-nom">Nom *</label><input id="r-nom" name="nom" autocomplete="family-name" maxlength="80" required></div>
+        <div class="field"><label for="r-tel">Téléphone (WhatsApp) *</label><input id="r-tel" name="telephone" type="tel" autocomplete="tel" placeholder="77 000 00 00" maxlength="20" required></div>
+        <div class="field"><label for="r-email">E-mail</label><input id="r-email" name="email" type="email" autocomplete="email" maxlength="120"></div>
+        <div class="field"><label for="r-ville">Ville / localité *</label><input id="r-ville" name="ville" autocomplete="address-level2" maxlength="80" required></div>
+        <div class="field"><label for="r-profil">Vous êtes *</label>
+          <select id="r-profil" name="profil" required><option value="">Choisir…</option>${opt(['Technicien en activité', 'Électricien', 'Étudiant / jeune diplômé', 'Entrepreneur', 'Agriculteur', 'En reconversion professionnelle', 'Autre'])}</select>
+        </div>
+        <div class="field"><label for="r-niveau">Niveau d'études *</label>
+          <select id="r-niveau" name="niveau" required><option value="">Choisir…</option>${opt(['Sans diplôme', 'BFEM', 'CAP / BEP', 'BT', 'Baccalauréat', 'BTS / DUT', 'Licence', 'Master ou plus'])}</select>
+        </div>
+        <div class="field"><label for="r-exp">Expérience dans le solaire</label>
+          <select id="r-exp" name="experience"><option value="">Choisir…</option>${opt(['Aucune', 'Quelques chantiers', "Plus d'un an"])}</select>
+        </div>
+        <div class="field f-full"><label for="r-connu">Comment avez-vous connu ProSolar Academy ?</label>
+          <select id="r-connu" name="connu"><option value="">Choisir…</option>${opt(['Réseaux sociaux', 'Bouche-à-oreille', 'ISEP de Thiès', 'Site internet', 'Autre'])}</select>
+        </div>
+        <div class="field f-full"><label for="r-attentes">Vos attentes (facultatif)</label><textarea id="r-attentes" name="attentes" rows="4" maxlength="1000" placeholder="Votre projet, ce que vous souhaitez apprendre…"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="r-website">Ne pas remplir</label><input id="r-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <input type="hidden" name="ts" value="">
+        <label class="check f-full"><input type="checkbox" name="consent" value="1" required><span>J'accepte que Dieye Solar Group utilise ces informations pour traiter mon inscription. *</span></label>
+        <label class="check f-full"><input type="checkbox" name="paiement" value="1" required><span>Je comprends que ma place n'est réservée qu'après le paiement de ${academy.fee} via Wave. *</span></label>
+      </div>
+      <p class="form-error" role="alert" hidden>Merci de remplir les champs obligatoires.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" type="submit">Valider et passer au paiement ${icon('arrow')}</button>
+      </div>
+    </form>
+    <aside class="card card-dark reg-side">
+      <h3>Récapitulatif</h3>
+      <dl>
+        <div><dt>Formation</dt><dd>${academy.name}</dd></div>
+        <div><dt>Session</dt><dd>${academy.nextSession}</dd></div>
+        <div><dt>Durée</dt><dd>3 mois, dont 1 mois de stage</dd></div>
+        <div><dt>Lieu</dt><dd>${academy.place}</dd></div>
+        <div class="reg-amount"><dt>À régler pour valider</dt><dd>${academy.fee}</dd></div>
+      </dl>
+      <p class="reg-wave">Paiement sécurisé sur la plateforme <strong>Wave</strong>, à l'étape suivante.</p>
+      <a class="btn btn-ghost btn-block" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} Une question ? WhatsApp</a>
+    </aside>
+  </div>
+</section>`,
+});
+
+add('prosolar-inscription-merci.html', {
+  active: 'academy',
+  noindex: true,
+  image: 'prosolar-signature',
+  title: 'Paiement de votre inscription',
+  description: `Validez votre inscription à ProSolar Academy par un paiement de ${academy.fee} via Wave.`,
+  body: `${pageHero({ kickerText: 'Étape 2 sur 3', title: 'Dernière étape : le paiement.', lead: 'Votre demande d\'inscription est enregistrée. Votre place sera réservée dès réception de votre paiement.', crumbs: [[academy.name, 'prosolar-academy.html'], ['Paiement']], actions: false })}
+<section class="section">
+  <div class="wrap pay-in">
+    <div class="card pay-card" data-pay data-wa="${company.whatsapp}" data-session="${esc(academy.nextSession)}">
+      <ol class="reg-steps" aria-label="Étapes de l'inscription">
+        <li class="is-done"><span>${icon('check')}</span>Vos informations</li>
+        <li class="is-on" aria-current="step"><span>2</span>Paiement Wave</li>
+        <li><span>3</span>Confirmation</li>
+      </ol>
+      <p class="pay-hello" data-hello hidden></p>
+      <dl class="pay-sum">
+        <div data-ref-row hidden><dt>Votre référence</dt><dd><strong data-ref></strong></dd></div>
+        <div><dt>Montant à régler</dt><dd><strong>${academy.fee}</strong></dd></div>
+      </dl>
+      <a class="btn btn-primary btn-block btn-wave" href="${academy.payUrl}" target="_blank" rel="noopener">Payer ${academy.fee} avec Wave ${icon('arrow')}</a>
+      <ol class="pay-steps">
+        <li>Cliquez sur <strong>Payer avec Wave</strong> et confirmez le paiement dans l'application Wave.</li>
+        <li>Faites une capture d'écran du reçu de paiement.</li>
+        <li>Envoyez-la sur WhatsApp${''} en indiquant votre référence : notre équipe vous confirme votre place.</li>
+      </ol>
+      <a class="btn btn-outline btn-block" data-pay-wa href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} Envoyer mon reçu sur WhatsApp</a>
+    </div>
+  </div>
+</section>`,
+});
+
+// Le script PHP reprend les réglages de data.mjs (une seule source de vérité)
+const php = readFileSync(new URL('./src/inscription.php', import.meta.url), 'utf8')
+  .replaceAll('{{EMAIL}}', company.email)
+  .replaceAll('{{SESSION}}', academy.nextSession)
+  .replaceAll('{{AMOUNT}}', academy.fee)
+  .replaceAll('{{PAY_URL}}', academy.payUrl)
+  .replaceAll('{{WHATSAPP}}', company.whatsapp);
+writeFileSync(new URL('./public/inscription.php', import.meta.url), php);
 
 // Contact
 add('contact.html', {
@@ -323,7 +430,9 @@ add('mentions-legales.html', {
     <h2>Propriété intellectuelle</h2>
     <p>Les textes, photographies, logos et la charte graphique de ce site appartiennent à ${company.legal} ou à leurs propriétaires respectifs. Les logos des clients, partenaires et fabricants sont reproduits pour illustrer nos références. Toute reproduction sans autorisation est interdite.</p>
     <h2>Données personnelles</h2>
-    <p>Le formulaire de contact ne stocke aucune donnée sur ce site : il ouvre WhatsApp ou votre messagerie avec votre message prérempli. Les informations transmises servent uniquement à répondre à votre demande. Conformément à la loi sénégalaise n° 2008-12 sur la protection des données à caractère personnel, vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:${company.email}">${company.email}</a>.</p>
+    <p>Le formulaire de contact et de devis ne stocke aucune donnée sur ce site : il ouvre WhatsApp ou votre messagerie avec votre message prérempli.</p>
+    <p>Le formulaire d'inscription à ProSolar Academy enregistre les informations saisies (identité, coordonnées, profil) sur le serveur de ${company.legal} et les transmet par e-mail à notre équipe. Elles servent uniquement à traiter votre inscription et à vous contacter au sujet de la formation. Le paiement est réalisé sur la plateforme Wave : aucune donnée bancaire ne transite par ce site.</p>
+    <p>Les informations transmises ne sont ni vendues ni cédées à des tiers. Conformément à la loi sénégalaise n° 2008-12 sur la protection des données à caractère personnel, vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à <a href="mailto:${company.email}">${company.email}</a>.</p>
     <h2>Simulateur</h2>
     <p>Les résultats du simulateur sont des estimations indicatives qui ne constituent pas une offre. Seule l'étude sur site permet un dimensionnement et un chiffrage définitifs.</p>
   </div>
