@@ -12,6 +12,8 @@ const SESSION_LABEL = '{{SESSION}}';
 const SESSION_LABEL_EN = '{{SESSION_EN}}';
 const AMOUNT = '{{AMOUNT}}';
 const AMOUNT_EN = '{{AMOUNT_EN}}';
+const COST = '{{COST}}';
+const COST_EN = '{{COST_EN}}';
 const PAY_URL = '{{PAY_URL}}';
 const WHATSAPP = '{{WHATSAPP}}';
 
@@ -73,15 +75,37 @@ if (!empty($_POST['website']) || ($ts > 0 && time() - $ts < 3)) {
 
 $limits = [
     'prenom' => 80, 'nom' => 80, 'telephone' => 30, 'email' => 120, 'ville' => 80,
-    'profil' => 60, 'niveau' => 60, 'experience' => 60, 'connu' => 60, 'attentes' => 1000,
+    'profil' => 60, 'profil_autre' => 80, 'niveau' => 60, 'experience' => 60, 'connu' => 60, 'attentes' => 1000,
+    'creneau' => 40, 'deplacement' => 80,
 ];
 $data = [];
 foreach ($limits as $key => $max) {
     $data[$key] = clean($_POST[$key] ?? '', $max, $key === 'attentes');
 }
 
+// Jours de disponibilité (cases à cocher dispo[])
+$dispo = [];
+foreach ((array) ($_POST['dispo'] ?? []) as $day) {
+    $day = clean($day, 20);
+    if ($day !== '' && count($dispo) < 7) {
+        $dispo[] = $day;
+    }
+}
+$data['dispo'] = implode(', ', array_unique($dispo));
+
 $errors = [];
-foreach (['prenom', 'nom', 'telephone', 'ville', 'profil', 'niveau'] as $key) {
+// « Autre » : le participant précise son profil dans un champ libre
+if (in_array($data['profil'], ['Autre', 'Other'], true)) {
+    if ($data['profil_autre'] === '') {
+        $errors[] = 'profil_autre';
+    } else {
+        $data['profil'] = 'Autre : ' . $data['profil_autre'];
+    }
+}
+if ($data['dispo'] === '') {
+    $errors[] = 'dispo';
+}
+foreach (['prenom', 'nom', 'telephone', 'ville', 'profil', 'niveau', 'deplacement'] as $key) {
     if ($data[$key] === '') {
         $errors[] = $key;
     }
@@ -101,7 +125,8 @@ if ($errors) {
 
 $date = date('Y-m-d H:i');
 $row = [$date, $ref, SESSION_LABEL, $data['prenom'], $data['nom'], $data['telephone'], $data['email'], $data['ville'],
-    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente du paiement Wave', strtoupper($lang)];
+    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente du paiement Wave', strtoupper($lang),
+    $data['dispo'], $data['creneau'], $data['deplacement']];
 
 $saved = false;
 $isNew = !file_exists(CSV_FILE);
@@ -110,7 +135,7 @@ if ($fh && flock($fh, LOCK_EX)) {
     if ($isNew) {
         fwrite($fh, "\xEF\xBB\xBF");
         fputcsv($fh, ['Date', 'Référence', 'Session', 'Prénom', 'Nom', 'Téléphone', 'E-mail', 'Ville', 'Profil',
-            'Niveau', 'Expérience solaire', 'Connu par', 'Attentes', 'Statut', 'Langue'], ';', '"', '');
+            'Niveau', 'Expérience solaire', 'Connu par', 'Attentes', 'Statut', 'Langue', 'Disponibilités', 'Moment de la journée', 'Déplacement / hébergement'], ';', '"', '');
     }
     $saved = fputcsv($fh, array_map('csvSafe', $row), ';', '"', '') !== false;
     flock($fh, LOCK_UN);
@@ -137,11 +162,13 @@ $lines = [
     'Ville : ' . $data['ville'],
     'Profil : ' . $data['profil'],
     'Niveau d\'études : ' . $data['niveau'],
+    'Disponibilités : ' . $data['dispo'] . ($data['creneau'] ? ' (' . $data['creneau'] . ')' : ''),
+    'Déplacement / hébergement à Thiès : ' . $data['deplacement'],
     'Expérience solaire : ' . ($data['experience'] ?: '-'),
     'Connu par : ' . ($data['connu'] ?: '-'),
     'Attentes : ' . ($data['attentes'] ?: '-'),
     '',
-    'Statut : en attente du paiement de ' . AMOUNT . ' via Wave.',
+    'Statut : en attente du premier versement de ' . AMOUNT . ' via Wave (coût total : ' . COST . ').',
     'Le participant doit envoyer son reçu Wave sur WhatsApp en indiquant sa référence.',
 ];
 $headers = [
@@ -165,7 +192,7 @@ if ($data['email'] !== '') {
             'We have received your request to enrol in ProSolar Academy (session starting ' . SESSION_LABEL_EN . ').',
             'Your reference: ' . $ref,
             '',
-            'To confirm your place, please pay ' . AMOUNT_EN . ' via Wave:',
+            'Programme cost: ' . COST_EN . '. To confirm your place, please pay the first instalment of ' . AMOUNT_EN . ' via Wave:',
             PAY_URL,
             '',
             'Then send a screenshot of your receipt on WhatsApp to +' . WHATSAPP . ' with your reference.',
@@ -181,7 +208,7 @@ if ($data['email'] !== '') {
             'Nous avons bien reçu votre demande d\'inscription à ProSolar Academy (session du ' . SESSION_LABEL . ').',
             'Votre référence : ' . $ref,
             '',
-            'Pour valider votre place, réglez ' . AMOUNT . ' via Wave :',
+            'Coût de la formation : ' . COST . '. Pour valider votre place, réglez le premier versement de ' . AMOUNT . ' via Wave :',
             PAY_URL,
             '',
             'Envoyez ensuite la capture de votre reçu sur WhatsApp au +' . WHATSAPP . ' en indiquant votre référence.',

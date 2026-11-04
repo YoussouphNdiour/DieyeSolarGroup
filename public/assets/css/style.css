@@ -301,6 +301,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--orange); flex: none; }
 .check input[aria-invalid='true'] { outline: 2px solid #c62828; outline-offset: 2px; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.f-grid fieldset.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+.f-grid fieldset.field legend { display: block; padding: 0; margin-bottom: 10px; font-weight: 700; font-size: 15px; color: var(--ink); }
+.day-group[aria-invalid='true'] .chip span { border-color: #c62828; }
+[data-other-field][hidden] { display: none; }
 .reg-form { position: relative; }
 .reg-side { position: sticky; top: calc(var(--header-h) + 24px); }
 .reg-side h3 { font-family: var(--font-d); font-size: 22px; color: #fff; text-transform: none; letter-spacing: -0.01em; margin-bottom: 8px; }
@@ -314,7 +318,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pay-in { display: grid; justify-items: center; }
 .pay-card { width: 100%; max-width: 640px; }
 .pay-hello { font-family: var(--font-d); font-size: 24px; color: var(--ink); font-weight: 700; margin-bottom: 16px; }
-.pay-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 22px; }
+.pay-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 0 0 22px; }
 .pay-sum div { padding: 16px 18px; border-radius: 14px; background: var(--paper); }
 .pay-sum dt { font-size: 13px; color: var(--ink-3); font-weight: 600; }
 .pay-sum dd { margin: 4px 0 0; font-family: var(--font-d); font-size: 22px; color: var(--ink); }

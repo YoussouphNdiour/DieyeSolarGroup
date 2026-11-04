@@ -255,6 +255,20 @@ ${d.message}`;
     const btn = $('button[type="submit"]', reg);
     const btnLabel = btn.innerHTML;
     f.ts.value = Math.floor(Date.now() / 1000);
+
+    // « Autre » : champ libre affiché seulement quand cette option est choisie
+    $$('[data-other-field]', reg).forEach((box) => {
+      const sel = document.getElementById(box.dataset.otherField);
+      const input = $('input', box);
+      const toggle = () => {
+        const isOther = !!(sel.selectedOptions[0] && sel.selectedOptions[0].hasAttribute('data-other'));
+        box.hidden = !isOther;
+        input.required = isOther;
+        if (!isOther) input.removeAttribute('aria-invalid');
+      };
+      sel.addEventListener('change', toggle);
+      toggle();
+    });
     if (new URLSearchParams(location.search).get('erreur')) {
       err.textContent = L("Votre inscription n'a pas pu être enregistrée : vérifiez les champs obligatoires puis réessayez.", 'Your enrolment could not be saved: please check the required fields and try again.');
       err.hidden = false;
@@ -264,7 +278,11 @@ ${d.message}`;
       err.hidden = false;
     };
     const waFallback = () => {
-      const d = Object.fromEntries(new FormData(reg));
+      const fd = new FormData(reg);
+      const d = Object.fromEntries(fd);
+      const days = fd.getAll('dispo[]').join(', ');
+      const opt = reg.elements.profil.selectedOptions[0];
+      if (d.profil_autre && opt && opt.hasAttribute('data-other')) d.profil = `${d.profil} : ${d.profil_autre}`;
       const msg = EN
         ? `Hello DSG, I would like to enrol in ProSolar Academy.
 First name: ${d.prenom}
@@ -272,14 +290,18 @@ Last name: ${d.nom}
 Phone: ${d.telephone}${d.email ? `\nEmail: ${d.email}` : ''}
 Town: ${d.ville}
 Profile: ${d.profil}
-Education: ${d.niveau}`
+Education: ${d.niveau}
+Availability: ${days}${d.creneau ? ` (${d.creneau})` : ''}
+Travel / accommodation: ${d.deplacement}`
         : `Bonjour DSG, je souhaite m'inscrire à ProSolar Academy.
 Prénom : ${d.prenom}
 Nom : ${d.nom}
 Téléphone : ${d.telephone}${d.email ? `\nE-mail : ${d.email}` : ''}
 Ville : ${d.ville}
 Profil : ${d.profil}
-Niveau : ${d.niveau}`;
+Niveau : ${d.niveau}
+Disponibilités : ${days}${d.creneau ? ` (${d.creneau})` : ''}
+Déplacement / hébergement : ${d.deplacement}`;
       err.textContent = L("L'envoi n'a pas abouti. Vous pouvez envoyer votre inscription sur WhatsApp : ", 'Sending failed. You can send your enrolment on WhatsApp: ');
       const a = document.createElement('a');
       a.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
@@ -297,12 +319,14 @@ Niveau : ${d.niveau}`;
         const bad = el.type === 'checkbox' ? !el.checked : !el.value.trim();
         el.setAttribute('aria-invalid', String(bad));
       });
+      // Groupes de cases (disponibilités) : au moins une case cochée
+      $$('[data-required-group]', reg).forEach((g) => g.setAttribute('aria-invalid', String(!$('input:checked', g))));
       if (f.telephone.value.trim() && !/^[0-9 +().-]{7,20}$/.test(f.telephone.value.trim())) f.telephone.setAttribute('aria-invalid', 'true');
       if (f.email.value.trim() && !f.email.checkValidity()) f.email.setAttribute('aria-invalid', 'true');
       const firstBad = $('[aria-invalid="true"]', reg);
       if (firstBad) {
         showError(L('Merci de vérifier les champs signalés en rouge.', 'Please check the fields highlighted in red.'));
-        firstBad.focus();
+        (firstBad.tagName === 'FIELDSET' ? $('input', firstBad) : firstBad).focus();
         return;
       }
       err.hidden = true;
@@ -320,7 +344,11 @@ Niveau : ${d.niveau}`;
       }
     });
     $$('input, select, textarea', reg).forEach((el) => {
-      const clear = () => el.removeAttribute('aria-invalid');
+      const clear = () => {
+        el.removeAttribute('aria-invalid');
+        const g = el.closest('[data-required-group]');
+        if (g) g.removeAttribute('aria-invalid');
+      };
       el.addEventListener('input', clear);
       el.addEventListener('change', clear);
     });

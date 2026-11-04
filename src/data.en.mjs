@@ -196,11 +196,12 @@ export const en = {
     tagline: 'Vocational training centre for the installation and maintenance of solar systems',
     nextSession: 'December 7, 2026',
     fee: '100,000 FCFA',
-    place: 'Grand Standing, Thiès (near École Sainte Bernadette)',
+    cost: '300,000 FCFA',
+    place: 'ISEP Abdoulaye Ly, Thiès',
     facts: [
+      ['6 months', '3 months of classes and a 3-month internship'],
+      ['CCP', 'Certificate of Professional Competence issued by ISEP Thiès'],
       ['70%', 'hands-on practice on real equipment'],
-      ['3 months', 'of training, including a 1-month internship'],
-      ['20', 'places per cohort, maximum'],
       ['Dec. 7', 'start of the next session'],
     ],
     modules: [

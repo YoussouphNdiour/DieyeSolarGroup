@@ -258,7 +258,7 @@ ${ctaBand()}`,
       ${kicker(t('Partenaire pédagogique', 'Academic partner'), true)}
       <h2>${t(`En partenariat avec ${isep}.`, `In partnership with ${isep}.`)}</h2>
       <p class="academy-lead">${t(`Dieye Solar Group et ${isep} ont signé une convention de partenariat pour la formation professionnelle aux énergies renouvelables. Le programme est construit en concertation avec l'institut.`, `Dieye Solar Group and ${isep} have signed a partnership agreement for vocational training in renewable energy. The curriculum is designed in consultation with the institute.`)}</p>
-      <p class="academy-lead">${t("À l'issue de la formation, chaque apprenant reçoit une attestation de compétences délivrée par ProSolar Academy – Dieye Solar Group, en partenariat avec l'ISEP.", 'At the end of the programme, each trainee receives a certificate of competence issued by ProSolar Academy – Dieye Solar Group, in partnership with ISEP.')}</p>
+      <p class="academy-lead">${t(`Les cours ont lieu à ${isep}. À l'issue des 3 mois de cours et des 3 mois de stage, l'apprenant obtient le Certificat de Compétence Professionnelle (CCP), délivré par ${isep}.`, `Classes take place at ${isep}. After the 3 months of classes and the 3-month internship, trainees obtain the Certificate of Professional Competence (CCP), issued by ${isep}.`)}</p>
     </div>
   </div>
 </section>
@@ -274,13 +274,14 @@ ${ctaBand()}`,
       </div>
     </div>
     <dl class="card ac-dl">
-      <div><dt>${t('Inscription', 'Enrolment')}</dt><dd>${t(`Formulaire en ligne, puis paiement de ${academy.fee} via Wave pour valider la place`, `Online form, then a payment of ${academy.fee} via Wave to confirm your place`)}</dd></div>
-      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('3 mois, dont 1 mois de stage pratique', '3 months, including a 1-month internship')}</dd></div>
+      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours, puis 3 mois de stage', '6 months: 3 months of classes, then a 3-month internship')}</dd></div>
+      <div><dt>${t('Coût', 'Cost')}</dt><dd>${t(`${academy.cost} pour la formation complète`, `${academy.cost} for the full programme`)}</dd></div>
+      <div><dt>${t('Inscription', 'Enrolment')}</dt><dd>${t(`Formulaire en ligne, puis premier versement de ${academy.fee} via Wave pour valider la place`, `Online form, then a first instalment of ${academy.fee} via Wave to confirm your place`)}</dd></div>
       <div><dt>${t('Rythme', 'Schedule')}</dt><dd>${t('Cours intensifs le week-end, compatibles avec une activité professionnelle', 'Intensive weekend classes, compatible with a job')}</dd></div>
       <div><dt>${t('Pédagogie', 'Teaching')}</dt><dd>${t('70 % de pratique, 30 % de théorie, évaluation finale sur un projet réel', '70% practice, 30% theory, final assessment on a real project')}</dd></div>
       <div><dt>${t('Lieu', 'Location')}</dt><dd>${academy.place}</dd></div>
       <div><dt>${t('Effectif', 'Class size')}</dt><dd>${t('20 apprenants maximum par cohorte', '20 trainees maximum per cohort')}</dd></div>
-      <div><dt>${t('Attestation', 'Certificate')}</dt><dd>${t("Délivrée par ProSolar Academy – DSG, en partenariat avec l'ISEP de Thiès", 'Issued by ProSolar Academy – DSG, in partnership with ISEP Thiès')}</dd></div>
+      <div><dt>${t('Certification', 'Certification')}</dt><dd>${t("Certificat de Compétence Professionnelle (CCP), délivré par l'ISEP Abdoulaye Ly de Thiès", 'Certificate of Professional Competence (CCP), issued by ISEP Abdoulaye Ly, Thiès')}</dd></div>
     </dl>
   </div>
 </section>`,
@@ -294,10 +295,10 @@ ${ctaBand()}`,
     image: 'prosolar-signature',
     title: t('Inscription ProSolar Academy', 'ProSolar Academy enrolment'),
     description: t(
-      `Inscrivez-vous à ProSolar Academy, session du ${academy.nextSession} à Thiès : formulaire en ligne puis paiement de ${academy.fee} via Wave pour valider votre place.`,
-      `Enrol in ProSolar Academy, session starting ${academy.nextSession} in Thiès: online form, then a payment of ${academy.fee} via Wave to confirm your place.`
+      `Inscrivez-vous à ProSolar Academy, session du ${academy.nextSession} à Thiès : formulaire en ligne puis premier versement de ${academy.fee} via Wave pour valider votre place.`,
+      `Enrol in ProSolar Academy, session starting ${academy.nextSession} in Thiès: online form, then a first instalment of ${academy.fee} via Wave to confirm your place.`
     ),
-    body: `${pageHero({ kickerText: t(`Session du ${academy.nextSession}`, `Session starting ${academy.nextSession}`), title: t('Inscription à ProSolar Academy', 'Enrol in ProSolar Academy'), lead: t(`Remplissez le formulaire, puis validez votre place par un paiement de ${academy.fee} via Wave.`, `Fill in the form, then confirm your place with a payment of ${academy.fee} via Wave.`), crumbs: [[academy.name, 'prosolar-academy.html'], [t('Inscription', 'Enrolment')]], actions: false })}
+    body: `${pageHero({ kickerText: t(`Session du ${academy.nextSession}`, `Session starting ${academy.nextSession}`), title: t('Inscription à ProSolar Academy', 'Enrol in ProSolar Academy'), lead: t(`Remplissez le formulaire, puis validez votre place par un premier versement de ${academy.fee} via Wave. Coût de la formation : ${academy.cost}.`, `Fill in the form, then confirm your place with a first instalment of ${academy.fee} via Wave. Programme cost: ${academy.cost}.`), crumbs: [[academy.name, 'prosolar-academy.html'], [t('Inscription', 'Enrolment')]], actions: false })}
 <section class="section" id="inscription">
   <div class="wrap reg-in">
     <form class="card quote-form reg-form" action="${base()}inscription.php" method="post" data-register novalidate>
@@ -315,13 +316,24 @@ ${ctaBand()}`,
         <div class="field"><label for="r-email">E-mail</label><input id="r-email" name="email" type="email" autocomplete="email" maxlength="120"></div>
         <div class="field"><label for="r-ville">${t('Ville / localité', 'City / town')} *</label><input id="r-ville" name="ville" autocomplete="address-level2" maxlength="80" required></div>
         <div class="field"><label for="r-profil">${t('Vous êtes', 'You are')} *</label>
-          <select id="r-profil" name="profil" required>${choose}${opt(t(['Technicien en activité', 'Électricien', 'Étudiant / jeune diplômé', 'Entrepreneur', 'Agriculteur', 'En reconversion professionnelle', 'Autre'], ['Working technician', 'Electrician', 'Student / recent graduate', 'Entrepreneur', 'Farmer', 'Changing careers', 'Other']))}</select>
+          <select id="r-profil" name="profil" required>${choose}${opt(t(['Technicien en activité', 'Électricien', 'Étudiant / jeune diplômé', 'Entrepreneur', 'Agriculteur', 'En reconversion professionnelle'], ['Working technician', 'Electrician', 'Student / recent graduate', 'Entrepreneur', 'Farmer', 'Changing careers']))}<option value="${t('Autre', 'Other')}" data-other>${t('Autre', 'Other')}</option></select>
         </div>
+        <div class="field f-full" data-other-field="r-profil"><label for="r-profil-autre">${t('Précisez votre profil', 'Please specify')} *</label><input id="r-profil-autre" name="profil_autre" maxlength="80" placeholder="${t('Ex. : plombier, enseignant, commerçant…', 'E.g. plumber, teacher, shopkeeper…')}"></div>
         <div class="field"><label for="r-niveau">${t("Niveau d'études", 'Education level')} *</label>
           <select id="r-niveau" name="niveau" required>${choose}${opt(t(['Sans diplôme', 'BFEM', 'CAP / BEP', 'BT', 'Baccalauréat', 'BTS / DUT', 'Licence', 'Master ou plus'], ['No diploma', 'BFEM (lower secondary)', 'CAP / BEP (vocational)', 'BT (technical)', 'Baccalaureate', 'BTS / DUT (2-year degree)', "Bachelor's degree", "Master's degree or higher"]))}</select>
         </div>
         <div class="field"><label for="r-exp">${t('Expérience dans le solaire', 'Solar experience')}</label>
           <select id="r-exp" name="experience">${choose}${opt(t(['Aucune', 'Quelques chantiers', "Plus d'un an"], ['None', 'A few sites', 'More than a year']))}</select>
+        </div>
+        <fieldset class="field f-full day-group" data-required-group>
+          <legend>${t('Vos disponibilités dans la semaine', 'Your availability during the week')} *</legend>
+          <div class="chips">${t(['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'], ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']).map((d) => `<label class="chip"><input type="checkbox" name="dispo[]" value="${d}"><span>${d}</span></label>`).join('')}</div>
+        </fieldset>
+        <div class="field"><label for="r-creneau">${t('Moment de la journée', 'Time of day')}</label>
+          <select id="r-creneau" name="creneau">${choose}${opt(t(['Matin', 'Après-midi', 'Soir', 'Journée entière', 'Indifférent'], ['Morning', 'Afternoon', 'Evening', 'Full day', 'No preference']))}</select>
+        </div>
+        <div class="field"><label for="r-deplacement">${t('Déplacement / hébergement à Thiès', 'Travel / accommodation in Thiès')} *</label>
+          <select id="r-deplacement" name="deplacement" required>${choose}${opt(t(["J'habite à Thiès ou à proximité", 'Je peux me déplacer chaque jour à Thiès', "J'ai un hébergement à Thiès", "J'aurai besoin d'un hébergement à Thiès", 'Pas encore sûr(e)'], ['I live in or near Thiès', 'I can travel to Thiès every day', 'I have accommodation in Thiès', 'I will need accommodation in Thiès', 'Not sure yet']))}</select>
         </div>
         <div class="field f-full"><label for="r-connu">${t('Comment avez-vous connu ProSolar Academy ?', 'How did you hear about ProSolar Academy?')}</label>
           <select id="r-connu" name="connu">${choose}${opt(t(['Réseaux sociaux', 'Bouche-à-oreille', 'ISEP de Thiès', 'Site internet', 'Autre'], ['Social media', 'Word of mouth', 'ISEP Thiès', 'Website', 'Other']))}</select>
@@ -331,7 +343,7 @@ ${ctaBand()}`,
         <input type="hidden" name="ts" value="">
         <input type="hidden" name="lang" value="${lang}">
         <label class="check f-full"><input type="checkbox" name="consent" value="1" required><span>${t("J'accepte que Dieye Solar Group utilise ces informations pour traiter mon inscription.", 'I agree that Dieye Solar Group may use this information to process my enrolment.')} *</span></label>
-        <label class="check f-full"><input type="checkbox" name="paiement" value="1" required><span>${t(`Je comprends que ma place n'est réservée qu'après le paiement de ${academy.fee} via Wave.`, `I understand that my place is only reserved once I have paid ${academy.fee} via Wave.`)} *</span></label>
+        <label class="check f-full"><input type="checkbox" name="paiement" value="1" required><span>${t(`Je comprends que ma place n'est réservée qu'après le premier versement de ${academy.fee} via Wave (coût total de la formation : ${academy.cost}).`, `I understand that my place is only reserved once I have paid the first instalment of ${academy.fee} via Wave (total programme cost: ${academy.cost}).`)} *</span></label>
       </div>
       <p class="form-error" role="alert" hidden>${t('Merci de remplir les champs obligatoires.', 'Please fill in the required fields.')}</p>
       <div class="btn-row">
@@ -343,9 +355,11 @@ ${ctaBand()}`,
       <dl>
         <div><dt>${t('Formation', 'Programme')}</dt><dd>${academy.name}</dd></div>
         <div><dt>Session</dt><dd>${academy.nextSession}</dd></div>
-        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('3 mois, dont 1 mois de stage', '3 months, including a 1-month internship')}</dd></div>
+        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours + 3 mois de stage', '6 months: 3 months of classes + 3-month internship')}</dd></div>
+        <div><dt>Certification</dt><dd>${t("CCP délivré par l'ISEP de Thiès", 'CCP issued by ISEP Thiès')}</dd></div>
         <div><dt>${t('Lieu', 'Location')}</dt><dd>${academy.place}</dd></div>
-        <div class="reg-amount"><dt>${t('À régler pour valider', 'To pay to confirm')}</dt><dd>${academy.fee}</dd></div>
+        <div><dt>${t('Coût de la formation', 'Programme cost')}</dt><dd>${academy.cost}</dd></div>
+        <div class="reg-amount"><dt>${t('Premier versement pour valider', 'First instalment to confirm')}</dt><dd>${academy.fee}</dd></div>
       </dl>
       <p class="reg-wave">${t("Paiement sécurisé sur la plateforme <strong>Wave</strong>, à l'étape suivante.", 'Secure payment on the <strong>Wave</strong> platform, at the next step.')}</p>
       <a class="btn btn-ghost btn-block" href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} ${t('Une question ? WhatsApp', 'Questions? WhatsApp')}</a>
@@ -359,7 +373,7 @@ ${ctaBand()}`,
     noindex: true,
     image: 'prosolar-signature',
     title: t('Paiement de votre inscription', 'Pay for your enrolment'),
-    description: t(`Validez votre inscription à ProSolar Academy par un paiement de ${academy.fee} via Wave.`, `Confirm your ProSolar Academy enrolment with a payment of ${academy.fee} via Wave.`),
+    description: t(`Validez votre inscription à ProSolar Academy par un premier versement de ${academy.fee} via Wave.`, `Confirm your ProSolar Academy enrolment with a first instalment of ${academy.fee} via Wave.`),
     body: `${pageHero({ kickerText: t('Étape 2 sur 3', 'Step 2 of 3'), title: t('Dernière étape : le paiement.', 'Last step: payment.'), lead: t("Votre demande d'inscription est enregistrée. Votre place sera réservée dès réception de votre paiement.", 'Your enrolment request has been recorded. Your place will be reserved as soon as we receive your payment.'), crumbs: [[academy.name, 'prosolar-academy.html'], [t('Paiement', 'Payment')]], actions: false })}
 <section class="section">
   <div class="wrap pay-in">
@@ -372,13 +386,14 @@ ${ctaBand()}`,
       <p class="pay-hello" data-hello hidden></p>
       <dl class="pay-sum">
         <div data-ref-row hidden><dt>${t('Votre référence', 'Your reference')}</dt><dd><strong data-ref></strong></dd></div>
-        <div><dt>${t('Montant à régler', 'Amount to pay')}</dt><dd><strong>${academy.fee}</strong></dd></div>
+        <div><dt>${t('Premier versement à régler', 'First instalment to pay')}</dt><dd><strong>${academy.fee}</strong></dd></div>
+        <div><dt>${t('Coût total de la formation', 'Total programme cost')}</dt><dd>${academy.cost}</dd></div>
       </dl>
       <a class="btn btn-primary btn-block btn-wave" href="${academy.payUrl}" target="_blank" rel="noopener">${t(`Payer ${academy.fee} avec Wave`, `Pay ${academy.fee} with Wave`)} ${icon('arrow')}</a>
       <ol class="pay-steps">
-        <li>${t("Cliquez sur <strong>Payer avec Wave</strong> et confirmez le paiement dans l'application Wave.", 'Click <strong>Pay with Wave</strong> and confirm the payment in the Wave app.')}</li>
-        <li>${t("Faites une capture d'écran du reçu de paiement.", 'Take a screenshot of the payment receipt.')}</li>
-        <li>${t('Envoyez-la sur WhatsApp en indiquant votre référence : notre équipe vous confirme votre place.', 'Send it to us on WhatsApp with your reference: our team will confirm your place.')}</li>
+        <li><span>${t("Cliquez sur <strong>Payer avec Wave</strong> et confirmez le paiement dans l'application Wave.", 'Click <strong>Pay with Wave</strong> and confirm the payment in the Wave app.')}</span></li>
+        <li><span>${t("Faites une capture d'écran du reçu de paiement.", 'Take a screenshot of the payment receipt.')}</span></li>
+        <li><span>${t('Envoyez-la sur WhatsApp en indiquant votre référence : notre équipe vous confirme votre place.', 'Send it to us on WhatsApp with your reference: our team will confirm your place.')}</span></li>
       </ol>
       <a class="btn btn-outline btn-block" data-pay-wa href="${academyWa()}" target="_blank" rel="noopener">${icon('chat')} ${t('Envoyer mon reçu sur WhatsApp', 'Send my receipt on WhatsApp')}</a>
     </div>
@@ -508,9 +523,11 @@ for (const l of ['fr', 'en']) {
 setLang('fr');
 const sessionFr = academy.nextSession;
 const amountFr = academy.fee;
+const costFr = academy.cost;
 setLang('en');
 const sessionEn = academy.nextSession;
 const amountEn = academy.fee;
+const costEn = academy.cost;
 setLang('fr');
 const php = readFileSync(new URL('./src/inscription.php', import.meta.url), 'utf8')
   .replaceAll('{{EMAIL}}', company.email)
@@ -518,6 +535,8 @@ const php = readFileSync(new URL('./src/inscription.php', import.meta.url), 'utf
   .replaceAll('{{SESSION_EN}}', sessionEn)
   .replaceAll('{{AMOUNT}}', amountFr)
   .replaceAll('{{AMOUNT_EN}}', amountEn)
+  .replaceAll('{{COST}}', costFr)
+  .replaceAll('{{COST_EN}}', costEn)
   .replaceAll('{{PAY_URL}}', academy.payUrl)
   .replaceAll('{{WHATSAPP}}', company.whatsapp);
 writeFileSync(new URL('./public/inscription.php', import.meta.url), php);

@@ -289,14 +289,16 @@ const academyFr = {
   tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
   partner: 'ISEP Abdoulaye Ly de Thiès',
   nextSession: '7 décembre 2026',
+  // Premier versement payé via Wave pour valider l'inscription (le lien ci-dessous est réglé sur ce montant)
   fee: '100\u00a0000\u00a0FCFA',
+  cost: '300\u00a0000\u00a0FCFA',
   // Lien de paiement Wave (montant fixé dans l'URL)
   payUrl: 'https://pay.wave.com/m/M_sn_M3Cuivt2qVb3/c/sn/?amount=100000',
-  place: "Grand Standing, Thiès (près de l'École Sainte Bernadette)",
+  place: 'ISEP Abdoulaye Ly de Thiès',
   facts: [
+    ['6 mois', 'dont 3 mois de cours et 3 mois de stage'],
+    ['CCP', "Certificat de Compétence Professionnelle délivré par l'ISEP de Thiès"],
     ['70 %', 'de pratique sur de vrais équipements'],
-    ['3 mois', 'de formation, dont 1 mois de stage'],
-    ['20', 'places maximum par cohorte'],
     ['7 déc.', 'début de la prochaine session'],
   ],
   modules: [

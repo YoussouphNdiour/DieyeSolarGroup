@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.classList.add('js')</script>
 <title>ProSolar Academy enrolment | DSG – Dieye Solar Group</title>
-<meta name="description" content="Enrol in ProSolar Academy, session starting December 7, 2026 in Thiès: online form, then a payment of 100,000 FCFA via Wave to confirm your place.">
+<meta name="description" content="Enrol in ProSolar Academy, session starting December 7, 2026 in Thiès: online form, then a first instalment of 100,000 FCFA via Wave to confirm your place.">
 
 <link rel="canonical" href="https://www.dsg.sn/en/prosolar-inscription.html">
 <link rel="alternate" hreflang="fr" href="https://www.dsg.sn/prosolar-inscription.html">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="DSG – Dieye Solar Group">
 <meta property="og:title" content="ProSolar Academy enrolment | DSG – Dieye Solar Group">
-<meta property="og:description" content="Enrol in ProSolar Academy, session starting December 7, 2026 in Thiès: online form, then a payment of 100,000 FCFA via Wave to confirm your place.">
+<meta property="og:description" content="Enrol in ProSolar Academy, session starting December 7, 2026 in Thiès: online form, then a first instalment of 100,000 FCFA via Wave to confirm your place.">
 <meta property="og:image" content="https://www.dsg.sn/assets/img/prosolar-signature.webp">
 <meta property="og:url" content="https://www.dsg.sn/en/prosolar-inscription.html">
 <link rel="icon" type="image/png" sizes="64x64" href="../assets/brand/favicon-64.png">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css?v=mw1ccn6g">
+<link rel="stylesheet" href="../assets/css/style.css?v=mw1cxmug">
 
 </head>
 <body>
@@ -64,7 +64,7 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="prosolar-academy.html">ProSolar Academy</a><span>/</span><span aria-current="page">Enrolment</span></nav>
     <p class="kicker kicker-light">Session starting December 7, 2026</p>
     <h1>Enrol in ProSolar Academy</h1>
-    <p class="page-lead">Fill in the form, then confirm your place with a payment of 100,000 FCFA via Wave.</p>
+    <p class="page-lead">Fill in the form, then confirm your place with a first instalment of 100,000 FCFA via Wave. Programme cost: 300,000 FCFA.</p>
     
   </div>
 </section>
@@ -85,13 +85,24 @@
         <div class="field"><label for="r-email">E-mail</label><input id="r-email" name="email" type="email" autocomplete="email" maxlength="120"></div>
         <div class="field"><label for="r-ville">City / town *</label><input id="r-ville" name="ville" autocomplete="address-level2" maxlength="80" required></div>
         <div class="field"><label for="r-profil">You are *</label>
-          <select id="r-profil" name="profil" required><option value="">Select…</option><option>Working technician</option><option>Electrician</option><option>Student / recent graduate</option><option>Entrepreneur</option><option>Farmer</option><option>Changing careers</option><option>Other</option></select>
+          <select id="r-profil" name="profil" required><option value="">Select…</option><option>Working technician</option><option>Electrician</option><option>Student / recent graduate</option><option>Entrepreneur</option><option>Farmer</option><option>Changing careers</option><option value="Other" data-other>Other</option></select>
         </div>
+        <div class="field f-full" data-other-field="r-profil"><label for="r-profil-autre">Please specify *</label><input id="r-profil-autre" name="profil_autre" maxlength="80" placeholder="E.g. plumber, teacher, shopkeeper…"></div>
         <div class="field"><label for="r-niveau">Education level *</label>
           <select id="r-niveau" name="niveau" required><option value="">Select…</option><option>No diploma</option><option>BFEM (lower secondary)</option><option>CAP / BEP (vocational)</option><option>BT (technical)</option><option>Baccalaureate</option><option>BTS / DUT (2-year degree)</option><option>Bachelor's degree</option><option>Master's degree or higher</option></select>
         </div>
         <div class="field"><label for="r-exp">Solar experience</label>
           <select id="r-exp" name="experience"><option value="">Select…</option><option>None</option><option>A few sites</option><option>More than a year</option></select>
+        </div>
+        <fieldset class="field f-full day-group" data-required-group>
+          <legend>Your availability during the week *</legend>
+          <div class="chips"><label class="chip"><input type="checkbox" name="dispo[]" value="Monday"><span>Monday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Tuesday"><span>Tuesday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Wednesday"><span>Wednesday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Thursday"><span>Thursday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Friday"><span>Friday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Saturday"><span>Saturday</span></label><label class="chip"><input type="checkbox" name="dispo[]" value="Sunday"><span>Sunday</span></label></div>
+        </fieldset>
+        <div class="field"><label for="r-creneau">Time of day</label>
+          <select id="r-creneau" name="creneau"><option value="">Select…</option><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Full day</option><option>No preference</option></select>
+        </div>
+        <div class="field"><label for="r-deplacement">Travel / accommodation in Thiès *</label>
+          <select id="r-deplacement" name="deplacement" required><option value="">Select…</option><option>I live in or near Thiès</option><option>I can travel to Thiès every day</option><option>I have accommodation in Thiès</option><option>I will need accommodation in Thiès</option><option>Not sure yet</option></select>
         </div>
         <div class="field f-full"><label for="r-connu">How did you hear about ProSolar Academy?</label>
           <select id="r-connu" name="connu"><option value="">Select…</option><option>Social media</option><option>Word of mouth</option><option>ISEP Thiès</option><option>Website</option><option>Other</option></select>
@@ -101,7 +112,7 @@
         <input type="hidden" name="ts" value="">
         <input type="hidden" name="lang" value="en">
         <label class="check f-full"><input type="checkbox" name="consent" value="1" required><span>I agree that Dieye Solar Group may use this information to process my enrolment. *</span></label>
-        <label class="check f-full"><input type="checkbox" name="paiement" value="1" required><span>I understand that my place is only reserved once I have paid 100,000 FCFA via Wave. *</span></label>
+        <label class="check f-full"><input type="checkbox" name="paiement" value="1" required><span>I understand that my place is only reserved once I have paid the first instalment of 100,000 FCFA via Wave (total programme cost: 300,000 FCFA). *</span></label>
       </div>
       <p class="form-error" role="alert" hidden>Please fill in the required fields.</p>
       <div class="btn-row">
@@ -113,9 +124,11 @@
       <dl>
         <div><dt>Programme</dt><dd>ProSolar Academy</dd></div>
         <div><dt>Session</dt><dd>December 7, 2026</dd></div>
-        <div><dt>Duration</dt><dd>3 months, including a 1-month internship</dd></div>
-        <div><dt>Location</dt><dd>Grand Standing, Thiès (near École Sainte Bernadette)</dd></div>
-        <div class="reg-amount"><dt>To pay to confirm</dt><dd>100,000 FCFA</dd></div>
+        <div><dt>Duration</dt><dd>6 months: 3 months of classes + 3-month internship</dd></div>
+        <div><dt>Certification</dt><dd>CCP issued by ISEP Thiès</dd></div>
+        <div><dt>Location</dt><dd>ISEP Abdoulaye Ly, Thiès</dd></div>
+        <div><dt>Programme cost</dt><dd>300,000 FCFA</dd></div>
+        <div class="reg-amount"><dt>First instalment to confirm</dt><dd>100,000 FCFA</dd></div>
       </dl>
       <p class="reg-wave">Secure payment on the <strong>Wave</strong> platform, at the next step.</p>
       <a class="btn btn-ghost btn-block" href="https://wa.me/221786803131?text=Hello%20DSG%2C%20I%20would%20like%20to%20enrol%20in%20ProSolar%20Academy%20(session%20starting%20December%207%2C%202026)." target="_blank" rel="noopener"><svg class="ico " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3 3z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"/></svg> Questions? WhatsApp</a>
@@ -150,6 +163,6 @@
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/221786803131?text=Hello%20DSG%2C%20I%20would%20like%20a%20quote%20for%20a%20project." target="_blank" rel="noopener" aria-label="Message DSG on WhatsApp"><svg class="ico " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3 3z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"/></svg></a>
-<script src="../assets/js/main.js?v=mw1ccn6g" defer></script>
+<script src="../assets/js/main.js?v=mw1cxmug" defer></script>
 </body>
 </html>
