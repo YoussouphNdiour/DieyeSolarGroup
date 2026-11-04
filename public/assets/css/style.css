@@ -329,6 +329,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pay-steps li::before { content: counter(p); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--yellow); font-weight: 800; font-size: 14px; }
 
 /* ---------- ProSolar Academy ---------- */
+.hero-badge, .ac-logo { display: block; height: auto; background: #fff; border-radius: 18px; box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.5); }
+.hero-badge { width: 150px; padding: 10px; margin-bottom: 26px; }
+.ac-logo { width: 120px; padding: 8px; margin-bottom: 22px; }
 .academy { background: radial-gradient(800px 420px at 0% 100%, rgba(253, 102, 0, 0.28), transparent 60%), radial-gradient(900px 500px at 100% 0%, rgba(0, 106, 185, 0.35), transparent 60%), var(--navy); }
 .academy-in { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(36px, 6vw, 88px); align-items: center; }
 .academy h2, .dark .academy-in h2 { max-width: 15ch; }

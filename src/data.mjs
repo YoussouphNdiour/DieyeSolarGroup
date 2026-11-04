@@ -261,7 +261,6 @@ const partnersFr = {
     ['senico', 'Senico'],
     ['patisen', 'Patisen'],
     ['terranga-farms', 'Terranga Farms Sénégal'],
-    ['afreenergy', 'Afreenergy'],
     ['grips', 'GRIPS'],
     ['mp-energy', 'MP Energy'],
     ['tumiqui', 'Tumiqui Japon'],
@@ -272,6 +271,7 @@ const partnersFr = {
     ['solarx', 'SolarX'],
     ['solarig', 'Solarig'],
     ['infraenergy', 'Infranergy'],
+    ['afreenergy', 'Afreenergy'],
     ['deye', 'Deye'],
     ['senelec', 'Senelec'],
     ['aner', 'ANER'],
@@ -289,7 +289,7 @@ const academyFr = {
   tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
   partner: 'ISEP Abdoulaye Ly de Thiès',
   nextSession: '7 décembre 2026',
-  // Premier versement payé via Wave pour valider l'inscription (le lien ci-dessous est réglé sur ce montant)
+  // Frais d'inscription payés via Wave pour valider la place, en plus du coût de la formation (le lien Wave est réglé sur ce montant)
   fee: '100\u00a0000\u00a0FCFA',
   cost: '300\u00a0000\u00a0FCFA',
   // Lien de paiement Wave (montant fixé dans l'URL)

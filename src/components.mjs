@@ -246,6 +246,7 @@ export function academySection() {
   return `<section class="section dark academy" id="prosolar-academy">
   <div class="wrap academy-in">
     <div>
+      <img class="ac-logo" src="${img('logo-prosolar')}" alt="${t('Logo ProSolar Academy', 'ProSolar Academy logo')}" width="120" height="100" loading="lazy">
       ${kicker(t('Formation · ProSolar Academy', 'Training · ProSolar Academy'), true)}
       <h2>${t('Formez-vous aux métiers du solaire.', 'Train for a career in solar.')}</h2>
       <p class="academy-lead">${t(
@@ -380,11 +381,12 @@ export function ctaBand() {
 </section>`;
 }
 
-export function pageHero({ kickerText, title, lead, image, alt, crumbs = [], actions = true }) {
+export function pageHero({ kickerText, title, lead, image, alt, badge, badgeAlt = '', crumbs = [], actions = true }) {
   return `<section class="page-hero${image ? ' has-img' : ''}">
   ${image ? `<div class="hero-media">${picture(image, alt || '', { eager: true })}</div>` : ''}
   <div class="wrap page-hero-in">
     <nav class="crumbs" aria-label="${t("Fil d'Ariane", 'Breadcrumb')}"><a href="index.html">${t('Accueil', 'Home')}</a>${crumbs.map(([l, h]) => (h ? `<span>/</span><a href="${h}">${l}</a>` : `<span>/</span><span aria-current="page">${l}</span>`)).join('')}</nav>
+    ${badge ? `<img class="hero-badge" src="${img(badge)}" alt="${esc(badgeAlt)}" width="150" height="125">` : ''}
     ${kickerText ? kicker(kickerText, true) : ''}
     <h1>${title}</h1>
     ${lead ? `<p class="page-lead">${lead}</p>` : ''}

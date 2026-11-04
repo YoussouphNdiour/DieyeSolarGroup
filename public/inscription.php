@@ -125,7 +125,7 @@ if ($errors) {
 
 $date = date('Y-m-d H:i');
 $row = [$date, $ref, SESSION_LABEL, $data['prenom'], $data['nom'], $data['telephone'], $data['email'], $data['ville'],
-    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente du paiement Wave', strtoupper($lang),
+    $data['profil'], $data['niveau'], $data['experience'], $data['connu'], $data['attentes'], 'En attente des frais d\'inscription (Wave)', strtoupper($lang),
     $data['dispo'], $data['creneau'], $data['deplacement']];
 
 $saved = false;
@@ -168,7 +168,7 @@ $lines = [
     'Connu par : ' . ($data['connu'] ?: '-'),
     'Attentes : ' . ($data['attentes'] ?: '-'),
     '',
-    'Statut : en attente du premier versement de ' . AMOUNT . ' via Wave (coût total : ' . COST . ').',
+    'Statut : en attente du paiement des frais d\'inscription (' . AMOUNT . ') via Wave. Coût de la formation en plus : ' . COST . '.',
     'Le participant doit envoyer son reçu Wave sur WhatsApp en indiquant sa référence.',
 ];
 $headers = [
@@ -192,7 +192,7 @@ if ($data['email'] !== '') {
             'We have received your request to enrol in ProSolar Academy (session starting ' . SESSION_LABEL_EN . ').',
             'Your reference: ' . $ref,
             '',
-            'Programme cost: ' . COST_EN . '. To confirm your place, please pay the first instalment of ' . AMOUNT_EN . ' via Wave:',
+            'To confirm your place, please pay the registration fee of ' . AMOUNT_EN . ' via Wave (the programme cost of ' . COST_EN . ' comes on top):',
             PAY_URL,
             '',
             'Then send a screenshot of your receipt on WhatsApp to +' . WHATSAPP . ' with your reference.',
@@ -208,7 +208,7 @@ if ($data['email'] !== '') {
             'Nous avons bien reçu votre demande d\'inscription à ProSolar Academy (session du ' . SESSION_LABEL . ').',
             'Votre référence : ' . $ref,
             '',
-            'Coût de la formation : ' . COST . '. Pour valider votre place, réglez le premier versement de ' . AMOUNT . ' via Wave :',
+            'Pour valider votre place, réglez les frais d\'inscription de ' . AMOUNT . ' via Wave (le coût de la formation, ' . COST . ', s\'y ajoute) :',
             PAY_URL,
             '',
             'Envoyez ensuite la capture de votre reçu sur WhatsApp au +' . WHATSAPP . ' en indiquant votre référence.',
