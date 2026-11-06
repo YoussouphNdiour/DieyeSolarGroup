@@ -252,13 +252,13 @@ ${ctaBand()}`,
   <div class="wrap academy-in">
     <figure class="academy-media" data-reveal>
       ${picture('prosolar-signature', t("Signature de la convention de partenariat entre le directeur général de Dieye Solar Group et le directeur de l'ISEP de Thiès", 'Signing of the partnership agreement between the CEO of Dieye Solar Group and the director of ISEP Thiès'))}
-      <figcaption><span></span>${t("Signature de la convention entre DSG et l'ISEP de Thiès", 'Signing of the agreement between DSG and ISEP Thiès')}</figcaption>
+      <figcaption><span></span>${t("Signature de la convention entre DSG et l'ISEP Abdoulaye Ly de Thiès", 'Signing of the agreement between DSG and ISEP Abdoulaye Ly, Thiès')}</figcaption>
     </figure>
     <div>
       ${kicker(t('Partenaire pédagogique', 'Academic partner'), true)}
       <h2>${t(`En partenariat avec ${isep}.`, `In partnership with ${isep}.`)}</h2>
       <p class="academy-lead">${t(`Dieye Solar Group et ${isep} ont signé une convention de partenariat pour la formation professionnelle aux énergies renouvelables. Le programme est construit en concertation avec l'institut.`, `Dieye Solar Group and ${isep} have signed a partnership agreement for vocational training in renewable energy. The curriculum is designed in consultation with the institute.`)}</p>
-      <p class="academy-lead">${t(`Les cours ont lieu à ${isep}. À l'issue des 3 mois de cours et des 3 mois de stage, l'apprenant obtient le Certificat de Compétence Professionnelle (CCP), délivré par ${isep}.`, `Classes take place at ${isep}. After the 3 months of classes and the 3-month internship, trainees obtain the Certificate of Professional Competence (CCP), issued by ${isep}.`)}</p>
+      <p class="academy-lead">${t(`Les cours auront lieu à ${isep}. À l'issue des 3 mois de cours, des 3 mois de stage et de la préparation du certificat, l'apprenant obtient le Certificat de Compétence Professionnelle (CCP), délivré par ${isep}.`, `Classes will take place at ${isep}. After the 3 months of classes, the 3-month internship and certificate preparation, trainees obtain the Certificate of Professional Competence (CCP), issued by ${isep}.`)}</p>
     </div>
   </div>
 </section>
@@ -274,12 +274,12 @@ ${ctaBand()}`,
       </div>
     </div>
     <dl class="card ac-dl">
-      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours, puis 3 mois de stage', '6 months: 3 months of classes, then a 3-month internship')}</dd></div>
+      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours, puis 3 mois de stage et préparation du certificat', '6 months: 3 months of classes, then a 3-month internship and certificate preparation')}</dd></div>
       <div><dt>${t('Coût', 'Cost')}</dt><dd>${t(`${academy.cost} pour la formation complète`, `${academy.cost} for the full programme`)}</dd></div>
       <div><dt>${t('Inscription', 'Enrolment')}</dt><dd>${t(`Formulaire en ligne, puis frais d'inscription de ${academy.fee} réglés via Wave pour valider la place (en plus du coût de la formation)`, `Online form, then a registration fee of ${academy.fee} paid via Wave to confirm your place (on top of the programme cost)`)}</dd></div>
       <div><dt>${t('Rythme', 'Schedule')}</dt><dd>${t('Cours intensifs le week-end, compatibles avec une activité professionnelle', 'Intensive weekend classes, compatible with a job')}</dd></div>
       <div><dt>${t('Pédagogie', 'Teaching')}</dt><dd>${t('70 % de pratique, 30 % de théorie, évaluation finale sur un projet réel', '70% practice, 30% theory, final assessment on a real project')}</dd></div>
-      <div><dt>${t('Lieu', 'Location')}</dt><dd>${academy.place}</dd></div>
+      <div><dt>${t('Lieu', 'Location')}</dt><dd>${t(`Les cours auront lieu à l'${academy.place}`, `Classes will take place at ${academy.place}`)}</dd></div>
       <div><dt>${t('Effectif', 'Class size')}</dt><dd>${t('20 apprenants maximum par cohorte', '20 trainees maximum per cohort')}</dd></div>
       <div><dt>${t('Certification', 'Certification')}</dt><dd>${t("Certificat de Compétence Professionnelle (CCP), délivré par l'ISEP Abdoulaye Ly de Thiès", 'Certificate of Professional Competence (CCP), issued by ISEP Abdoulaye Ly, Thiès')}</dd></div>
     </dl>
@@ -356,8 +356,8 @@ ${ctaBand()}`,
       <dl>
         <div><dt>${t('Formation', 'Programme')}</dt><dd>${academy.name}</dd></div>
         <div><dt>Session</dt><dd>${academy.nextSession}</dd></div>
-        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours + 3 mois de stage', '6 months: 3 months of classes + 3-month internship')}</dd></div>
-        <div><dt>Certification</dt><dd>${t("CCP délivré par l'ISEP de Thiès", 'CCP issued by ISEP Thiès')}</dd></div>
+        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours + 3 mois de stage et préparation du certificat', '6 months: 3 months of classes + 3-month internship and certificate preparation')}</dd></div>
+        <div><dt>Certification</dt><dd>${t("Certificat de Compétence Professionnelle (CCP) délivré par l'ISEP Abdoulaye Ly de Thiès", 'Certificate of Professional Competence (CCP) issued by ISEP Abdoulaye Ly, Thiès')}</dd></div>
         <div><dt>${t('Lieu', 'Location')}</dt><dd>${academy.place}</dd></div>
         <div><dt>${t('Coût de la formation', 'Programme cost')}</dt><dd>${academy.cost}</dd></div>
         <div class="reg-amount"><dt>${t('Frais d’inscription à régler maintenant', 'Registration fee to pay now')}</dt><dd>${academy.fee}</dd></div>

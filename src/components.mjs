@@ -94,8 +94,8 @@ export function approach() {
   return `<section class="section approach">
   <div class="wrap approach-in">
     <div class="approach-media" data-reveal>
-      ${picture('sandiara-techniciens', t('Techniciens DSG en tenue de chantier lors de la mise en service des onduleurs de Sandiara', 'DSG technicians in work gear commissioning the inverters in Sandiara'))}
-      <p class="media-tag"><span></span>${t('Mise en service à Sandiara, région de Thiès', 'Commissioning in Sandiara, Thiès region')}</p>
+      ${picture('sandiara-conteneurs', t('Chambres froides autonomes alimentées par une centrale solaire DSG à Sandiara', 'Self-sufficient cold rooms powered by a DSG solar plant in Sandiara'))}
+      <p class="media-tag"><span></span>${t('Mise en service des Chambres froides autonomes à Sandiara, région de Thiès', 'Commissioning of the self-sufficient cold rooms in Sandiara, Thiès region')}</p>
     </div>
     <div>
       ${kicker(t('Notre approche', 'Our approach'))}
@@ -261,7 +261,7 @@ export function academySection() {
     </div>
     <figure class="academy-media" data-reveal>
       ${picture('prosolar-signature', t("Signature de la convention de partenariat ProSolar Academy entre le directeur général de Dieye Solar Group et le directeur de l'ISEP de Thiès", 'Signing of the ProSolar Academy partnership agreement between the CEO of Dieye Solar Group and the director of ISEP Thiès'))}
-      <figcaption><span></span>${t("Signature de la convention de partenariat avec l'ISEP de Thiès", 'Signing the partnership agreement with ISEP Thiès')}</figcaption>
+      <figcaption><span></span>${t("Signature de la convention entre DSG et l'ISEP Abdoulaye Ly de Thiès", 'Signing of the agreement between DSG and ISEP Abdoulaye Ly, Thiès')}</figcaption>
     </figure>
   </div>
 </section>`;
