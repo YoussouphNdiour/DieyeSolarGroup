@@ -8,7 +8,7 @@
 
 const NOTIFY_TO = 'info@dsg.sn';
 const MAIL_FROM = 'no-reply@dsg.sn';
-const SESSION_LABEL = '7 décembre 2026';
+const SESSION_LABEL = '11 janvier 2027';
 const SESSION_LABEL_EN = 'December 7, 2026';
 const AMOUNT = '100 000 FCFA';
 const AMOUNT_EN = '100,000 FCFA';

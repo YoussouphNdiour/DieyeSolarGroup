@@ -315,7 +315,7 @@ const academyFr = {
   name: 'ProSolar Academy',
   tagline: 'Centre de formation professionnelle en installation et maintenance de systèmes solaires',
   partner: 'ISEP Abdoulaye Ly de Thiès',
-  nextSession: '7 décembre 2026',
+  nextSession: '11 janvier 2027',
   // Frais d'inscription payés via Wave pour valider la place, en plus du coût de la formation (le lien Wave est réglé sur ce montant)
   fee: '100\u00a0000\u00a0FCFA',
   cost: '300\u00a0000\u00a0FCFA',
@@ -326,7 +326,7 @@ const academyFr = {
     ['6 mois', 'dont 3 mois de cours et 3 mois de stage et préparation du certificat'],
     ['CCP', "Certificat de Compétence Professionnelle délivré par l'ISEP Abdoulaye Ly de Thiès"],
     ['70 %', 'de pratique sur de vrais équipements'],
-    ['7 déc.', 'début de la prochaine session'],
+    ['11 janvier.', 'début de la prochaine session'],
   ],
   modules: [
     ['Électricité appliquée', ['Bases de l\'électricité, courant continu et alternatif', 'Tension, courant, puissance et énergie', 'Protections électriques et mise à la terre', 'Câblage, raccordement et lecture de schémas', 'Mesures électriques et multimètre']],
