@@ -58,7 +58,21 @@ Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, 
 - [ProSolar Academy](https://www.dsg.sn/prosolar-academy.html)
 - [Inscription ProSolar](https://www.dsg.sn/prosolar-inscription.html)
 - [Contact et devis](https://www.dsg.sn/contact.html)
+- [Blog DSG — guides pratiques](https://www.dsg.sn/blog.html)
 - [Version anglaise du site](https://www.dsg.sn/en/)
+
+## Blog — guides pratiques
+
+Articles rédigés par les équipes DSG à partir de chantiers réels au Sénégal, publiés sur https://www.dsg.sn/blog.html :
+
+- [Combien coûte une installation solaire au Sénégal en 2026 ?](https://www.dsg.sn/blog-prix-installation-solaire-senegal-2026.html) — Prix réels par type d'usage : maison 3 kWc, villa 11 kWc, entreprise 50 kWc, usine 1 MWc. Avec le coût au kWc, les économies mensuelles et le retour sur investissement.
+- [Comment financer son installation solaire au Sénégal : Wave, leasing, prêt, tontine](https://www.dsg.sn/blog-financer-installation-solaire-senegal-wave-leasing-tontine.html) — Les 5 solutions concrètes pour financer une installation solaire au Sénégal en 2026, avec mensualités réelles, taux et pièces à fournir.
+- [Batteries lithium vs plomb, onduleurs Deye vs Victron : quel matériel pour votre installation solaire ?](https://www.dsg.sn/blog-batterie-solaire-lithium-plomb-deye-victron-comparatif.html) — Le vrai comparatif entre les technologies et les marques installées au Sénégal : prix, durée de vie, performances, cas d'usage. Sans publicité.
+- [Raccorder son installation solaire à Senelec au Sénégal : autorisations, démarches et revente du surplus](https://www.dsg.sn/blog-raccordement-senelec-autoconsommation-revente-surplus-senegal.html) — Le guide complet 2026 : autoconsommation, injection, démarches Senelec, revente du surplus. Textes de référence et procédures à jour.
+- [Pompage solaire agricole au Sénégal : dimensionner, choisir une pompe, coût par hectare](https://www.dsg.sn/blog-pompage-solaire-agricole-senegal-dimensionnement-cout.html) — Guide pratique pour agriculteurs et maraîchers : volume d'eau nécessaire, type de pompe, puissance solaire, coût au m³ et au hectare.
+- [Chambre froide solaire au Sénégal : technologie, coût et rentabilité pour l'agro-industrie](https://www.dsg.sn/blog-chambre-froide-solaire-senegal-agro-industrie-cout-rentabilite.html) — Alimenter une chambre froide 100 % au solaire est possible et rentable. Le vrai coût, la technologie et le retour sur investissement d'après une installation industrielle réelle à Sandiara.
+- [Devenir technicien solaire au Sénégal : parcours, formations certifiantes, salaires 2026](https://www.dsg.sn/blog-devenir-technicien-solaire-senegal-formation-salaire.html) — Le marché de l'énergie solaire sénégalais recrute. Quelles formations, quelles compétences, quels salaires attendre, et comment décrocher un emploi stable.
+- [Solaire ou groupe électrogène ? Le vrai comparatif sur 10 ans au Sénégal](https://www.dsg.sn/blog-solaire-vs-groupe-electrogene-senegal-comparatif-10-ans.html) — Investissement, carburant, entretien, bruit, fiabilité. Le calcul complet qui donne tort au groupe électrogène dans 95 % des cas.
 
 ## Zone d'intervention
 

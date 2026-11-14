@@ -263,6 +263,57 @@ export function projectJsonLd(p) {
 
 export { courseJsonLd };
 
+// ---------- Blog : Article + FAQPage ----------
+// Combinés en un tableau de JSON-LD. L'Article porte la source principale (auteur,
+// date, mots-clefs, image). Le FAQPage reprend les Q/R, qui se classent très bien
+// en snippet Google et sont aussi lues par les LLM (ChatGPT, Claude, Perplexity).
+export function articleJsonLd(a, author) {
+  const url = `${company.url}${lang === 'en' ? '/en' : ''}/blog/${a.slug}.html`;
+  const article = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    name: a.title,
+    description: a.excerpt,
+    image: `${company.url}/assets/img/${a.image}.webp`,
+    datePublished: a.date,
+    dateModified: a.date,
+    inLanguage: lang,
+    keywords: (a.tags || []).concat(a.keyword || []).join(', '),
+    author: { '@type': 'Person', name: author.name, jobTitle: author.role, url: author.url },
+    publisher: { '@id': `${company.url}/#organization` },
+    mainEntityOfPage: url,
+    url,
+  };
+  const docs = [article];
+  if (a.faq && a.faq.length) {
+    docs.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: a.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    });
+  }
+  return JSON.stringify(docs);
+}
+
+// Breadcrumb pour la page blog index et les articles.
+export function breadcrumbJsonLd(items) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  });
+}
+
 export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false, ld = null }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
   const path = file === 'index.html' ? '' : file;

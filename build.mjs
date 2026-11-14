@@ -1,12 +1,119 @@
 // Génère les pages HTML statiques : français dans public/, anglais dans public/en/ — usage : node build.mjs
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { company, services, projects, fieldPhotos, academy, clips, lang, t, setLang } from './src/data.mjs';
-import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd } from './src/layout.mjs';
+import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd, articleJsonLd, breadcrumbJsonLd } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
   videosSection, videoCard, academySection, academyFacts, academyWa, clipsSection,
 } from './src/components.mjs';
+import { articlesFr, AUTHOR as AUTHOR_FR, categoriesFr } from './src/blog.mjs';
+import { articlesEn, AUTHOR_EN, categoriesEn } from './src/blog.en.mjs';
+
+// ---------- Blog : rendu des pages ----------
+// On garde une URL plate (`blog.html`, `blog-SLUG.html`) pour que tous les liens relatifs
+// du layout (nav, footer, breadcrumbs) continuent à fonctionner sans modification.
+function blogData() {
+  return lang === 'en'
+    ? { articles: articlesEn, author: AUTHOR_EN, categories: categoriesEn }
+    : { articles: articlesFr, author: AUTHOR_FR, categories: categoriesFr };
+}
+
+function articleCard(a) {
+  const dateLabel = new Date(a.date).toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return `<article class="blog-card">
+    <a class="blog-card-media" href="blog-${a.slug}.html" aria-label="${esc(a.title)}">
+      ${picture(a.image, a.imageAlt)}
+    </a>
+    <div class="blog-card-body">
+      <small class="blog-card-meta">${dateLabel} · ${esc(a.tags[0] || '')}</small>
+      <h3><a href="blog-${a.slug}.html">${esc(a.title)}</a></h3>
+      <p>${esc(a.excerpt)}</p>
+      <a class="link-arrow" href="blog-${a.slug}.html">${t('Lire l\'article', 'Read the article')} ${icon('arrow')}</a>
+    </div>
+  </article>`;
+}
+
+function blogIndexBody(articles) {
+  const intro = t(
+    'Prix, financement, matériel, réglementation, formation : des guides pratiques rédigés par les équipes de Dieye Solar Group à partir de nos chantiers réels au Sénégal.',
+    'Prices, financing, equipment, regulation, training: practical guides written by the Dieye Solar Group teams, based on our real-world projects in Senegal.'
+  );
+  return `${pageHero({
+    kickerText: 'Blog',
+    title: t('Guides solaires, énergie et formation au Sénégal.', 'Solar, energy and training guides in Senegal.'),
+    lead: intro,
+    image: articles[0].image,
+    alt: articles[0].imageAlt,
+    crumbs: [['Blog']],
+    actions: false,
+  })}
+<section class="section">
+  <div class="wrap">
+    <div class="blog-grid">${articles.map(articleCard).join('')}</div>
+  </div>
+</section>
+${ctaBand()}`;
+}
+
+function articleBody(a, author, articles) {
+  const dateLabel = new Date(a.date).toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const toc = a.sections.map((s, i) => `<li><a href="#s-${i}">${esc(s.h)}</a></li>`).join('');
+  const sections = a.sections.map((s, i) => `<section class="blog-section" id="s-${i}"><h2>${esc(s.h)}</h2><div>${s.body}</div></section>`).join('');
+  const faq = a.faq && a.faq.length ? `<section class="blog-faq">
+    <h2>${t('Questions fréquentes', 'Frequently asked questions')}</h2>
+    <dl>${a.faq.map((f) => `<div><dt>${esc(f.q)}</dt><dd>${esc(f.a)}</dd></div>`).join('')}</dl>
+  </section>` : '';
+
+  const relatedArticles = (a.related || [])
+    .map((slug) => articles.find((x) => x.slug === slug))
+    .filter(Boolean);
+  const related = relatedArticles.length ? `<aside class="blog-related">
+    <h3>${t('À lire aussi', 'Read next')}</h3>
+    <ul>${relatedArticles.map((r) => `<li><a href="blog-${r.slug}.html"><strong>${esc(r.title)}</strong><small>${esc(r.excerpt)}</small></a></li>`).join('')}</ul>
+  </aside>` : '';
+
+  return `<article class="blog-article">
+  <header class="blog-hero">
+    <div class="wrap">
+      <nav class="crumbs"><a href="index.html">${t('Accueil', 'Home')}</a><span>/</span><a href="blog.html">Blog</a><span>/</span><span>${esc(a.title)}</span></nav>
+      ${kicker(a.tags.slice(0, 2).join(' · '))}
+      <h1>${esc(a.title)}</h1>
+      <p class="blog-lead">${esc(a.excerpt)}</p>
+      <div class="blog-meta">
+        <span>${dateLabel}</span>
+        <span>·</span>
+        <span>${t('Par', 'By')} <a href="groupe.html">${esc(author.name)}</a>, ${esc(author.role)}</span>
+      </div>
+    </div>
+  </header>
+  <div class="wrap blog-cover">
+    ${picture(a.image, a.imageAlt)}
+  </div>
+  <div class="wrap blog-body">
+    <nav class="blog-toc" aria-label="${t('Sommaire', 'Table of contents')}">
+      <h2>${t('Sommaire', 'In this article')}</h2>
+      <ol>${toc}</ol>
+    </nav>
+    <div class="blog-content">
+      ${sections}
+      ${faq}
+    </div>
+  </div>
+  <section class="section section-paper blog-cta">
+    <div class="wrap">
+      ${kicker(t('Besoin d\'une étude ?', 'Need a free study?'))}
+      <h2>${t('Parlons de votre projet.', 'Let\'s talk about your project.')}</h2>
+      <p class="section-intro">${t('Étude gratuite sous 72 heures, devis détaillé poste par poste, visite sur site par nos équipes.', 'Free study within 72 hours, detailed line-by-line quote, on-site visit by our teams.')}</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="contact.html#devis">${t('Demander un devis', 'Request a quote')} ${icon('arrow')}</a>
+        <a class="btn btn-outline" href="${waLink()}" target="_blank" rel="noopener">${icon('chat')} WhatsApp</a>
+      </div>
+    </div>
+  </section>
+  ${related ? `<section class="section"><div class="wrap">${related}</div></section>` : ''}
+</article>`;
+}
 
 function buildPages() {
   const out = [];
@@ -497,6 +604,33 @@ ${ctaBand()}`,
 </section>`,
   });
 
+  // ---------- Blog ----------
+  // Pages indexables mais NON liées depuis la navigation principale : elles ramènent
+  // du trafic organique et nourrissent les LLM sans alourdir le menu.
+  const bd = blogData();
+  add('blog.html', {
+    title: t('Blog · Solaire, pompage, formation et énergie au Sénégal', 'Blog · Solar, pumping, training and energy in Senegal'),
+    description: t(
+      'Guides pratiques Dieye Solar Group : prix d\'une installation solaire au Sénégal, financement, matériel, pompage agricole, formation de technicien solaire, solaire vs groupe électrogène.',
+      'Practical Dieye Solar Group guides: cost of a solar installation in Senegal, financing, equipment, agricultural pumping, solar technician training, solar vs diesel generator.'
+    ),
+    image: bd.articles[0].image,
+    ld: breadcrumbJsonLd([
+      { name: t('Accueil', 'Home'), url: `${company.url}${lang === 'en' ? '/en' : ''}/` },
+      { name: 'Blog', url: `${company.url}${lang === 'en' ? '/en' : ''}/blog.html` },
+    ]),
+    body: blogIndexBody(bd.articles),
+  });
+  bd.articles.forEach((a) => {
+    add(`blog-${a.slug}.html`, {
+      title: a.title,
+      description: a.excerpt,
+      image: a.image,
+      ld: articleJsonLd(a, bd.author),
+      body: articleBody(a, bd.author, bd.articles),
+    });
+  });
+
   // 404
   add('404.html', {
     title: t('Page introuvable', 'Page not found'),
@@ -533,13 +667,14 @@ for (const l of ['fr', 'en']) {
 // ==========================================================================
 setLang('fr');
 const today = new Date().toISOString().slice(0, 10);
-const priority = (file) => file === 'index.html' ? '1.0' : /^(energie-solaire|forage-pompage-solaire|irrigation|electricite-generale|btp|sav-maintenance|prosolar-academy)\.html$/.test(file) ? '0.9' : file.startsWith('projet-') || file === 'realisations.html' ? '0.8' : /404|mentions-legales|prosolar-inscription-merci/.test(file) ? '0.3' : '0.6';
-const changefreq = (file) => file === 'index.html' ? 'weekly' : /^(prosolar-academy|realisations)\.html$/.test(file) ? 'monthly' : 'yearly';
+const priority = (file) => file === 'index.html' ? '1.0' : /^(energie-solaire|forage-pompage-solaire|irrigation|electricite-generale|btp|sav-maintenance|prosolar-academy)\.html$/.test(file) ? '0.9' : file.startsWith('projet-') || file === 'realisations.html' ? '0.8' : file === 'blog.html' ? '0.8' : file.startsWith('blog-') ? '0.7' : /404|mentions-legales|prosolar-inscription-merci/.test(file) ? '0.3' : '0.6';
+const changefreq = (file) => file === 'index.html' ? 'weekly' : /^(prosolar-academy|realisations|blog)\.html$/.test(file) ? 'monthly' : file.startsWith('blog-') ? 'monthly' : 'yearly';
 const noindexFile = (file) => file === 'prosolar-inscription-merci.html' || file === '404.html';
 
 const urlEntries = [];
-// Pages éditoriales standards (FR + EN appariées via hreflang)
-const indexable = allPages.fr.filter((f) => !noindexFile(f));
+// Pages éditoriales standards (FR + EN appariées via hreflang, même nom de fichier).
+// On exclut les articles de blog car leurs slugs diffèrent entre FR et EN.
+const indexable = allPages.fr.filter((f) => !noindexFile(f) && !f.startsWith('blog-'));
 for (const f of indexable) {
   const pathFr = f === 'index.html' ? '' : f;
   const pathEn = f === 'index.html' ? '' : f;
@@ -567,6 +702,36 @@ for (const f of indexable) {
     <xhtml:link rel="alternate" hreflang="x-default" href="${urlFr}" />
   </url>`
   );
+}
+
+// Articles de blog : slugs différents en FR et EN → on apparie 1 à 1 via l'ordre
+// des tableaux `articlesFr` et `articlesEn` (déjà synchronisés dans blog.*.mjs).
+for (let i = 0; i < articlesFr.length; i += 1) {
+  const fr = articlesFr[i];
+  const en = articlesEn[i];
+  const urlFr = `${company.url}/blog-${fr.slug}.html`;
+  const urlEn = `${company.url}/en/blog-${en.slug}.html`;
+  const frEntry =
+`  <url>
+    <loc>${urlFr}</loc>
+    <lastmod>${fr.date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="${urlFr}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${urlEn}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFr}" />
+  </url>`;
+  const enEntry =
+`  <url>
+    <loc>${urlEn}</loc>
+    <lastmod>${en.date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="${urlFr}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${urlEn}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFr}" />
+  </url>`;
+  urlEntries.push(frEntry, enEntry);
 }
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -667,7 +832,14 @@ Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, 
 - [ProSolar Academy](${company.url}/prosolar-academy.html)
 - [Inscription ProSolar](${company.url}/prosolar-inscription.html)
 - [Contact et devis](${company.url}/contact.html)
+- [Blog DSG — guides pratiques](${company.url}/blog.html)
 - [Version anglaise du site](${company.url}/en/)
+
+## Blog — guides pratiques
+
+Articles rédigés par les équipes DSG à partir de chantiers réels au Sénégal, publiés sur ${company.url}/blog.html :
+
+${articlesFr.map((a) => `- [${a.title}](${company.url}/blog-${a.slug}.html) — ${a.excerpt}`).join('\n')}
 
 ## Zone d'intervention
 
