@@ -1,0 +1,22 @@
+# Robots.txt — Dieye Solar Group
+User-agent: *
+Allow: /
+Disallow: /inscription.php
+Disallow: /prosolar-inscription-merci.html
+Disallow: /en/prosolar-inscription-merci.html
+
+# Les pages blog ne sont pas liées depuis la navigation mais restent indexables.
+# Les bots d'IA génératives sont autorisés : la marque DSG profite de leur citation.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.dsg.sn/sitemap.xml

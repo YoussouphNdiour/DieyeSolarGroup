@@ -1,7 +1,7 @@
 // Génère les pages HTML statiques : français dans public/, anglais dans public/en/ — usage : node build.mjs
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { company, services, projects, fieldPhotos, academy, clips, lang, t, setLang } from './src/data.mjs';
-import { page, icon, esc, waLink, base, img } from './src/layout.mjs';
+import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
@@ -114,6 +114,7 @@ ${ctaBand()}`,
       active: 'projects',
       image: p.image,
       title: p.title,
+      ld: projectJsonLd(p),
       description: t(
         `${p.title} (${p.place}${p.year ? `, ${p.year}` : ''}) : ${p.summary} Une réalisation Dieye Solar Group.`,
         `${p.title} (${p.place}${p.year ? `, ${p.year}` : ''}): ${p.summary} A Dieye Solar Group project.`
@@ -204,6 +205,7 @@ ${ctaBand()}`,
   add('prosolar-academy.html', {
     active: 'academy',
     image: 'formation-prosolar',
+    ld: courseJsonLd(),
     title: t('ProSolar Academy – formation aux métiers du solaire', 'ProSolar Academy – training for solar careers'),
     description: t(
       `ProSolar Academy, centre de formation de Dieye Solar Group à Thiès : installation et maintenance de systèmes solaires, 70 % de pratique, en partenariat avec ${isep}. Prochaine session le ${academy.nextSession}.`,
@@ -511,14 +513,172 @@ ${ctaBand()}`,
 }
 
 let total = 0;
+// Collecte des URL par langue pour le sitemap.
+const allPages = { fr: [], en: [] };
 for (const l of ['fr', 'en']) {
   setLang(l);
   const dir = new URL(l === 'fr' ? './public/' : './public/en/', import.meta.url);
   mkdirSync(dir, { recursive: true });
   const pages = buildPages();
-  for (const [file, html] of pages) writeFileSync(new URL(file, dir), html);
+  for (const [file, html] of pages) {
+    writeFileSync(new URL(file, dir), html);
+    allPages[l].push(file);
+  }
   total += pages.length;
 }
+
+// ==========================================================================
+// sitemap.xml — liste chaque page FR + EN avec balises hreflang alternates.
+// Priorités : accueil 1.0, activités et ProSolar 0.9, réalisations 0.8, autres 0.6.
+// ==========================================================================
+setLang('fr');
+const today = new Date().toISOString().slice(0, 10);
+const priority = (file) => file === 'index.html' ? '1.0' : /^(energie-solaire|forage-pompage-solaire|irrigation|electricite-generale|btp|sav-maintenance|prosolar-academy)\.html$/.test(file) ? '0.9' : file.startsWith('projet-') || file === 'realisations.html' ? '0.8' : /404|mentions-legales|prosolar-inscription-merci/.test(file) ? '0.3' : '0.6';
+const changefreq = (file) => file === 'index.html' ? 'weekly' : /^(prosolar-academy|realisations)\.html$/.test(file) ? 'monthly' : 'yearly';
+const noindexFile = (file) => file === 'prosolar-inscription-merci.html' || file === '404.html';
+
+const urlEntries = [];
+// Pages éditoriales standards (FR + EN appariées via hreflang)
+const indexable = allPages.fr.filter((f) => !noindexFile(f));
+for (const f of indexable) {
+  const pathFr = f === 'index.html' ? '' : f;
+  const pathEn = f === 'index.html' ? '' : f;
+  const urlFr = `${company.url}/${pathFr}`;
+  const urlEn = `${company.url}/en/${pathEn}`;
+  urlEntries.push(
+`  <url>
+    <loc>${urlFr}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${changefreq(f)}</changefreq>
+    <priority>${priority(f)}</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="${urlFr}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${urlEn}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFr}" />
+  </url>`
+  );
+  urlEntries.push(
+`  <url>
+    <loc>${urlEn}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${changefreq(f)}</changefreq>
+    <priority>${priority(f)}</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="${urlFr}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${urlEn}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${urlFr}" />
+  </url>`
+  );
+}
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urlEntries.join('\n')}
+</urlset>
+`;
+writeFileSync(new URL('./public/sitemap.xml', import.meta.url), sitemap);
+
+// ==========================================================================
+// robots.txt
+// ==========================================================================
+const robots = `# Robots.txt — Dieye Solar Group
+User-agent: *
+Allow: /
+Disallow: /inscription.php
+Disallow: /prosolar-inscription-merci.html
+Disallow: /en/prosolar-inscription-merci.html
+
+# Les pages blog ne sont pas liées depuis la navigation mais restent indexables.
+# Les bots d'IA génératives sont autorisés : la marque DSG profite de leur citation.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: ${company.url}/sitemap.xml
+`;
+writeFileSync(new URL('./public/robots.txt', import.meta.url), robots);
+
+// ==========================================================================
+// llms.txt — description structurée du site pour les LLM (Claude, ChatGPT, Perplexity).
+// Standard proposé par Jeremy Howard : https://llmstxt.org
+// ==========================================================================
+const llms = `# Dieye Solar Group (DSG)
+
+> Groupe sénégalais basé à Thiès, spécialisé dans l'énergie solaire, le forage et pompage, l'irrigation, l'électricité générale, le BTP, le SAV et la maintenance. Fondé par Cheikh Mohamed Dieye, DSG sert les industries, les collectivités et les familles au Sénégal et en Afrique de l'Ouest.
+
+Site officiel : ${company.url}
+Téléphone : ${company.phone}
+E-mail : ${company.email}
+Adresse : ${company.address}
+Horaires : ${company.hours}
+Slogan : « ${company.slogan} »
+
+## Services proposés
+
+- **Énergie solaire** : centrales photovoltaïques en toiture, au sol ou en ombrière ; systèmes hybrides avec stockage lithium et bascule automatique en cas de coupure ; sites isolés ; supervision à distance.
+- **Forage et pompage solaire** : forage, pompes solaires immergées ou de surface, stockage d'eau, maintenance.
+- **Systèmes d'irrigation** : goutte-à-goutte, aspersion, bassins et réservoirs, programmation.
+- **Électricité générale** : tableaux, mise aux normes, courant fort industriel, dépannage.
+- **BTP et infrastructures** : châteaux d'eau, ombrières, locaux techniques, génie civil.
+- **SAV et maintenance** : nettoyage à la brosse rotative, maintenance préventive et curative, contrats d'entretien.
+
+## Réalisations phares
+
+- **Centrale de 1 MWc à Sandiara** (2026) : 7 onduleurs Sungrow 115 kW, injection directe, 100 % des besoins journaliers d'une usine agro-industrielle.
+- **Chambres froides solaires de Sandiara** (2026) : 35,5 kWc, 60 kWh de stockage, ombrière métallique sur deux conteneurs frigorifiques.
+- **Mosquée Abdoulaye Diop à Thiès** (2025) : 28,32 kWc, 40 kWh de batteries, 70 % d'autonomie, 600 000 FCFA d'économies/mois.
+- **Villa à la Somone** (Mbour) : 25,2 kWc, 40 panneaux Canadian Solar 630 W bifaciaux, 2 onduleurs Deye 20 kW, 4 batteries Dyness 10 kWh.
+- **Villa aux Mamelles** (Dakar) : 11 kWc, panneaux 555 W, Deye 12 kW monophasé, 3 batteries GSB 10 kWh.
+- **Pompage de Keur Madaro** (2026) : pompe solaire 2,2 kW sur bassin d'irrigation agricole.
+
+## ProSolar Academy
+
+Centre de formation professionnelle de DSG, en partenariat avec l'ISEP Abdoulaye Ly de Thiès. Durée 6 mois (3 mois de cours + 3 mois de stage et préparation du certificat), 70 % de pratique, 20 apprenants maximum par cohorte. Certification : Certificat de Compétence Professionnelle (CCP) délivré par l'ISEP.
+
+- Coût de la formation : 300 000 FCFA
+- Frais d'inscription (via Wave) : 100 000 FCFA (en plus du coût)
+- Prochaine session : 7 décembre 2026
+- Inscription en ligne : ${company.url}/prosolar-inscription.html
+
+## Direction
+
+Cheikh Mohamed Dieye — Président Directeur Général de Dieye Solar Group SAS, enseignant formateur à l'ISEP de Thiès, auditeur de centrales photovoltaïques.
+
+## Marques installées
+
+Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, Hober, Must, Victron, SMA.
+
+## Clients et partenaires
+
+**Clients** : Senico, Patisen, Terranga Farms Sénégal, GRIPS, MP Energy, Tumiqui Japon.
+**Partenaires institutionnels** : Senelec, ANER, ISEP Thiès, Eranove, Solarig, Infranergy, Afreenergy.
+
+## Pages importantes
+
+- [Accueil](${company.url})
+- [Nos activités](${company.url}/index.html#activites)
+- [Nos réalisations](${company.url}/realisations.html)
+- [Le groupe](${company.url}/groupe.html)
+- [ProSolar Academy](${company.url}/prosolar-academy.html)
+- [Inscription ProSolar](${company.url}/prosolar-inscription.html)
+- [Contact et devis](${company.url}/contact.html)
+- [Version anglaise du site](${company.url}/en/)
+
+## Zone d'intervention
+
+Sénégal (Thiès, Dakar, Mbour, Saint-Louis, Kaolack, Tivaouane, Ziguinchor, zones rurales) et Afrique de l'Ouest.
+
+## Contact
+
+Pour un devis ou une étude gratuite : WhatsApp au ${company.phone}, e-mail ${company.email}, ou formulaire en ligne sur ${company.url}/contact.html. Réponse sous 24 heures ouvrées.
+`;
+writeFileSync(new URL('./public/llms.txt', import.meta.url), llms);
+console.log(`sitemap + robots + llms.txt écrits (${urlEntries.length} URL dans le sitemap)`);
 
 // Le script PHP reprend les réglages de data.mjs (une seule source de vérité)
 setLang('fr');

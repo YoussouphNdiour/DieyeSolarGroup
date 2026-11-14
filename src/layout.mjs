@@ -140,24 +140,130 @@ function footer() {
 <a class="wa-float" href="${waLink()}" target="_blank" rel="noopener" aria-label="${t('Écrire à DSG sur WhatsApp', 'Message DSG on WhatsApp')}">${icon('chat')}</a>`;
 }
 
-const jsonLd = () =>
-  JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: company.name,
-    alternateName: company.short,
-    slogan: company.slogan,
-    url: company.url,
-    telephone: company.phone,
-    email: company.email,
-    image: `${company.url}/assets/img/hero-centrale-1mwc.webp`,
-    logo: `${company.url}/assets/brand/dsg-logo.png`,
-    address: { '@type': 'PostalAddress', streetAddress: 'Grand Standing', addressLocality: 'Thiès', addressCountry: 'SN' },
-    openingHours: 'Mo-Fr 08:00-17:00',
-    areaServed: 'SN',
-  });
+// ---------- Schema.org ----------
+// Entité principale : LocalBusiness. Enrichie avec zone d'intervention, services,
+// horaires, note et liens vers les autres pages pour un knowledge graph complet.
+const localBusinessLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'Electrician', 'EnergyEfficiencyConsultant'],
+  '@id': `${company.url}/#organization`,
+  name: company.name,
+  alternateName: [company.short, 'DSG', 'Dieye Solar Group SAS'],
+  legalName: company.legal,
+  slogan: company.slogan,
+  description: t(
+    'Dieye Solar Group (DSG), groupe sénégalais basé à Thiès, conçoit, installe et entretient des centrales solaires, forages, systèmes de pompage, installations électriques et ouvrages BTP. Centre de formation ProSolar Academy en partenariat avec l\'ISEP de Thiès.',
+    'Dieye Solar Group (DSG), a Senegalese group based in Thiès, designs, installs and maintains solar plants, boreholes, pumping systems, electrical installations and construction works. ProSolar Academy training centre in partnership with ISEP Thiès.'
+  ),
+  url: company.url,
+  telephone: company.phone,
+  email: company.email,
+  image: `${company.url}/assets/img/hero-centrale-1mwc.webp`,
+  logo: `${company.url}/assets/brand/dsg-logo.png`,
+  foundingDate: '2018',
+  founder: { '@type': 'Person', name: company.owner, jobTitle: 'Président Directeur Général' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Grand Standing',
+    addressLocality: 'Thiès',
+    addressRegion: 'Thiès',
+    addressCountry: 'SN',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: 14.7886, longitude: -16.9260 },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '08:00', closes: '17:00',
+  }],
+  areaServed: [
+    { '@type': 'Country', name: 'Sénégal' },
+    { '@type': 'AdministrativeArea', name: 'Thiès' },
+    { '@type': 'AdministrativeArea', name: 'Dakar' },
+    { '@type': 'AdministrativeArea', name: 'Mbour' },
+    { '@type': 'AdministrativeArea', name: 'Saint-Louis' },
+  ],
+  knowsAbout: [
+    'Énergie solaire photovoltaïque',
+    'Centrales hybrides avec stockage lithium',
+    'Forage et pompage solaire',
+    'Systèmes d\'irrigation',
+    'Électricité générale',
+    'BTP et ouvrages d\'art',
+    'Maintenance et nettoyage de panneaux',
+    'Formation professionnelle solaire',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: t('Nos activités', 'Our services'),
+    itemListElement: services.map((s) => ({
+      '@type': 'OfferCatalogItem',
+      itemOffered: { '@type': 'Service', name: s.title, description: s.short, url: `${company.url}/${s.slug}.html` },
+    })),
+  },
+  sameAs: [`${company.url}/groupe.html`, `${company.url}/prosolar-academy.html`],
+  contactPoint: [{ '@type': 'ContactPoint', telephone: company.phone, contactType: 'customer service', email: company.email, availableLanguage: ['French', 'English', 'Wolof'] }],
+});
 
-export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false }) {
+// Course Schema pour ProSolar Academy
+const courseLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  '@id': `${company.url}/prosolar-academy.html#course`,
+  name: 'ProSolar Academy — Installation et maintenance de systèmes solaires',
+  description: 'Formation professionnelle de 6 mois (3 mois de cours + 3 mois de stage et préparation du certificat) à l\'installation et à la maintenance des systèmes solaires photovoltaïques, en partenariat avec l\'ISEP Abdoulaye Ly de Thiès.',
+  provider: {
+    '@type': 'EducationalOrganization',
+    name: 'ProSolar Academy — Dieye Solar Group',
+    url: `${company.url}/prosolar-academy.html`,
+  },
+  educationalCredentialAwarded: 'Certificat de Compétence Professionnelle (CCP) délivré par l\'ISEP Abdoulaye Ly de Thiès',
+  coursePrerequisites: 'Aucun prérequis académique. Motivation requise.',
+  teaches: ['Électricité appliquée', 'Technologie des systèmes solaires', 'Dimensionnement optimal', 'Incubation et entrepreneuriat'],
+  inLanguage: 'fr',
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'blended',
+    location: { '@type': 'Place', name: 'ISEP Abdoulaye Ly de Thiès', address: { '@type': 'PostalAddress', addressLocality: 'Thiès', addressCountry: 'SN' } },
+    startDate: '2026-12-07',
+    courseWorkload: 'P6M',
+    maximumAttendeeCapacity: 20,
+    offers: { '@type': 'Offer', price: '300000', priceCurrency: 'XOF', category: 'Tuition fees' },
+  },
+});
+
+// Website avec champ de recherche interne (si on l'ajoute plus tard)
+const websiteLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${company.url}/#website`,
+  url: company.url,
+  name: 'Dieye Solar Group',
+  inLanguage: ['fr', 'en'],
+  publisher: { '@id': `${company.url}/#organization` },
+});
+
+const jsonLd = () => JSON.stringify([localBusinessLd(), websiteLd()]);
+const courseJsonLd = () => JSON.stringify(courseLd());
+
+export function projectJsonLd(p) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: p.title,
+    headline: p.title,
+    description: p.summary,
+    image: `${company.url}/assets/img/${p.image}.webp`,
+    locationCreated: { '@type': 'Place', name: p.place },
+    author: { '@id': `${company.url}/#organization` },
+    dateCreated: p.year ? String(p.year) : undefined,
+    about: p.category,
+    url: `${company.url}/projet-${p.slug}.html`,
+  });
+}
+
+export { courseJsonLd };
+
+export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false, ld = null }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
   const path = file === 'index.html' ? '' : file;
   const urlFr = `${company.url}/${path}`;
@@ -183,7 +289,18 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:image" content="${company.url}/assets/img/${image}.webp">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
 <meta property="og:url" content="${canonical}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(fullTitle)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${company.url}/assets/img/${image}.webp">
+<meta name="author" content="${company.legal}">
+<meta name="geo.region" content="SN-TH">
+<meta name="geo.placename" content="Thiès">
+<meta name="geo.position" content="14.7886;-16.9260">
+<meta name="ICBM" content="14.7886, -16.9260">
 <link rel="icon" type="image/png" sizes="64x64" href="${asset('brand/favicon-64.png')}">
 <link rel="apple-touch-icon" href="${asset('brand/favicon-180.png')}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -191,6 +308,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${asset('css/style.css')}?v=${ASSET_V}">
 ${home ? `<link rel="preload" as="image" href="${img(image)}" fetchpriority="high">\n<script type="application/ld+json">${jsonLd()}</script>` : ''}
+${ld ? `<script type="application/ld+json">${ld}</script>` : ''}
 </head>
 <body>
 ${header(active, file)}
