@@ -10,13 +10,17 @@
   const L = (fr, en) => (EN ? en : fr);
   const fmt = (n, d = 0) => n.toLocaleString(EN ? 'en-US' : 'fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/ /g, ' ');
 
-  /* En-tête — rAF pour éviter un read scrollY + write .class par frame */
+  /* En-tête — IntersectionObserver sur une sentinelle plutôt que lecture scrollY
+     dans un handler scroll (évite les reflows forcés signalés par Lighthouse). */
   const header = $('.site-header');
-  let hdrScheduled = false;
-  const applyHdr = () => { hdrScheduled = false; header.classList.toggle('scrolled', scrollY > 8); };
-  const onScroll = () => { if (!hdrScheduled) { hdrScheduled = true; requestAnimationFrame(applyHdr); } };
-  addEventListener('scroll', onScroll, { passive: true });
-  applyHdr();
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(
+    ([e]) => header.classList.toggle('scrolled', !e.isIntersecting),
+    { rootMargin: '0px' }
+  ).observe(sentinel);
 
   /* Menu mobile */
   const burger = $('.burger');

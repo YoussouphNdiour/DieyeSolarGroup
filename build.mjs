@@ -1,7 +1,7 @@
 // Génère les pages HTML statiques : français dans public/, anglais dans public/en/ — usage : node build.mjs
 import { mkdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { company, services, projects, fieldPhotos, academy, clips, lang, t, setLang } from './src/data.mjs';
-import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, cityBusinessJsonLd } from './src/layout.mjs';
+import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, cityBusinessJsonLd, setInlineCss } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
@@ -739,6 +739,24 @@ ${ctaBand()}`,
   return out;
 }
 
+// ==========================================================================
+// Minification CSS inlinée — on lit style.css, on minifie et on l'injecte
+// dans chaque <head>. Supprime la requête bloquante vers style.min.css et
+// économise ~400 ms de LCP flagués par Lighthouse. On garde aussi le fichier
+// minifié sur disque pour toute page/outil qui le référencerait.
+// ==========================================================================
+const cssPath = new URL('./public/assets/css/style.css', import.meta.url);
+const cssSrc = readFileSync(cssPath, 'utf8');
+const minCss = cssSrc
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{}:;,>+~])\s*/g, '$1')
+  .replace(/;}/g, '}')
+  .trim();
+writeFileSync(new URL('./public/assets/css/style.min.css', import.meta.url), minCss);
+setInlineCss(minCss);
+const INLINE_CSS_SIZE = minCss.length;
+
 let total = 0;
 // Collecte des URL par langue pour le sitemap.
 const allPages = { fr: [], en: [] };
@@ -975,23 +993,4 @@ const php = readFileSync(new URL('./src/inscription.php', import.meta.url), 'utf
 writeFileSync(new URL('./public/inscription.php', import.meta.url), php);
 
 console.log(`${total} pages générées (français dans public/, anglais dans public/en/)`);
-
-// ==========================================================================
-// Minification CSS — produit public/assets/css/style.min.css référencée par layout.mjs.
-// La version non minifiée reste la source éditable, la minifiée est la version déployée.
-// Minifieur maison sans dépendance : commentaires, espaces autour des séparateurs,
-// `;` final avant `}`. ~15 % de gain sur ce fichier.
-// ==========================================================================
-const cssPath = new URL('./public/assets/css/style.css', import.meta.url);
-const cssSrc = readFileSync(cssPath, 'utf8');
-const minCss = cssSrc
-  .replace(/\/\*[\s\S]*?\*\//g, '')
-  .replace(/\s+/g, ' ')
-  .replace(/\s*([{}:;,>+~])\s*/g, '$1')
-  .replace(/;}/g, '}')
-  .trim();
-const minPath = new URL('./public/assets/css/style.min.css', import.meta.url);
-writeFileSync(minPath, minCss);
-const before = statSync(cssPath).size;
-const after = statSync(minPath).size;
-console.log(`CSS minifiée : ${before} B → ${after} B (${Math.round((1 - after / before) * 100)} % de gain)`);
+console.log(`CSS inlinée dans chaque page (${INLINE_CSS_SIZE} octets minifiés).`);
