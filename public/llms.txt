@@ -58,8 +58,18 @@ Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, 
 - [ProSolar Academy](https://www.dsg.sn/prosolar-academy.html)
 - [Inscription ProSolar](https://www.dsg.sn/prosolar-inscription.html)
 - [Contact et devis](https://www.dsg.sn/contact.html)
+- [FAQ — Questions fréquentes](https://www.dsg.sn/faq.html)
 - [Blog DSG — guides pratiques](https://www.dsg.sn/blog.html)
 - [Version anglaise du site](https://www.dsg.sn/en/)
+
+## Pages villes (interventions locales)
+
+- [Thiès](https://www.dsg.sn/thies.html) — Thiès est la ville où est né Dieye Solar Group. Villas, mosquées, ateliers, écoles et exploitations agricoles de toute la région bénéficient de visites rapides et d'un SAV en 24 heures.
+- [Touba](https://www.dsg.sn/touba.html) — Centrales solaires pour la grande mosquée, les daaras, les résidences familiales et les grands commerces de Touba : DSG déploie des solutions hybrides adaptées au Mouridisme et au Magal.
+- [Dakar](https://www.dsg.sn/dakar.html) — Centrales solaires hybrides, kits résidentiels, climatisation autonome, bornes de recharge : DSG déploie ses équipes de Thiès vers Dakar chaque semaine depuis 2020.
+- [Mbour](https://www.dsg.sn/mbour.html) — Villas de la Somone et de Saly, hôtels de Mbour, ateliers agro-alimentaires : DSG équipe la Petite Côte en solutions solaires hybrides et en SAV réactif.
+- [Saint-Louis](https://www.dsg.sn/saint-louis.html) — Chambres froides pour la pêche artisanale, pompage agricole dans le Walo, rénovation énergétique des bâtiments anciens : DSG accompagne Saint-Louis depuis Thiès.
+- [Kaolack](https://www.dsg.sn/kaolack.html) — Pompage solaire sur forages, chambres froides pour maraîchers, kits résidentiels : DSG équipe le bassin arachidier et le sud du Sine Saloum.
 
 ## Blog — guides pratiques
 

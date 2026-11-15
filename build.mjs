@@ -1,7 +1,7 @@
 // Génère les pages HTML statiques : français dans public/, anglais dans public/en/ — usage : node build.mjs
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { company, services, projects, fieldPhotos, academy, clips, lang, t, setLang } from './src/data.mjs';
-import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd, articleJsonLd, breadcrumbJsonLd } from './src/layout.mjs';
+import { page, icon, esc, waLink, base, img, projectJsonLd, courseJsonLd, articleJsonLd, breadcrumbJsonLd, faqPageJsonLd, cityBusinessJsonLd } from './src/layout.mjs';
 import {
   homeHero, logoTicker, servicesGrid, approach, hybridDay, projectsCarousel, simulator,
   stepsSection, partnersSection, ctaBand, pageHero, projectCard, picture, kicker, gallery,
@@ -9,6 +9,77 @@ import {
 } from './src/components.mjs';
 import { articlesFr, AUTHOR as AUTHOR_FR, categoriesFr } from './src/blog.mjs';
 import { articlesEn, AUTHOR_EN, categoriesEn } from './src/blog.en.mjs';
+import { faqFr, faqEn } from './src/faq.mjs';
+import { citiesFr, citiesEn } from './src/local.mjs';
+
+// ---------- FAQ page ----------
+function faqBody(data) {
+  const allItems = data.groups.flatMap((g) => g.items);
+  const groups = data.groups.map((g) => `<section class="faq-group">
+    <h2>${esc(g.title)}</h2>
+    <div class="faq-items">
+      ${g.items.map((it, i) => `<details class="faq-item"${i === 0 ? ' open' : ''}>
+        <summary><span>${esc(it.q)}</span>${icon('chevron', 'faq-chev')}</summary>
+        <div class="faq-answer">${it.a}</div>
+      </details>`).join('')}
+    </div>
+  </section>`).join('');
+  return `${pageHero({
+    kickerText: 'FAQ',
+    title: data.title,
+    lead: data.subtitle,
+    image: 'equipe-dsg',
+    alt: t('Équipe DSG sur un chantier', 'DSG team on site'),
+    crumbs: [['FAQ']],
+    actions: false,
+  })}
+<section class="section">
+  <div class="wrap faq-wrap">
+    <p class="section-intro">${data.intro}</p>
+    ${groups}
+  </div>
+</section>
+${ctaBand()}`;
+}
+
+// ---------- Pages locales (villes) ----------
+function cityBody(c) {
+  const highlights = c.highlights.map((h) => `<li><h3>${icon('check')}${esc(h.h)}</h3><p>${esc(h.d)}</p></li>`).join('');
+  const faq = c.faq.map((f) => `<details class="faq-item"><summary><span>${esc(f.q)}</span>${icon('chevron', 'faq-chev')}</summary><div class="faq-answer">${f.a}</div></details>`).join('');
+  return `${pageHero({
+    kickerText: t(`Zone d'intervention — ${c.distance}`, `Service area — ${c.distance}`),
+    title: `${t('Installation solaire à', 'Solar installation in')} ${c.city}`,
+    lead: c.hook,
+    image: c.image,
+    alt: c.imageAlt,
+    crumbs: [[c.city]],
+  })}
+<section class="section">
+  <div class="wrap">
+    ${kicker(t(`Nos interventions à ${c.city}`, `Our work in ${c.city}`))}
+    <h2>${t(`Ce que nous déployons dans la région de ${c.city}.`, `What we deploy in the ${c.city} region.`)}</h2>
+    <ul class="city-highlights">${highlights}</ul>
+  </div>
+</section>
+<section class="section section-paper">
+  <div class="wrap city-ref">
+    <div>
+      ${kicker(t('Référence', 'Reference project'))}
+      <h2>${esc(c.reference.title)}</h2>
+      <p class="section-intro">${c.reference.body}</p>
+    </div>
+    <figure class="city-ref-media">${picture(c.image, c.imageAlt)}</figure>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    ${kicker('FAQ')}
+    <h2>${t(`Questions fréquentes — ${c.city}.`, `FAQ — ${c.city}.`)}</h2>
+    <div class="city-faq">${faq}</div>
+  </div>
+</section>
+${ctaBand()}`;
+}
 
 // ---------- Blog : rendu des pages ----------
 // On garde une URL plate (`blog.html`, `blog-SLUG.html`) pour que tous les liens relatifs
@@ -631,6 +702,28 @@ ${ctaBand()}`,
     });
   });
 
+  // ---------- FAQ ----------
+  const fd = lang === 'en' ? faqEn : faqFr;
+  add('faq.html', {
+    title: fd.title,
+    description: fd.subtitle,
+    image: 'equipe-dsg',
+    ld: faqPageJsonLd(fd.groups.flatMap((g) => g.items)),
+    body: faqBody(fd),
+  });
+
+  // ---------- Pages villes ----------
+  const cities = lang === 'en' ? citiesEn : citiesFr;
+  cities.forEach((c) => {
+    add(`${c.slug}.html`, {
+      title: c.title,
+      description: c.excerpt,
+      image: c.image,
+      ld: cityBusinessJsonLd(c),
+      body: cityBody(c),
+    });
+  });
+
   // 404
   add('404.html', {
     title: t('Page introuvable', 'Page not found'),
@@ -667,8 +760,10 @@ for (const l of ['fr', 'en']) {
 // ==========================================================================
 setLang('fr');
 const today = new Date().toISOString().slice(0, 10);
-const priority = (file) => file === 'index.html' ? '1.0' : /^(energie-solaire|forage-pompage-solaire|irrigation|electricite-generale|btp|sav-maintenance|prosolar-academy)\.html$/.test(file) ? '0.9' : file.startsWith('projet-') || file === 'realisations.html' ? '0.8' : file === 'blog.html' ? '0.8' : file.startsWith('blog-') ? '0.7' : /404|mentions-legales|prosolar-inscription-merci/.test(file) ? '0.3' : '0.6';
-const changefreq = (file) => file === 'index.html' ? 'weekly' : /^(prosolar-academy|realisations|blog)\.html$/.test(file) ? 'monthly' : file.startsWith('blog-') ? 'monthly' : 'yearly';
+const CITY_SLUGS = ['thies', 'touba', 'dakar', 'mbour', 'saint-louis', 'kaolack'];
+const isCityPage = (file) => CITY_SLUGS.some((s) => file === `${s}.html`);
+const priority = (file) => file === 'index.html' ? '1.0' : /^(energie-solaire|forage-pompage-solaire|irrigation|electricite-generale|btp|sav-maintenance|prosolar-academy)\.html$/.test(file) ? '0.9' : file.startsWith('projet-') || file === 'realisations.html' ? '0.8' : file === 'blog.html' ? '0.8' : isCityPage(file) ? '0.8' : file.startsWith('blog-') ? '0.7' : file === 'faq.html' ? '0.7' : /404|mentions-legales|prosolar-inscription-merci/.test(file) ? '0.3' : '0.6';
+const changefreq = (file) => file === 'index.html' ? 'weekly' : /^(prosolar-academy|realisations|blog|faq)\.html$/.test(file) ? 'monthly' : file.startsWith('blog-') || isCityPage(file) ? 'monthly' : 'yearly';
 const noindexFile = (file) => file === 'prosolar-inscription-merci.html' || file === '404.html';
 
 const urlEntries = [];
@@ -832,8 +927,13 @@ Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, 
 - [ProSolar Academy](${company.url}/prosolar-academy.html)
 - [Inscription ProSolar](${company.url}/prosolar-inscription.html)
 - [Contact et devis](${company.url}/contact.html)
+- [FAQ — Questions fréquentes](${company.url}/faq.html)
 - [Blog DSG — guides pratiques](${company.url}/blog.html)
 - [Version anglaise du site](${company.url}/en/)
+
+## Pages villes (interventions locales)
+
+${citiesFr.map((c) => `- [${c.city}](${company.url}/${c.slug}.html) — ${c.excerpt}`).join('\n')}
 
 ## Blog — guides pratiques
 

@@ -300,6 +300,42 @@ export function articleJsonLd(a, author) {
   return JSON.stringify(docs);
 }
 
+// ---------- FAQ autonome ----------
+// Pour la page /faq.html : un seul FAQPage qui agrège toutes les Q/R.
+export function faqPageJsonLd(items) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+    })),
+  });
+}
+
+// ---------- LocalBusiness centré sur une ville ----------
+// Pour les pages locales (Dakar, Mbour, Saint-Louis, Kaolack) : Schema.org avec
+// addressLocality et geo spécifiques pour apparaître dans le pack local Google
+// quand quelqu'un cherche « installation solaire <ville> ».
+export function cityBusinessJsonLd(c) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': ['LocalBusiness', 'Electrician'],
+    '@id': `${company.url}/${c.slug}.html#organization`,
+    name: `${company.name} — ${c.city}`,
+    parentOrganization: { '@id': `${company.url}/#organization` },
+    url: `${company.url}/${c.slug}.html`,
+    telephone: company.phone,
+    email: company.email,
+    image: `${company.url}/assets/img/${c.image}.webp`,
+    description: c.excerpt,
+    address: { '@type': 'PostalAddress', addressLocality: c.city, addressRegion: c.region, addressCountry: 'SN' },
+    geo: { '@type': 'GeoCoordinates', latitude: c.geo.lat, longitude: c.geo.lng },
+    areaServed: { '@type': 'AdministrativeArea', name: c.city },
+  });
+}
+
 // Breadcrumb pour la page blog index et les articles.
 export function breadcrumbJsonLd(items) {
   return JSON.stringify({
