@@ -17,7 +17,7 @@ export const citiesFr = [
     highlights: [
       { h: "Mosquées, écoles et institutions publiques", d: "Centrales hybrides 20 à 50 kWc. La mosquée Abdoulaye Diop (28,32 kWc, 40 kWh) économise 600 000 FCFA/mois sur Senelec." },
       { h: "Industriels de Sandiara, Diass et Tivaouane", d: "Centrales 100 à 1 000 kWc en injection directe, modèle Sungrow 115 kW × 7 déjà déployé à Sandiara." },
-      { h: "ProSolar Academy à l'ISEP Abdoulaye Ly", d: "Centre de formation professionnelle solaire porté par DSG en partenariat avec l'ISEP de Thiès, prochaine session le 7 décembre 2026." },
+      { h: "ProSolar Academy à l'ISEP Abdoulaye Ly", d: "Centre de formation professionnelle solaire porté par DSG en partenariat avec l'ISEP de Thiès, prochaine session le 11 janvier 2027." },
       { h: "Villas et PME de Thiès-Nord et Thiès-Ouest", d: "Centrales hybrides 5 à 15 kWc avec stockage lithium, SAV 24 heures grâce à la proximité du siège." },
     ],
     reference: {
@@ -176,7 +176,7 @@ export const citiesEn = [
     highlights: [
       { h: 'Mosques, schools, public institutions', d: '20-50 kWc hybrid systems. The Abdoulaye Diop mosque (28.32 kWc, 40 kWh) saves USD 1,000/month on Senelec.' },
       { h: 'Industrial sites in Sandiara, Diass, Tivaouane', d: '100-1,000 kWc direct-injection plants, Sungrow 115 kW × 7 model already deployed in Sandiara.' },
-      { h: 'ProSolar Academy at ISEP Abdoulaye Ly', d: 'Vocational solar training centre run by DSG in partnership with ISEP Thiès, next cohort starts 7 December 2026.' },
+      { h: 'ProSolar Academy at ISEP Abdoulaye Ly', d: 'Vocational solar training centre run by DSG in partnership with ISEP Thiès, next cohort starts 11 January 2027.' },
       { h: 'Villas and SMEs in Thiès-Nord and Thiès-Ouest', d: '5-15 kWc hybrid systems with lithium storage, 24-hour service thanks to HQ proximity.' },
     ],
     reference: {

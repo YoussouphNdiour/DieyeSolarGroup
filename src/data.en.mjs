@@ -211,7 +211,7 @@ export const en = {
 
   academy: {
     tagline: 'Vocational training centre for the installation and maintenance of solar systems',
-    nextSession: 'December 7, 2026',
+    nextSession: 'January 11, 2027',
     fee: '100,000 FCFA',
     cost: '300,000 FCFA',
     place: 'ISEP Abdoulaye Ly, Thiès',

@@ -224,7 +224,7 @@ const courseLd = () => ({
     '@type': 'CourseInstance',
     courseMode: 'blended',
     location: { '@type': 'Place', name: 'ISEP Abdoulaye Ly de Thiès', address: { '@type': 'PostalAddress', addressLocality: 'Thiès', addressCountry: 'SN' } },
-    startDate: '2026-12-07',
+    startDate: '2027-01-11',
     courseWorkload: 'P6M',
     maximumAttendeeCapacity: 20,
     offers: { '@type': 'Offer', price: '300000', priceCurrency: 'XOF', category: 'Tuition fees' },
