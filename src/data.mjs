@@ -323,7 +323,7 @@ const academyFr = {
   payUrl: 'https://pay.wave.com/m/M_sn_M3Cuivt2qVb3/c/sn/?amount=100000',
   place: 'ISEP Abdoulaye Ly de Thiès',
   facts: [
-    ['6 mois', 'dont 3 mois de cours et 3 mois de stage et préparation du certificat'],
+    ['6 mois', 'dont 3 mois de cours et 3 mois de stage et préparation de la certification'],
     ['CCP', "Certificat de Compétence Professionnelle délivré par l'ISEP Abdoulaye Ly de Thiès"],
     ['70 %', 'de pratique sur de vrais équipements'],
     ['11 janvier.', 'début de la prochaine session'],

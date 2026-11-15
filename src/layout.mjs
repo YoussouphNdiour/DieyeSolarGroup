@@ -210,7 +210,7 @@ const courseLd = () => ({
   '@type': 'Course',
   '@id': `${company.url}/prosolar-academy.html#course`,
   name: 'ProSolar Academy — Installation et maintenance de systèmes solaires',
-  description: 'Formation professionnelle de 6 mois (3 mois de cours + 3 mois de stage et préparation du certificat) à l\'installation et à la maintenance des systèmes solaires photovoltaïques, en partenariat avec l\'ISEP Abdoulaye Ly de Thiès.',
+  description: 'Formation professionnelle de 6 mois (3 mois de cours + 3 mois de stage et préparation de la certification) à l\'installation et à la maintenance des systèmes solaires photovoltaïques, en partenariat avec l\'ISEP Abdoulaye Ly de Thiès.',
   provider: {
     '@type': 'EducationalOrganization',
     name: 'ProSolar Academy — Dieye Solar Group',

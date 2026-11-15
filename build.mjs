@@ -438,7 +438,7 @@ ${ctaBand()}`,
       ${kicker(t('Partenaire pédagogique', 'Academic partner'), true)}
       <h2>${t(`En partenariat avec ${isep}.`, `In partnership with ${isep}.`)}</h2>
       <p class="academy-lead">${t(`Dieye Solar Group et ${isep} ont signé une convention de partenariat pour la formation professionnelle aux énergies renouvelables. Le programme est construit en concertation avec l'institut.`, `Dieye Solar Group and ${isep} have signed a partnership agreement for vocational training in renewable energy. The curriculum is designed in consultation with the institute.`)}</p>
-      <p class="academy-lead">${t(`Les cours auront lieu à ${isep}. À l'issue des 3 mois de cours, des 3 mois de stage et de la préparation du certificat, l'apprenant obtient le Certificat de Compétence Professionnelle (CCP), délivré par ${isep}.`, `Classes will take place at ${isep}. After the 3 months of classes, the 3-month internship and certificate preparation, trainees obtain the Certificate of Professional Competence (CCP), issued by ${isep}.`)}</p>
+      <p class="academy-lead">${t(`Les cours auront lieu à ${isep}. À l'issue des 3 mois de cours, des 3 mois de stage et de la préparation de la certification, l'apprenant obtient le Certificat de Compétence Professionnelle (CCP), délivré par ${isep}.`, `Classes will take place at ${isep}. After the 3 months of classes, the 3-month internship and certificate preparation, trainees obtain the Certificate of Professional Competence (CCP), issued by ${isep}.`)}</p>
     </div>
   </div>
 </section>
@@ -454,7 +454,7 @@ ${ctaBand()}`,
       </div>
     </div>
     <dl class="card ac-dl">
-      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours, puis 3 mois de stage et préparation du certificat', '6 months: 3 months of classes, then a 3-month internship and certificate preparation')}</dd></div>
+      <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours, puis 3 mois de stage et préparation de la certification', '6 months: 3 months of classes, then a 3-month internship and certificate preparation')}</dd></div>
       <div><dt>${t('Coût', 'Cost')}</dt><dd>${t(`${academy.cost} pour la formation complète`, `${academy.cost} for the full programme`)}</dd></div>
       <div><dt>${t('Inscription', 'Enrolment')}</dt><dd>${t(`Formulaire en ligne, puis frais d'inscription de ${academy.fee} réglés via Wave pour valider la place (en plus du coût de la formation)`, `Online form, then a registration fee of ${academy.fee} paid via Wave to confirm your place (on top of the programme cost)`)}</dd></div>
       <div><dt>${t('Rythme', 'Schedule')}</dt><dd>${t('Cours intensifs le week-end, compatibles avec une activité professionnelle', 'Intensive weekend classes, compatible with a job')}</dd></div>
@@ -536,7 +536,7 @@ ${ctaBand()}`,
       <dl>
         <div><dt>${t('Formation', 'Programme')}</dt><dd>${academy.name}</dd></div>
         <div><dt>Session</dt><dd>${academy.nextSession}</dd></div>
-        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours + 3 mois de stage et préparation du certificat', '6 months: 3 months of classes + 3-month internship and certificate preparation')}</dd></div>
+        <div><dt>${t('Durée', 'Duration')}</dt><dd>${t('6 mois : 3 mois de cours + 3 mois de stage et préparation de la certification', '6 months: 3 months of classes + 3-month internship and certificate preparation')}</dd></div>
         <div><dt>Certification</dt><dd>${t("Certificat de Compétence Professionnelle (CCP) délivré par l'ISEP Abdoulaye Ly de Thiès", 'Certificate of Professional Competence (CCP) issued by ISEP Abdoulaye Ly, Thiès')}</dd></div>
         <div><dt>${t('Lieu', 'Location')}</dt><dd>${academy.place}</dd></div>
         <div><dt>${t('Coût de la formation', 'Programme cost')}</dt><dd>${academy.cost}</dd></div>
@@ -898,7 +898,7 @@ Slogan : « ${company.slogan} »
 
 ## ProSolar Academy
 
-Centre de formation professionnelle de DSG, en partenariat avec l'ISEP Abdoulaye Ly de Thiès. Durée 6 mois (3 mois de cours + 3 mois de stage et préparation du certificat), 70 % de pratique, 20 apprenants maximum par cohorte. Certification : Certificat de Compétence Professionnelle (CCP) délivré par l'ISEP.
+Centre de formation professionnelle de DSG, en partenariat avec l'ISEP Abdoulaye Ly de Thiès. Durée 6 mois (3 mois de cours + 3 mois de stage et préparation de la certification), 70 % de pratique, 20 apprenants maximum par cohorte. Certification : Certificat de Compétence Professionnelle (CCP) délivré par l'ISEP.
 
 - Coût de la formation : 300 000 FCFA
 - Frais d'inscription (via Wave) : 100 000 FCFA (en plus du coût)
