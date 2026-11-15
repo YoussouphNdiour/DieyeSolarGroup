@@ -98,7 +98,7 @@ function header(active, file) {
       </div>
     </nav>
     <div class="header-actions">
-      <a class="header-phone" href="tel:${company.phoneHref}">${icon('phone')}<span>${company.phone}</span></a>
+      <a class="header-phone" href="tel:${company.phoneHref}" aria-label="${t('Appeler DSG au ' + company.phone, 'Call DSG at ' + company.phone)}">${icon('phone')}<span>${company.phone}</span></a>
       ${langLink('lang-switch')}
       <a class="btn btn-primary btn-sm" href="contact.html#devis">${t('Demander un devis', 'Request a quote')}</a>
       <button class="burger" type="button" aria-label="${t('Ouvrir le menu', 'Open menu')}" aria-expanded="false">${icon('menu', 'i-open')}${icon('close', 'i-close')}</button>

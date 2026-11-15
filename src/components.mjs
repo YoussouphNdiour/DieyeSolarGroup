@@ -308,7 +308,7 @@ export function simulator() {
         <div><dt>${t('Puissance conseillée', 'Recommended capacity')}</dt><dd><span data-out="kwc">–</span> <small>${kwc}</small></dd></div>
         <div><dt>${t('Panneaux', 'Panels')}</dt><dd><span data-out="panels">–</span></dd></div>
         <div><dt>${t('Stockage conseillé', 'Recommended storage')}</dt><dd><span data-out="storage">–</span> <small data-out="storage-unit">kWh</small></dd></div>
-        <div class="out-main"><dt>${t('Économies estimées', 'Estimated savings')}</dt><dd><span data-out="save">–</span> <small>${t('FCFA / mois', 'FCFA / month')}</small></dd><p>${t('soit', 'i.e.')} <strong data-out="save-year">–</strong> ${t('FCFA par an', 'FCFA per year')}</p></div>
+        <div class="out-main"><dt>${t('Économies estimées', 'Estimated savings')}</dt><dd><span data-out="save">–</span> <small>${t('FCFA / mois', 'FCFA / month')}</small><p class="out-year">${t('soit', 'i.e.')} <strong data-out="save-year">–</strong> ${t('FCFA par an', 'FCFA per year')}</p></dd></div>
       </dl>
       <a class="btn btn-primary btn-block" data-sim-cta href="${waLink()}" target="_blank" rel="noopener">${t('Recevoir mon étude gratuite', 'Get my free study')} ${icon('arrow')}</a>
     </form>
