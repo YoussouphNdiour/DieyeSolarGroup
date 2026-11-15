@@ -392,8 +392,9 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="apple-touch-icon" href="${asset('brand/favicon-180.png')}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="${asset('css/style.css')}?v=${ASSET_V}">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="${asset('css/style.min.css')}?v=${ASSET_V}">
 ${home ? `<link rel="preload" as="image" href="${img(image)}" fetchpriority="high">\n<script type="application/ld+json">${jsonLd()}</script>` : ''}
 ${ld ? `<script type="application/ld+json">${ld}</script>` : ''}
 </head>

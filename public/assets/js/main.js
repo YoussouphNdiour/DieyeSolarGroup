@@ -10,11 +10,13 @@
   const L = (fr, en) => (EN ? en : fr);
   const fmt = (n, d = 0) => n.toLocaleString(EN ? 'en-US' : 'fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(/ /g, ' ');
 
-  /* En-tête */
+  /* En-tête — rAF pour éviter un read scrollY + write .class par frame */
   const header = $('.site-header');
-  const onScroll = () => header.classList.toggle('scrolled', scrollY > 8);
+  let hdrScheduled = false;
+  const applyHdr = () => { hdrScheduled = false; header.classList.toggle('scrolled', scrollY > 8); };
+  const onScroll = () => { if (!hdrScheduled) { hdrScheduled = true; requestAnimationFrame(applyHdr); } };
   addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  applyHdr();
 
   /* Menu mobile */
   const burger = $('.burger');
@@ -100,16 +102,24 @@
     counters.forEach((c) => co.observe(c));
   }
 
-  /* Carrousel des réalisations */
+  /* Carrousel des réalisations — on batch les lectures DOM dans un rAF pour éviter
+     le reflow forcé flagué par Lighthouse (read scrollLeft/clientWidth puis
+     write .disabled, répété = couche qui reflow plusieurs fois par scroll). */
   const car = $('[data-carousel]');
   if (car) {
     const prev = $('[data-car="prev"]');
     const next = $('[data-car="next"]');
     const step = () => (car.firstElementChild ? car.firstElementChild.getBoundingClientRect().width + 20 : 400);
-    const update = () => {
-      prev.disabled = car.scrollLeft < 8;
-      next.disabled = car.scrollLeft + car.clientWidth >= car.scrollWidth - 8;
+    let carScheduled = false;
+    const applyUpdate = () => {
+      carScheduled = false;
+      const sl = car.scrollLeft;
+      const cw = car.clientWidth;
+      const sw = car.scrollWidth;
+      prev.disabled = sl < 8;
+      next.disabled = sl + cw >= sw - 8;
     };
+    const update = () => { if (!carScheduled) { carScheduled = true; requestAnimationFrame(applyUpdate); } };
     prev.addEventListener('click', () => car.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }));
     next.addEventListener('click', () => car.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }));
     car.addEventListener('scroll', update, { passive: true });
@@ -118,7 +128,7 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
     });
     addEventListener('resize', update);
-    update();
+    applyUpdate();
   }
 
   /* Vidéos : bouton de lecture personnalisé, une seule vidéo à la fois */
