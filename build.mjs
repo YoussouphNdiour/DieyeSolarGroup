@@ -929,7 +929,7 @@ Cheikh Mohamed Dieye — Président Directeur Général de Dieye Solar Group SAS
 
 ## Marques installées
 
-Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, Hober, Must, Victron, SMA.
+Jinko Solar, JA Solar, Canadian Solar (panneaux) ; Deye, Huawei, Sungrow, Felicity Solar, Solarig, Solis, Dyness, Livoltek, Uhome, Hober, Must, Victron, SMA.
 
 ## Clients et partenaires
 

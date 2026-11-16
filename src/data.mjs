@@ -298,6 +298,9 @@ const partnersFr = {
     ['isep-thies', 'ISEP Thiès'],
   ],
   brands: [
+    ['jinko-solar', 'Jinko Solar'],
+    ['ja-solar', 'JA Solar'],
+    ['canadian-solar', 'Canadian Solar'],
     ['felicity', 'Felicity Solar'],
     ['solarig', 'Solarig'],
     ['deye', 'Deye'],
