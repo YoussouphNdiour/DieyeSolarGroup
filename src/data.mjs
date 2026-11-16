@@ -22,6 +22,8 @@ const companyFr = {
   city: 'Thiès',
   hours: 'Lundi au vendredi, 8 h – 17 h',
   url: 'https://www.dsg.sn',
+  rccm: 'SN THS 2026-B-5611',
+  ninea: '013359395',
 };
 
 const servicesFr = [

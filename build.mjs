@@ -641,7 +641,7 @@ ${ctaBand()}`,
     <h2>Website publisher</h2>
     <p>${company.legal}, simplified joint-stock company (SAS).<br>Registered office: ${company.address}.<br>Phone: <a href="tel:${company.phoneHref}">${company.phone}</a> · Email: <a href="mailto:${company.email}">${company.email}</a></p>
     <p>Publication director: ${company.owner}, Chairman and CEO.</p>
-    <p class="todo">RCCM and NINEA: to be completed.</p>
+    <p>RCCM: ${company.rccm}<br>NINEA: ${company.ninea}</p>
     <h2>Hosting</h2>
     <p class="todo">Name and address of the cPanel hosting provider: to be completed.</p>
     <h2>Intellectual property</h2>
@@ -660,7 +660,7 @@ ${ctaBand()}`,
     <h2>Éditeur du site</h2>
     <p>${company.legal}, société par actions simplifiée.<br>Siège : ${company.address}.<br>Téléphone : <a href="tel:${company.phoneHref}">${company.phone}</a> · E-mail : <a href="mailto:${company.email}">${company.email}</a></p>
     <p>Responsable de la publication : ${company.owner}, Président Directeur Général.</p>
-    <p class="todo">RCCM et NINEA : à compléter.</p>
+    <p>RCCM : ${company.rccm}<br>NINEA : ${company.ninea}</p>
     <h2>Hébergement</h2>
     <p class="todo">Nom et adresse de l'hébergeur cPanel : à compléter.</p>
     <h2>Propriété intellectuelle</h2>
