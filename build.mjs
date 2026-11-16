@@ -643,7 +643,7 @@ ${ctaBand()}`,
     <p>Publication director: ${company.owner}, Chairman and CEO.</p>
     <p>RCCM: ${company.rccm}<br>NINEA: ${company.ninea}</p>
     <h2>Hosting</h2>
-    <p class="todo">Name and address of the cPanel hosting provider: to be completed.</p>
+    <p>The website is hosted by o2switch, 222-224 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand, France.</p>
     <h2>Intellectual property</h2>
     <p>The texts, photographs, logos and visual identity of this website belong to ${company.legal} or to their respective owners. The logos of clients, partners and manufacturers are shown to illustrate our references. Any reproduction without permission is prohibited.</p>
     <h2>Personal data</h2>
@@ -662,7 +662,7 @@ ${ctaBand()}`,
     <p>Responsable de la publication : ${company.owner}, Président Directeur Général.</p>
     <p>RCCM : ${company.rccm}<br>NINEA : ${company.ninea}</p>
     <h2>Hébergement</h2>
-    <p class="todo">Nom et adresse de l'hébergeur cPanel : à compléter.</p>
+    <p>Le site est hébergé par o2switch, 222-224 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand, France.</p>
     <h2>Propriété intellectuelle</h2>
     <p>Les textes, photographies, logos et la charte graphique de ce site appartiennent à ${company.legal} ou à leurs propriétaires respectifs. Les logos des clients, partenaires et fabricants sont reproduits pour illustrer nos références. Toute reproduction sans autorisation est interdite.</p>
     <h2>Données personnelles</h2>
