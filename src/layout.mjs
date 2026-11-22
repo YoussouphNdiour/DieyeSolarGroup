@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { company, services, projects, lang, t } from './data.mjs';
 
 const ASSET_V = Date.now().toString(36);
@@ -14,6 +15,25 @@ export const esc = (s) =>
 export const base = () => (lang === 'en' ? '../' : '');
 export const asset = (p) => `${base()}assets/${p}`;
 export const img = (name) => asset(`img/${name}.webp`);
+
+// Dimensions réelles d'un WebP (lues dans l'en-tête) : width/height sur chaque <img> évitent les décalages de mise en page (CLS).
+const _dims = new Map();
+export function webpSize(rel) {
+  if (_dims.has(rel)) return _dims.get(rel);
+  let out = null;
+  try {
+    const b = readFileSync(new URL(`../public/assets/${rel}`, import.meta.url));
+    const k = b.toString('ascii', 12, 16);
+    if (k === 'VP8 ') out = [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+    else if (k === 'VP8L') { const v = b.readUInt32LE(21); out = [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1]; }
+    else if (k === 'VP8X') out = [b.readUIntLE(24, 3) + 1, b.readUIntLE(27, 3) + 1];
+  } catch {}
+  _dims.set(rel, out);
+  return out;
+}
+const _mf = JSON.parse(readFileSync(new URL('./img-manifest.json', import.meta.url), 'utf8'));
+export const preloadSet = (name) => { const m = _mf[name]; return m && m.v.length ? ` imagesrcset="${[...m.v.map((w) => `${img(`${name}-${w}`)} ${w}w`), `${img(name)} ${m.w}w`].join(', ')}" imagesizes="100vw"` : ''; };
+export const dimAttr = (rel) => { const d = webpSize(rel); return d ? ` width="${d[0]}" height="${d[1]}"` : ''; };
 
 export const waLink = (text = t('Bonjour DSG, je souhaite un devis pour un projet.', 'Hello DSG, I would like a quote for a project.')) =>
   `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(text)}`;
@@ -67,8 +87,9 @@ const nav = () => [
   { label: 'Contact', href: 'contact.html', key: 'contact' },
 ];
 
-function header(active, file) {
-  const other = lang === 'en' ? `../${file}` : `en/${file}`;
+function header(active, file, altFile) {
+  // altFile : nom du fichier dans l'AUTRE langue quand il diffère (articles de blog)
+  const other = lang === 'en' ? `../${altFile || file}` : `en/${altFile || file}`;
   const langLink = (cls) => lang === 'en'
     ? `<a class="${cls}" href="${other}" hreflang="fr" lang="fr" title="Version française">FR</a>`
     : `<a class="${cls}" href="${other}" hreflang="en" lang="en" title="English version">EN</a>`;
@@ -355,11 +376,12 @@ export function breadcrumbJsonLd(items) {
   });
 }
 
-export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false, ld = null }) {
+export function page({ file, title, description, active, body, image = 'hero-centrale-1mwc', home = false, noindex = false, ld = null, alt = null }) {
   const fullTitle = home ? title : `${title} | DSG – Dieye Solar Group`;
   const path = file === 'index.html' ? '' : file;
-  const urlFr = `${company.url}/${path}`;
-  const urlEn = `${company.url}/en/${path}`;
+  const pathFr = alt ? alt.fr : path, pathEn = alt ? alt.en : path;
+  const urlFr = `${company.url}/${pathFr}`;
+  const urlEn = `${company.url}/en/${pathEn}`;
   const canonical = lang === 'en' ? urlEn : urlFr;
   return `<!doctype html>
 <html lang="${lang}">
@@ -400,11 +422,11 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet"></noscript>
 ${INLINE_CSS ? `<style>${INLINE_CSS}</style>` : `<link rel="stylesheet" href="${asset('css/style.min.css')}?v=${ASSET_V}">`}
-${home ? `<link rel="preload" as="image" href="${img(image)}" fetchpriority="high">\n<script type="application/ld+json">${jsonLd()}</script>` : ''}
+${home ? `<link rel="preload" as="image" href="${img(image)}"${preloadSet(image)} fetchpriority="high">\n<script type="application/ld+json">${jsonLd()}</script>` : ''}
 ${ld ? `<script type="application/ld+json">${ld}</script>` : ''}
 </head>
 <body>
-${header(active, file)}
+${header(active, file, alt ? (lang === 'en' ? alt.fr : alt.en) : null)}
 <main id="contenu">
 ${body}
 </main>

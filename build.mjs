@@ -271,7 +271,7 @@ ${ctaBand()}`,
     body: `${pageHero({ kickerText: t('Réalisations', 'Projects'), title: t('Des installations qui tournent déjà.', 'Installations already up and running.'), lead: t('Industrie, lieux de culte, agro-industrie, résidences, agriculture : chaque projet est étudié, installé et suivi par nos équipes.', 'Industry, places of worship, agro-industry, homes, agriculture: every project is studied, installed and followed up by our teams.'), image: 'sandiara-aerien', alt: t('Vue aérienne des chambres froides solaires de Sandiara', 'Aerial view of the solar-powered cold rooms in Sandiara'), crumbs: [[t('Réalisations', 'Projects')]], actions: false })}
 <section class="section">
   <div class="wrap">
-    <div class="proj-grid">${projects.map((p) => projectCard(p, 'proj-static')).join('')}</div>
+    <div class="proj-grid">${projects.map((p) => projectCard(p, 'proj-static', 'h2')).join('')}</div>
   </div>
 </section>
 <section class="section section-paper">
@@ -693,8 +693,9 @@ ${ctaBand()}`,
     ]),
     body: blogIndexBody(bd.articles),
   });
-  bd.articles.forEach((a) => {
+  bd.articles.forEach((a, i) => {
     add(`blog-${a.slug}.html`, {
+      alt: { fr: `blog-${articlesFr[i].slug}.html`, en: `blog-${articlesEn[i].slug}.html` },
       title: a.title,
       description: a.excerpt,
       image: a.image,

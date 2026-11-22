@@ -1,0 +1,510 @@
+{
+"cablage-tableau": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"casem-armoire": {
+"w": 1400,
+"h": 1050,
+"v": [
+480,
+800
+]
+},
+"casem-equipe": {
+"w": 1050,
+"h": 1400,
+"v": [
+480,
+800
+]
+},
+"casem-pose": {
+"w": 787,
+"h": 1400,
+"v": [
+480
+]
+},
+"casem-toiture": {
+"w": 1050,
+"h": 1400,
+"v": [
+480,
+800
+]
+},
+"centrale-1mwc-aerien": {
+"w": 1600,
+"h": 900,
+"v": [
+480,
+800
+]
+},
+"champ-solaire": {
+"w": 1200,
+"h": 801,
+"v": [
+480,
+800
+]
+},
+"chateau-eau": {
+"w": 1400,
+"h": 626,
+"v": [
+480,
+800
+]
+},
+"cheikh-mohamed-dieye": {
+"w": 480,
+"h": 481,
+"v": []
+},
+"equipe-dsg": {
+"w": 1080,
+"h": 617,
+"v": [
+480,
+800
+]
+},
+"equipe-pose": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"forage-eau": {
+"w": 960,
+"h": 1280,
+"v": [
+480
+]
+},
+"forage-jet-2": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"forage-jet-3": {
+"w": 675,
+"h": 1200,
+"v": [
+480
+]
+},
+"forage-jet-irrigation": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"formation-prosolar": {
+"w": 1600,
+"h": 900,
+"v": [
+480,
+800
+]
+},
+"hero-centrale-1mwc": {
+"w": 1600,
+"h": 900,
+"v": [
+480,
+800
+]
+},
+"hero-mosquee": {
+"w": 2000,
+"h": 1125,
+"v": [
+480,
+800
+]
+},
+"irrigation-collecteur": {
+"w": 675,
+"h": 1200,
+"v": [
+480
+]
+},
+"irrigation-raccords": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"irrigation-vannes": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"keur-madaro-bassin": {
+"w": 1000,
+"h": 1334,
+"v": [
+480,
+800
+]
+},
+"keur-madaro-chantier": {
+"w": 1000,
+"h": 1334,
+"v": [
+480,
+800
+]
+},
+"keur-madaro-pompe": {
+"w": 1000,
+"h": 1334,
+"v": [
+480,
+800
+]
+},
+"local-batteries": {
+"w": 1400,
+"h": 1050,
+"v": [
+480,
+800
+]
+},
+"local-onduleurs": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"local-technique": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"logo-prosolar": {
+"w": 480,
+"h": 399,
+"v": []
+},
+"mamelles-11kwc-panneaux": {
+"w": 788,
+"h": 1400,
+"v": [
+480
+]
+},
+"mamelles-11kwc-pose": {
+"w": 1050,
+"h": 1400,
+"v": [
+480,
+800
+]
+},
+"mamelles-11kwc-technicien": {
+"w": 788,
+"h": 1400,
+"v": [
+480
+]
+},
+"mamelles-toiture": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mamelles-villa": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mamelles-vue": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mbao-armoire": {
+"w": 1050,
+"h": 1400,
+"v": [
+480,
+800
+]
+},
+"mbao-batterie": {
+"w": 787,
+"h": 1400,
+"v": [
+480
+]
+},
+"mbao-toiture": {
+"w": 1400,
+"h": 1050,
+"v": [
+480,
+800
+]
+},
+"mosquee-aerien": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mosquee-panneaux": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mosquee-rangees": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"mosquee-toiture": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"onduleur-batterie": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"onduleurs-mur": {
+"w": 1000,
+"h": 1334,
+"v": [
+480,
+800
+]
+},
+"petit-champ-sol": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"pompage-champ-panneaux": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"prosolar-signature": {
+"w": 1400,
+"h": 1050,
+"v": [
+480,
+800
+]
+},
+"sandiara-aerien": {
+"w": 1400,
+"h": 934,
+"v": [
+480,
+800
+]
+},
+"sandiara-batteries": {
+"w": 1000,
+"h": 1334,
+"v": [
+480,
+800
+]
+},
+"sandiara-charpente": {
+"w": 1200,
+"h": 900,
+"v": [
+480,
+800
+]
+},
+"sandiara-conteneurs": {
+"w": 1400,
+"h": 934,
+"v": [
+480,
+800
+]
+},
+"sandiara-ombriere": {
+"w": 1200,
+"h": 900,
+"v": [
+480,
+800
+]
+},
+"sandiara-onduleurs": {
+"w": 1000,
+"h": 750,
+"v": [
+480,
+800
+]
+},
+"sandiara-site": {
+"w": 1400,
+"h": 934,
+"v": [
+480,
+800
+]
+},
+"sandiara-techniciens": {
+"w": 1400,
+"h": 1050,
+"v": [
+480,
+800
+]
+},
+"sav-brosse-toiture": {
+"w": 1200,
+"h": 1600,
+"v": [
+480,
+800
+]
+},
+"sav-brosse": {
+"w": 1200,
+"h": 1600,
+"v": [
+480,
+800
+]
+},
+"sav-nettoyage-mosquee": {
+"w": 900,
+"h": 1200,
+"v": [
+480
+]
+},
+"sav-nettoyage": {
+"w": 1200,
+"h": 1600,
+"v": [
+480,
+800
+]
+},
+"technicienne-onduleur": {
+"w": 1400,
+"h": 788,
+"v": [
+480,
+800
+]
+},
+"toiture-pose": {
+"w": 1000,
+"h": 1778,
+"v": [
+480,
+800
+]
+},
+"video-casem-chantier": {
+"w": 540,
+"h": 960,
+"v": []
+},
+"video-forage-foration-1": {
+"w": 544,
+"h": 960,
+"v": []
+},
+"video-forage-foration-2": {
+"w": 544,
+"h": 960,
+"v": []
+},
+"video-forage-foration-3": {
+"w": 544,
+"h": 960,
+"v": []
+},
+"video-mbao-chantier": {
+"w": 540,
+"h": 959,
+"v": []
+},
+"video-mosquee": {
+"w": 1280,
+"h": 720,
+"v": [
+480,
+800
+]
+},
+"video-pompage-debit": {
+"w": 540,
+"h": 960,
+"v": []
+},
+"video-pompage-pose-panneaux": {
+"w": 540,
+"h": 960,
+"v": []
+},
+"video-sav-nettoyage-brosse": {
+"w": 540,
+"h": 960,
+"v": []
+}
+}

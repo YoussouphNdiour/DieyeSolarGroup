@@ -1,8 +1,15 @@
 import { company, services, projects, steps, partners, academy, clips, lang, t } from './data.mjs';
-import { esc, icon, img, asset, waLink } from './layout.mjs';
+import { esc, icon, img, asset, waLink, dimAttr } from './layout.mjs';
 
-export const picture = (name, alt, { cls = '', eager = false, sizes } = {}) =>
-  `<img class="${cls}" src="${img(name)}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"${sizes ? ` sizes="${sizes}"` : ''}>`;
+import { readFileSync } from 'node:fs';
+const manifest = JSON.parse(readFileSync(new URL('./img-manifest.json', import.meta.url), 'utf8'));
+
+// <img> responsive : variantes 480/800 px générées par tools/variants.py, dimensions réelles pour éviter tout décalage (CLS).
+export const picture = (name, alt, { cls = '', eager = false, sizes } = {}) => {
+  const m = manifest[name];
+  const srcset = m && m.v.length ? ` srcset="${[...m.v.map((w) => `${img(`${name}-${w}`)} ${w}w`), `${img(name)} ${m.w}w`].join(', ')}" sizes="${sizes || (eager ? '100vw' : '(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 600px')}"` : '';
+  return `<img class="${cls}" src="${img(name)}" alt="${esc(alt)}"${m ? ` width="${m.w}" height="${m.h}"` : dimAttr(`img/${name}.webp`)}${srcset} ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+};
 
 export const kicker = (text, light = false) => `<p class="kicker${light ? ' kicker-light' : ''}">${text}</p>`;
 
@@ -44,7 +51,7 @@ export function homeHero() {
 export function logoTicker() {
   const seen = new Set();
   const all = [...partners.clients, ...partners.partners, ...partners.brands].filter(([f]) => !seen.has(f) && seen.add(f));
-  const row = (hidden) => all.map(([f, n]) => `<li><img src="${asset(`logos/${f}.webp`)}" alt="${hidden ? '' : esc(n)}" loading="lazy" height="40"></li>`).join('');
+  const row = (hidden) => all.map(([f, n]) => `<li><img src="${asset(`logos/${f}.webp`)}" alt="${hidden ? '' : esc(n)}"${dimAttr(`logos/${f}.webp`)} loading="lazy"></li>`).join('');
   // La liste est courte : on la répète pour que la bande défile sans trou sur grand écran.
   return `<section class="ticker" aria-label="${t('Clients, partenaires et marques', 'Clients, partners and brands')}">
   <div class="ticker-track"><ul>${row(false)}${row(true)}</ul><ul aria-hidden="true">${row(true)}${row(true)}</ul></div>
@@ -158,12 +165,12 @@ export function hybridDay() {
 </section>`;
 }
 
-export const projectCard = (p, cls = '') => `<article class="proj-card ${cls}">
+export const projectCard = (p, cls = '', hn = 'h3') => `<article class="proj-card ${cls}">
   <a href="projet-${p.slug}.html">
     ${picture(p.image, `${p.title}, ${p.place}`)}
     <div class="proj-body">
       <p class="proj-fig"><span>${p.figure}</span><small>${p.unit}</small></p>
-      <h3>${p.shortTitle || p.title}</h3>
+      <${hn}>${p.shortTitle || p.title}</${hn}>
       <p class="proj-sum">${p.place} · ${p.summary}</p>
       <p class="tags"><span class="tag tag-accent">${p.category}</span>${p.year ? `<span class="tag">${p.year}</span>` : ''}</p>
     </div>
@@ -193,7 +200,8 @@ export function projectsCarousel() {
 
 const vidFigure = ({ file, poster, title, sub, portrait = false }) => `<figure class="vid${portrait ? ' vid-portrait' : ''}">
   <div class="vid-frame">
-    <video controls preload="none" playsinline poster="${img(poster)}" aria-label="${t('Vidéo', 'Video')} : ${esc(title)}">
+    ${picture(poster, '', { cls: 'vid-poster' })}
+    <video controls preload="none" playsinline aria-label="${t('Vidéo', 'Video')} : ${esc(title)}">
       <source src="${asset(`video/${file}.mp4`)}" type="video/mp4">
     </video>
     <button class="vid-play" type="button" aria-label="${t('Lire la vidéo', 'Play video')} : ${esc(title)}">${icon('play')}</button>
@@ -339,7 +347,7 @@ export function stepsSection() {
 export function partnersSection() {
   const group = (title, list) => `<div class="pt-group" data-reveal>
     <h3>${title}</h3>
-    <ul class="pt-logos">${list.map(([f, n]) => `<li><img src="${asset(`logos/${f}.webp`)}" alt="${esc(n)}" loading="lazy"></li>`).join('')}</ul>
+    <ul class="pt-logos">${list.map(([f, n]) => `<li><img src="${asset(`logos/${f}.webp`)}" alt="${esc(n)}"${dimAttr(`logos/${f}.webp`)} loading="lazy"></li>`).join('')}</ul>
   </div>`;
   return `<section class="section partners">
   <div class="wrap">

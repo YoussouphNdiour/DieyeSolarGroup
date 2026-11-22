@@ -14,7 +14,7 @@
   --white: #fff;
   --ink: #0d1034;
   --ink-2: #474c66;
-  --ink-3: #6b7086;
+  --ink-3: #666b80;
   --line: rgba(13, 16, 52, 0.12);
   --line-light: rgba(255, 255, 255, 0.14);
   --radius: 20px;
@@ -259,7 +259,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .proj-fig { font-family: var(--font-d); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; display: flex; align-items: baseline; gap: 8px; }
 .proj-fig span { font-size: clamp(54px, 7vw, 96px); color: var(--yellow); }
 .proj-fig small { font-size: clamp(20px, 2vw, 28px); color: var(--cyan); letter-spacing: 0; }
-.proj-card h3 { color: #fff; font-size: clamp(22px, 2.4vw, 30px); margin-top: 14px; }
+.proj-card h3, .proj-card h2 { color: #fff; font-size: clamp(22px, 2.4vw, 30px); margin-top: 14px; }
 .proj-sum { margin-top: 8px; color: rgba(255, 255, 255, 0.78); font-size: 15.5px; max-width: 60ch; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .tag { display: inline-flex; align-items: center; height: 30px; padding: 0 14px; border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, 0.4); font-size: 13px; font-weight: 700; }
@@ -271,7 +271,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .videos-single { grid-template-columns: minmax(0, 960px); }
 .vid { margin: 0; }
 .vid-frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: var(--navy); }
-.vid-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vid-frame video { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Affiche chargée en différé (une <img> lazy) : l'attribut poster est téléchargé tout de suite et concurrence l'image LCP. */
+.vid-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .vid-play { display: none; }
 .js .vid-play {
   position: absolute; inset: 0; display: grid; place-items: center; width: 100%; border: 0; padding: 0; cursor: pointer; color: var(--navy);
