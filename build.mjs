@@ -315,7 +315,8 @@ ${p.video ? `<section class="section section-paper videos-sec">
     <div class="videos videos-single">${videoCard(p)}</div>
   </div>
 </section>` : ''}
-<section class="section${p.video ? '' : ' section-paper'}">
+${p.clips ? clipsSection(p.clips, { title: t('Le chantier en vidéo.', 'The site on video.'), paper: true }) : ''}
+<section class="section${p.video || p.clips ? '' : ' section-paper'}">
   <div class="wrap">
     ${kicker(t('En images', 'In pictures'))}
     <h2>${t('Le chantier.', 'The site.')}</h2>
@@ -750,7 +751,8 @@ const cssSrc = readFileSync(cssPath, 'utf8');
 const minCss = cssSrc
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/\s+/g, ' ')
-  .replace(/\s*([{}:;,>+~])\s*/g, '$1')
+  // « + » est conservé : dans calc(a + b) les espaces sont obligatoires (sinon la déclaration entière est invalide)
+  .replace(/\s*([{}:;,>~])\s*/g, '$1')
   .replace(/;}/g, '}')
   .trim();
 writeFileSync(new URL('./public/assets/css/style.min.css', import.meta.url), minCss);
@@ -912,6 +914,8 @@ Slogan : « ${company.slogan} »
 - **Mosquée Abdoulaye Diop à Thiès** (2025) : 28,32 kWc, 40 kWh de batteries, 70 % d'autonomie, 600 000 FCFA d'économies/mois.
 - **Villa à la Somone** (Mbour) : 25,2 kWc, 40 panneaux Canadian Solar 630 W bifaciaux, 2 onduleurs Deye 20 kW, 4 batteries Dyness 10 kWh.
 - **Villa aux Mamelles** (Dakar) : 11 kWc, panneaux 555 W, Deye 12 kW monophasé, 3 batteries GSB 10 kWh.
+- **CASEM AFRICA** (Thiès) : 9,94 kWc, 14 panneaux Canadian Solar 710 W, onduleur hybride Deye 8 kW, batterie Dyness 5 kWh.
+- **Maison à Grand Mbao** (Dakar) : 4,96 kWc, 8 panneaux Jinko 620 W, onduleur hybride Deye 8 kW, batterie Uhome 16 kWh.
 - **Pompage de Keur Madaro** (2026) : pompe solaire 2,2 kW sur bassin d'irrigation agricole.
 
 ## ProSolar Academy

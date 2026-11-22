@@ -25,6 +25,8 @@ Slogan : « L'innovation au service de vos projets »
 - **Mosquée Abdoulaye Diop à Thiès** (2025) : 28,32 kWc, 40 kWh de batteries, 70 % d'autonomie, 600 000 FCFA d'économies/mois.
 - **Villa à la Somone** (Mbour) : 25,2 kWc, 40 panneaux Canadian Solar 630 W bifaciaux, 2 onduleurs Deye 20 kW, 4 batteries Dyness 10 kWh.
 - **Villa aux Mamelles** (Dakar) : 11 kWc, panneaux 555 W, Deye 12 kW monophasé, 3 batteries GSB 10 kWh.
+- **CASEM AFRICA** (Thiès) : 9,94 kWc, 14 panneaux Canadian Solar 710 W, onduleur hybride Deye 8 kW, batterie Dyness 5 kWh.
+- **Maison à Grand Mbao** (Dakar) : 4,96 kWc, 8 panneaux Jinko 620 W, onduleur hybride Deye 8 kW, batterie Uhome 16 kWh.
 - **Pompage de Keur Madaro** (2026) : pompe solaire 2,2 kW sur bassin d'irrigation agricole.
 
 ## ProSolar Academy
