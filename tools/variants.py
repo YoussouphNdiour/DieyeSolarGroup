@@ -14,9 +14,9 @@ for f in sorted(glob.glob(IMG + '/*.webp')):
     for tw in (480, 800):
         if w > tw * 1.2:
             out = os.path.join(IMG, f'{name}-{tw}.webp')
-            if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(f):
+            if True:
                 r = im.convert('RGB').resize((tw, round(h * tw / w)), Image.LANCZOS)
-                r.save(out, 'WEBP', quality=72, method=6)
+                r.save(out, 'WEBP', quality=62, method=6)
             vs.append(tw)
     manifest[name] = {'w': w, 'h': h, 'v': vs}
 json.dump(manifest, open(os.path.join(ROOT, 'src/img-manifest.json'), 'w'), indent=0)

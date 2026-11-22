@@ -131,8 +131,9 @@
       if (e.key === 'ArrowRight') { e.preventDefault(); next.click(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); prev.click(); }
     });
-    addEventListener('resize', update);
-    applyUpdate();
+    // ResizeObserver : premier calcul après la mise en page (pas de lecture synchrone → pas de reflow forcé), puis à chaque redimensionnement.
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(car);
+    else { addEventListener('resize', update); addEventListener('load', update); }
   }
 
   /* Vidéos : bouton de lecture personnalisé, une seule vidéo à la fois */

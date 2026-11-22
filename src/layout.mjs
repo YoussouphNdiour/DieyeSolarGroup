@@ -113,7 +113,7 @@ function header(active, file, altFile) {
 <header class="site-header">
   <div class="wrap header-in">
     <a class="brand" href="index.html" aria-label="${t('Dieye Solar Group, accueil', 'Dieye Solar Group, home')}">
-      <img src="${asset('brand/dsg-mark.webp')}" alt="DSG Dieye Solar Group" width="160" height="45">
+      <img src="${asset('brand/dsg-mark-330.webp')}" alt="DSG Dieye Solar Group" width="330" height="94">
     </a>
     <nav class="main-nav" aria-label="${t('Navigation principale', 'Main navigation')}">
       <ul class="nav-list">${items}</ul>
